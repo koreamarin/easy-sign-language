@@ -17,6 +17,7 @@ pipeline {
             steps {
                 dir("${env.WORKSPACE}/Easysign_be"){
                     script {
+                        sh "ls secure-settings -al"
                         sh "chmod +x ./gradlew"
                     }
                 }
