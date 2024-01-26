@@ -1,0 +1,3 @@
+[submodule "Easysign_be/secure-settings"]
+	path = Easysign_be/secure-settings
+	url = https://github.com/dodokim98/easysign_settings.git
