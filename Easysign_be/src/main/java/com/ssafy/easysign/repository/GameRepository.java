@@ -1,9 +1,9 @@
 package com.ssafy.easysign.repository;
 
-import com.ssafy.easysign.model.Game;
+import com.ssafy.easysign.model.GameRoom;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 
-public interface GameRepository extends JpaRepository<Game, Long> {
+public interface GameRepository extends JpaRepository<GameRoom, Long> {
 
 }
