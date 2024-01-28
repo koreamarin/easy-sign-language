@@ -1,6 +1,5 @@
 package com.ssafy.easysign.model.request;
 
-import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import lombok.Data;
 import lombok.NoArgsConstructor;

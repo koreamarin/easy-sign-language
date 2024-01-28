@@ -2,10 +2,11 @@ package com.ssafy.easysign.model;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.hibernate.annotations.ColumnDefault;
 
-@Entity
 @Data
+@NoArgsConstructor
 public class GameRoom {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
