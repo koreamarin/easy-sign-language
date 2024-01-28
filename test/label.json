@@ -1,0 +1,17 @@
+{
+	"label_count": 3,
+	"label": {
+		"고민": {
+			"idx": 0,
+			"file_cnt": 20
+		},
+		"뻔뻔": {
+			"idx": 1,
+			"file_cnt": 20
+		},
+		"수어": {
+			"idx": 2,
+			"file_cnt": 20
+		}
+	}
+}
