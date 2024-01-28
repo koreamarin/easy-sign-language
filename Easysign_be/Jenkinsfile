@@ -19,7 +19,8 @@ pipeline {
                     script {
                         sh "ls secure-settings -al"
                         sh "chmod +x ./gradlew"
-                        sh 'cp backend/secure-settings/ .env'
+                        sh "mkdir ./src/main/resources"
+                        sh 'cp -r ./secure-settings/ ./src/main/resources/'
                         sh "cat ./src/main/resources/application-dev.yml"
                     }
                 }
