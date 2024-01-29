@@ -6,7 +6,7 @@ import numpy as np
 from tensorflow.keras.models import load_model
 
 
-test_data_version = "v1.0.1"
+test_data_version = "v1.0.3"
 
 path = os.path.dirname(os.path.abspath(__file__))
 
@@ -20,7 +20,15 @@ test_data_version = test_data_version.replace('.', '')[1:]
 
 actions = list(range(word_count * 2 - 1))
 seq_length = 10
-move = ['default', '기억! 기억! 기억! 기억!', '기억! 기억! 기억! 기억!', 'ㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴ', 'ㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴ']
+move = ['default', 
+        '기억! 기억! 기억! 기억!', '기억! 기억! 기억! 기억!', 
+        'ㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴ', 'ㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴ',
+        'ㄷㄷㄷㄷㄷ디귿ㄷㄷㄷㄷㄷ디귿ㄷㄷㄷ', 'ㄷㄷㄷㄷㄷ디귿ㄷㄷㄷㄷㄷ디귿ㄷㄷㄷ',
+        'ㄹㄹㄹㄹㄹㄹㄹㄹㄹㄹㄹㄹㄹㄹㄹㄹㄹㄹㄹㄹㄹㄹ', 'ㄹㄹㄹㄹㄹㄹㄹㄹㄹㄹㄹㄹㄹㄹㄹㄹㄹㄹㄹㄹㄹㄹ',
+        'ㅁㅁㅁㅁ', 'ㅁㅁㅁㅁ',
+        'ㅂㅂㅂㅂㅂㅂㅂㅂㅂㅂㅂㅂㅂㅂㅂㅂㅂㅂㅂㅂ', 'ㅂㅂㅂㅂㅂㅂㅂㅂㅂㅂㅂㅂㅂㅂㅂㅂㅂㅂㅂㅂ',
+        'ㅅㅅㅅㅅㅅㅅㅅㅅㅅㅅㅅㅅㅅ', 'ㅅㅅㅅㅅㅅㅅㅅㅅㅅㅅㅅㅅㅅ',
+        'ㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇ', 'ㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇ',]
 
 
 model = load_model(f'{path}/data_{test_data_version}_train_100_model.h5')
@@ -65,44 +73,64 @@ with mp_holistic.Holistic(
             img = cv2.cvtColor(img, cv2.COLOR_RGB2BGR)
             
         
-            if results.pose_landmarks:
+            if results.pose_landmarks and results.left_hand_landmarks and results.right_hand_landmarks:
 
                 # 빈 벡터 생성
-                joint_p = np.zeros((14, 3))
+                joint_p = np.zeros((14, 2))
                 
                 # 필요 keypoint만 저장하기 위한 알고리즘 -> 기존 pose는 33개의 keypoint
                 i = 0
                 for j, lm in enumerate(results.pose_landmarks.landmark):
                     if j in list(range(11, 25)):
-                        joint_p[i] = [lm.x, lm.y, lm.z]
-                        i += 1
-                # 현재 joint는 14 * 3 으로 이용되는 pose의 keypoint만 저장함
-                # pose_map에서의 인덱스와 변경, custom_pose_map참조
-                
-                # 좌표 -> 벡터 변환
-                    v1_p = joint_p[[0,1, 1,0, 1,0, 3,2, 5,4, 5,4, 5,4, 13,12], :2]
-                    v2_p = joint_p[[1,0, 0,1, 3,2, 1,0, 0,1, 1,0, 3,2, 1,0], :2]
-                    v_p = v2_p - v1_p
-
-                    # 벡터 정규화(내적 시 cos만 나오게)
-                    v_p = v_p /np.linalg.norm(v_p, axis=1)[:, np.newaxis]
+                        joint_p[i] = [lm.x, lm.y]
+                        i += 1  
+                        
+                v1_p = joint_p[[0, 0, 1, 12], :]
+                v2_p = joint_p[[1, 12, 0, 0], :]
+                v_p = v2_p - v1_p    
+            
+                        
+                joint_l = np.zeros((21, 2))
+                for j, lm in enumerate(results.left_hand_landmarks.landmark):
+                    joint_l[j] = [lm.x, lm.y]
                     
-                    # 내적 후 결과 -> cos 따라서 arcos으로 각도 계산
-                    angle_p = np.arccos(np.einsum('nt,nt->n',
-                            v_p[[0,1, 0,1, 2,3, 4,5, 6,7, 10,11], :],
-                            v_p[[6,7, 10,11, 8,9, 12,13, 14,15, 14,15], :]))
+                v1_l = joint_l[[0, 0, 0, 0, 0], :]
+                v2_l = joint_l[[1, 5, 9, 13, 17], :]
+                v_l = v2_l - v1_l  
+                    
                 
-                # 라디안 -> degree 변환
-                angle_p = np.degrees(angle_p)
+                joint_r = np.zeros((21, 2))
+                for j, lm in enumerate(results.right_hand_landmarks.landmark):
+                    joint_r[j] = [lm.x, lm.y]
+                    
+                v1_r = joint_r[[0, 0, 0, 0, 0], :]
+                v2_r = joint_r[[1, 5, 9, 13, 17], :]
+                v_r = v2_r - v1_r  
+                
+                v_p = v_p /np.linalg.norm(v_p, axis=1)[:, np.newaxis]
+                v_r = v_r /np.linalg.norm(v_r, axis=1)[:, np.newaxis]
+                v_l = v_l /np.linalg.norm(v_l, axis=1)[:, np.newaxis]
+                
+                
+                angle_p1 = np.arccos(np.einsum('nt,nt->n',
+                        v_p[[0, 0, 0, 0, 0, 1, 1, 1, 1, 1], :],
+                        v_l[[0, 1, 2, 3, 4, 0, 1, 2, 3, 4], :]))
+                
 
-                d_pose = np.concatenate([angle_p, angle_p])
-                # print(angle_p)
+                angle_p2 = np.arccos(np.einsum('nt,nt->n',
+                        v_p[[2, 2, 2, 2, 2, 3, 3, 3, 3, 3], :],
+                        v_r[[0, 1, 2, 3, 4, 0, 1, 2, 3, 4], :]))
+                
+                angle_p1 = np.degrees(angle_p1)
+                angle_p2 = np.degrees(angle_p2)
+                
+                angle_p = np.concatenate([angle_p1, angle_p2])
+            
+
+                d_pose = np.concatenate([angle_p])
                 
             else:
-                # 더미데이터 : 12 * 1
-                dumy_data = np.zeros((24, ))
-                
-                d_pose = np.concatenate([dumy_data])
+                d_pose = np.zeros((20,))
 
             
             # ==========================================================================
