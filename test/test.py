@@ -6,7 +6,7 @@ import numpy as np
 from tensorflow.keras.models import load_model
 
 
-test_data_version = "v1.0.0"
+test_data_version = "v1.0.1"
 
 path = os.path.dirname(os.path.abspath(__file__))
 
@@ -16,12 +16,14 @@ with open(f'{path}/../create_dataset/{test_data_version}/label.json', 'r', encod
 word_count = label['label_count']
 word_dict = label['label']
 
+test_data_version = test_data_version.replace('.', '')[1:]
+
 actions = list(range(word_count * 2 - 1))
 seq_length = 10
 move = ['default', '기억! 기억! 기억! 기억!', '기억! 기억! 기억! 기억!', 'ㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴ', 'ㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴ']
 
 
-model = load_model(f'{path}/data_100_train_100_model.h5')
+model = load_model(f'{path}/data_{test_data_version}_train_100_model.h5')
 
 # MediaPipe hands model
 mp_drawing = mp.solutions.drawing_utils
@@ -78,8 +80,6 @@ with mp_holistic.Holistic(
                 # pose_map에서의 인덱스와 변경, custom_pose_map참조
                 
                 # 좌표 -> 벡터 변환
-                # v1_p = joint_p[[9, 7, 9, 11, 5, 3, 13, 1, 13, 12, 2, 4, 10, 6, 8, 8], :]
-                # v2_p = joint_p[[7, 5, 5, 5, 3, 1, 1, 0, 12, 0, 0, 2, 4, 4, 4, 6], :]
                     v1_p = joint_p[[0,1, 1,0, 1,0, 3,2, 5,4, 5,4, 5,4, 13,12], :2]
                     v2_p = joint_p[[1,0, 0,1, 3,2, 1,0, 0,1, 1,0, 3,2, 1,0], :2]
                     v_p = v2_p - v1_p
@@ -94,22 +94,13 @@ with mp_holistic.Holistic(
                 
                 # 라디안 -> degree 변환
                 angle_p = np.degrees(angle_p)
+
+                d_pose = np.concatenate([angle_p, angle_p])
                 # print(angle_p)
                 
-                                    
-                angle_p = np.concatenate([angle_p, angle_p])
-
-                # 라벨 추가를 위한 빈공간 생성
-                
-                # 라벨 삽입
-                # 27 * 1 벡터(26 각도데이터 + 1 라벨데이터)
-                
-                # 69 * 1 벡터(joint_p -> 14 * 3 = 42, angle_label -> 27  : 27 + 42 = 69)
-                d_pose = np.concatenate([angle_p])
-                
             else:
-                # 라벨 데이터를 붙여줘야함 -> 더미데이터 : 68 * 1, 라벨 데이터 -> 1 * 1
-                dumy_data = np.zeros((12, ))
+                # 더미데이터 : 12 * 1
+                dumy_data = np.zeros((24, ))
                 
                 d_pose = np.concatenate([dumy_data])
 
@@ -121,7 +112,6 @@ with mp_holistic.Holistic(
             # 순간적으로 왼손이 안보일 때를 고려해서 NaN배열을 넣어줘야함
             # 왼손이 존재할때
             if results.left_hand_landmarks is not None:
-                # print('왼손존재')
                 joint_l = np.zeros((21, 3))
                 for j, lm in enumerate(results.left_hand_landmarks.landmark):
                     joint_l[j] = [lm.x, lm.y, lm.z]
@@ -138,14 +128,11 @@ with mp_holistic.Holistic(
                 
                 # 계산 결과 : 15 * 1
                 angle_l = np.degrees(angle_l)
-                # 이미 pose에서 라벨링을 했으므로 따로 X
-                
-                # 78 * 1 벡터(joint -> 21 * 3 = 63, angle_label -> 15 * 1  : 63 + 15 = 78)
+
                 d_left = np.concatenate([angle_l])
             
             # 왼손이 존재하지 않을 때
             else:
-                # print('왼손 없음')
                 d_left = np.zeros((15, ))
 
             # ==========================================================================
@@ -175,13 +162,9 @@ with mp_holistic.Holistic(
                 
                 # 계산 결과 : 15 * 1
                 angle_r = np.degrees(angle_r)
-                # 이미 pose에서 라벨링을 했으므로 따로 X
-                
-                # 78 * 1 벡터(joint -> 21 * 3 = 63, angle_rabel -> 15 * 1  : 63 + 15 = 78)
+
                 d_right = np.concatenate([angle_r])
 
-
-            # 오른손이 존재하지 않을 때
             else:
                 # print('오른손 없음')
                 d_right = np.zeros((15, ))
@@ -192,9 +175,9 @@ with mp_holistic.Holistic(
             # # 병합
             
             # d_pose 마지막에 라벨링이 존재하므로 pose를 마지막에 붙여줌
-            # d_left : 78 * 1, d_right : 78 * 1, d_pose : 69 * 1 => 225 * 1
-            # d = np.concatenate([d_left, d_right, d_pose])
-            d = np.concatenate([d_pose])
+            # d_left : 15 * 1, d_right : 15 * 1, d_pose : 12 * 1 => 42 * 1
+            d = np.concatenate([d_left, d_right, d_pose])
+            # d = np.concatenate([d_pose])
 
             # print(np.shape(d))
             data.append(d)
@@ -216,19 +199,19 @@ with mp_holistic.Holistic(
                 landmark_drawing_spec=mp_drawing_styles
                 .get_default_pose_landmarks_style())
             # 왼손
-            # mp_drawing.draw_landmarks(
-            #     img,
-            #     results.left_hand_landmarks,
-            #     mp_holistic.HAND_CONNECTIONS,
-            #     landmark_drawing_spec=mp_drawing_styles
-            #     .get_default_hand_landmarks_style())
-            # # 오른손
-            # mp_drawing.draw_landmarks(
-            #     img,
-            #     results.right_hand_landmarks,
-            #     mp_holistic.HAND_CONNECTIONS,
-            #     landmark_drawing_spec=mp_drawing_styles
-            #         .get_default_hand_landmarks_style())
+            mp_drawing.draw_landmarks(
+                img,
+                results.left_hand_landmarks,
+                mp_holistic.HAND_CONNECTIONS,
+                landmark_drawing_spec=mp_drawing_styles
+                .get_default_hand_landmarks_style())
+            # 오른손
+            mp_drawing.draw_landmarks(
+                img,
+                results.right_hand_landmarks,
+                mp_holistic.HAND_CONNECTIONS,
+                landmark_drawing_spec=mp_drawing_styles
+                    .get_default_hand_landmarks_style())
   
 
 
