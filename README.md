@@ -5,6 +5,7 @@
 ## 개발환경 정보
 
 - CSS Style : styled components 방식 사용
+- 이용 CSS : MUI
 - Language : Typescript
 - State management : Redux
 - Router version : react-router-dom@6.21.3
