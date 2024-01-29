@@ -4,7 +4,8 @@ WORKDIR /front
 
 ENV PATH /front/node_modules/.bin:$PATH
 
-COPY package.json /front/package.json
+#COPY package.json /front/package.json
+COPY . .
 
 RUN npm install
 RUN npm install react-scripts@3.0.1 -g
