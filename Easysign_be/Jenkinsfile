@@ -8,8 +8,8 @@ pipeline {
             steps {
                 checkout scmGit(
                         branches: [[name: 'be']],
-                        extensions: [submodule(parentCredentials: true, trackingSubmodules: true)],
-                        userRemoteConfigs: [[credentialsId: 'Github-access-token', url: 'https://github.com/dodokim98/easysign_settings.git']]
+//                         extensions: [submodule(parentCredentials: true, trackingSubmodules: true)],
+                        userRemoteConfigs: [[credentialsId: 'GitLab-Access-Token', url: 'https://lab.ssafy.com/s10-webmobile1-sub2/S10P12C202.git']]
                 )
             }
         }
