@@ -1,5 +1,7 @@
 package com.ssafy.easysign.global.config;
 
+import com.ssafy.easysign.global.jwt.JwtAuthenticationFilter;
+import com.ssafy.easysign.global.jwt.JwtAuthorizationFilter;
 import com.ssafy.easysign.user.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -40,13 +42,14 @@ public class SecurityConfig {
         AuthenticationManager authenticationManager = authenticationConfiguration.getAuthenticationManager();
         http.authenticationManager(authenticationManager);
 
-//        http.addFilterBefore(new MyFilter3(), BasicAuthenticationFilter.class);
         //로그인페이지가 없는 api 프로젝트일 때 고정
         http.csrf(AbstractHttpConfigurer::disable);
         http.sessionManagement((sessionManagement) -> sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .addFilter(corsFilter) // @CrossOrigin(인증X), 시큐리티 필터에 등록인증(O)
                 .formLogin(AbstractHttpConfigurer::disable)
                 .httpBasic(AbstractHttpConfigurer::disable)
+                .addFilter(new JwtAuthenticationFilter(authenticationManager))
+                .addFilter(new JwtAuthorizationFilter(authenticationManager, userRepository))
                 .authorizeHttpRequests((authorizeRequests) ->
                         authorizeRequests
                                 .requestMatchers("/login").permitAll()
