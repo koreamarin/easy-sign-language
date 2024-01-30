@@ -37,7 +37,7 @@ pipeline {
             steps {
                 script {
                     withCredentials([[$class: 'UsernamePasswordMultiBinding', credentialsId: 'Docker-hub', usernameVariable: 'DOCKER_USER_ID', passwordVariable: 'DOCKER_USER_PASSWORD']]) {
-                        sh "docker build -t ${DOCKER_USER_ID}/fe-edu Easysign_fe-edu"
+                        sh "docker build -t ${DOCKER_USER_ID}/front-edu Easysign_fe-edu"
                     }
                 }
             }
@@ -57,7 +57,7 @@ pipeline {
             steps {
                 script {
                      withCredentials([[$class: 'UsernamePasswordMultiBinding', credentialsId: 'Docker-hub', usernameVariable: 'DOCKER_USER_ID', passwordVariable: 'DOCKER_USER_PASSWORD']]) {
-                        sh "docker push ${DOCKER_USER_ID}/fe-edu"
+                        sh "docker push ${DOCKER_USER_ID}/front-edu"
                      }
                 }
             }
@@ -73,7 +73,7 @@ pipeline {
             steps {
                 script {
                     withCredentials([[$class: 'UsernamePasswordMultiBinding', credentialsId: 'Docker-hub', usernameVariable: 'DOCKER_USER_ID', passwordVariable: 'DOCKER_USER_PASSWORD']]) {
-                        sh "docker pull ${DOCKER_USER_ID}/fe-edu"
+                        sh "docker pull ${DOCKER_USER_ID}/front-edu"
                     }
                 }
             }
@@ -83,11 +83,11 @@ pipeline {
                 script {
                     withCredentials([[$class: 'UsernamePasswordMultiBinding', credentialsId: 'Docker-hub', usernameVariable: 'DOCKER_USER_ID', passwordVariable: 'DOCKER_USER_PASSWORD']]) {
                         try{
-                            sh "docker stop -f fe-edu || true"
-                            sh "docker rm -f fe-edu || true"
-                            sh "docker run -d --name fe-edu -p 8084:8080 ${DOCKER_USER_ID}/fe-edu"
+                            sh "docker stop -f front-edu || true"
+                            sh "docker rm -f front-edu || true"
+                            sh "docker run -d --name front-edu -p 8084:8080 ${DOCKER_USER_ID}/front-edu"
                         } catch (Exception e){
-                            sh "docker restart fe-edu"
+                            sh "docker restart front-edu"
                         }
                     }
                 }
