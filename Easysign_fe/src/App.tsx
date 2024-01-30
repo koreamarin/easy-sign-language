@@ -1,5 +1,4 @@
 import React from "react";
-import logo from "./logo.svg";
 import MainPage from "./components/common/MainPage";
 import Login from "./components/common/Login";
 import Join from "./components/common/Join";
