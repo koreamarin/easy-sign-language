@@ -2,7 +2,7 @@ pipeline {
     agent any
     environment {
         REPO = "s10-webmobile1-sub2/S10P12C202"
-        DB_URL = "${env.jdbc:mysql://i10c202.p.ssafy.io:3307/easysign}"
+        DB_URL = "${env.DB_URL}"
         DB_USER = "${env.DB_USER}"
         DB_PASSWORD = "${env.DB_PASSWORD}"
     }
