@@ -1,0 +1,14 @@
+{
+    "data": [
+        {
+            "start": 0.5,
+            "end": 4.5,
+            "attributes": [
+                {
+                    "name": "default"
+                }            
+            ],
+            "seq_len": 20
+        }
+    ]
+}
