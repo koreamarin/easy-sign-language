@@ -88,9 +88,9 @@ pipeline {
                         try{
 //                             sh "docker rm -f back || true"
                             sh "docker run -d --name back -p 8082:8080 \
-                            -e spring.datasource.DB_USER=${DB_USER} \
-                            -e DB_PASSWORD=${DB_PASSWORD} \
-                            -e DB_URL = ${DB_URL} \
+                            -e spring.datasource.username=${DB_USER} \
+                            -e spring.datasource.password=${DB_PASSWORD} \
+                            -e spring.datasource.url = ${DB_URL} \
                             ${DOCKER_USER_ID}/back"
                         } catch (Exception e){
                             sh "docker restart back"
