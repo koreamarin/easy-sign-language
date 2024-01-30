@@ -87,11 +87,7 @@ pipeline {
                     withCredentials([[$class: 'UsernamePasswordMultiBinding', credentialsId: 'Docker-hub', usernameVariable: 'DOCKER_USER_ID', passwordVariable: 'DOCKER_USER_PASSWORD']]) {
                         try{
 //                             sh "docker rm -f back || true"
-                            sh "docker run -d --name back -p 8082:8080 \
-                            -e spring.datasource.url = ${DB_URL} \
-                            -e spring.datasource.username=${DB_USER} \
-                            -e spring.datasource.password=${DB_PASSWORD} \
-                            ${DOCKER_USER_ID}/back"
+                            sh "docker run -d --name back -p 8082:8080 -e spring.datasource.url=jdbc:mysql://i10c202.p.ssafy.io:3307/easysign -e spring.datasource.username=root -e spring.datasource.password=ssafy doribari/back"
                         } catch (Exception e){
                             sh "docker restart back"
                         }
