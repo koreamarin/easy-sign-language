@@ -3,39 +3,39 @@
 	"label": {
 		"default": {
 			"idx": 0,
-			"file_cnt": 40
+			"file_cnt": 60
 		},
 		"ㄱ": {
 			"idx": 1,
-			"file_cnt": 40
+			"file_cnt": 60
 		},
 		"ㄴ": {
 			"idx": 2,
-			"file_cnt": 40
+			"file_cnt": 60
 		},
 		"ㄷ": {
 			"idx": 3,
-			"file_cnt": 40
+			"file_cnt": 64
 		},
 		"ㄹ": {
 			"idx": 4,
-			"file_cnt": 40
+			"file_cnt": 60
 		},
 		"ㅁ": {
 			"idx": 5,
-			"file_cnt": 40
+			"file_cnt": 62
 		},
 		"ㅂ": {
 			"idx": 6,
-			"file_cnt": 30
+			"file_cnt": 50
 		},
 		"ㅅ": {
 			"idx": 7,
-			"file_cnt": 30
+			"file_cnt": 50
 		},
 		"ㅇ": {
 			"idx": 8,
-			"file_cnt": 30
+			"file_cnt": 50
 		}
 	}
 }
