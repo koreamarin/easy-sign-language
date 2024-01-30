@@ -2,6 +2,7 @@ pipeline {
     agent any
     environment {
         REPO = "s10-webmobile1-sub2/S10P12C202"
+        TEST = "1"
     }
     stages {
         stage('Checkout') {
