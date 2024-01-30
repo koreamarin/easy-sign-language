@@ -6,7 +6,7 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                checkout scm(
+                checkout scmGit(
                         branches: [[name: 'fe-edu']],
 //                         extensions: [submodule(parentCredentials: true, trackingSubmodules: true)],
                         userRemoteConfigs: [[credentialsId: 'GitLab-Access-Token2', url: 'https://lab.ssafy.com/s10-webmobile1-sub2/S10P12C202.git']]
