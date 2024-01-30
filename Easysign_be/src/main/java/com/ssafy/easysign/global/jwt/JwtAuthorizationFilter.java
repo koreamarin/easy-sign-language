@@ -9,6 +9,7 @@ import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -16,10 +17,12 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 
 import java.io.IOException;
+import java.util.Optional;
 
 // 시큐리티가 filter 가지고 있는데 그 필터중에 BasicAucthenticationFilter라는 것이 있음.
 // 권한이나 인증이 필요한 특정 주소를  요청했을 때 위 필터를 무조건 타게 되어 있음.
 // 만약에 권한이 인증이 필요한 주소가 아니라면 이 필터를 안타요.
+@Slf4j
 public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
 
     private UserRepository userRepository;
@@ -33,8 +36,7 @@ public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws IOException, ServletException {
         String jwtHeader = request.getHeader(JwtProperties.HEADER_STRING);
-        System.out.println("jwtHeader : " + jwtHeader);
-
+        log.info("current token : " + jwtHeader);
         // JWT 토큰을 검증을 해서 정상적인 사용자인지 확인
         if(jwtHeader == null || !jwtHeader.startsWith("Bearer")) {
             chain.doFilter(request, response);
@@ -48,8 +50,8 @@ public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
                 JWT.require(Algorithm.HMAC512(JwtProperties.SECRET)).build().verify(jwtToken).getClaim("loginId").asString();
         // 서명이 정상적으로 됨
         if(loginId != null) {
-            User userEntity = userRepository.findByLoginId(loginId);
-            PrincipalDetails principalDetails = new PrincipalDetails(userEntity);
+            Optional<User> userEntity = userRepository.findByLoginId(loginId);
+            PrincipalDetails principalDetails = new PrincipalDetails(userEntity.get());
 
             // Jwt 토큰 서명을 통해서 서명이 정상이면 Authentication 객체를 만들어준다.
             Authentication authentication =

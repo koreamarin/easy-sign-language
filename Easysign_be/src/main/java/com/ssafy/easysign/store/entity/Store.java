@@ -1,9 +1,7 @@
 package com.ssafy.easysign.store.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import com.ssafy.easysign.global.jpaEnum.StoreCategory;
+import jakarta.persistence.*;
 import lombok.Data;
 
 @Entity
@@ -12,8 +10,10 @@ public class Store {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long item_id;
-    private String category_name;
+
+    @Enumerated(EnumType.STRING)
+    private StoreCategory category_name;
     private int price;
-    private String descript;
+    private String description;
     private String image_path;
 }

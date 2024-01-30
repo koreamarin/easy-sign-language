@@ -1,9 +1,7 @@
 package com.ssafy.easysign.sign.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import com.ssafy.easysign.global.jpaEnum.Gubun;
+import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -14,8 +12,11 @@ public class SignInfo {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long singId;
+    private Long signId;
     private Long categoryId;
+    @Enumerated(EnumType.STRING)
+    private Gubun gubun;
+    @Column(unique = true)
     private String content;
     private String imagePath;
     private String videoPath;
