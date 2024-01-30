@@ -19,7 +19,6 @@ public class UserController {
         try {
             // 사용자 등록 서비스 호출
             userService.registerUser(registRequest);
-
             // 성공 시 200 OK 응답
             return new ResponseEntity<>("User registered successfully!", HttpStatus.OK);
         } catch (IllegalArgumentException e) {
