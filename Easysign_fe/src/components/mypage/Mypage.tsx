@@ -1,6 +1,5 @@
+import React from "react";
 import styled from "styled-components";
-// mui 관련 import
-import Button from "@mui/material/Button";
 
 // 큰 상자 이름 - container
 // 캐릭터 모음 - Characters
@@ -41,9 +40,7 @@ function Mypage() {
     <Content>
       <Container>
         <Characters>
-          <div>
-            캐릭터 모음 <Button variant="outlined">선택 사항 적용</Button>
-          </div>
+          <div>캐릭터 모음</div>
 
           <div className="character_images">
             {/* 이미지 1 */}
