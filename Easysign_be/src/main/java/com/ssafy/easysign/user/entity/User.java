@@ -29,7 +29,9 @@ public class User {
     private int sticker;
     @ColumnDefault("0")
     private int wordCount;
+
     @ColumnDefault("false")
+    @Column(columnDefinition = "TINYINT(1)")
     private boolean isDeleted;
     private Timestamp deletedAt;
 }

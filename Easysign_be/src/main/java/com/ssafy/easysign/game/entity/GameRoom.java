@@ -13,6 +13,7 @@ public class GameRoom {
     @ColumnDefault("0")
     private int currentUserCnt;
     private String inviteCode;
+    @Column(columnDefinition = "TINYINT(1)")
     private boolean isPublic;
 
 }
