@@ -7,6 +7,7 @@ import React from "react";
 
 const NavbarMenu = styled.div`
   height: 150px;
+  background-color: #ffd9fa;
 `;
 
 // 코드 적용
@@ -15,6 +16,10 @@ function Navbar() {
   return (
     <div>
       <NavbarMenu>
+        <div>
+          현재는 임시로 작업 중입니다. 추후 로그인 이전 / 로그인 이후로 나누어
+          구현될 예정.
+        </div>
         <div className="navbar">
           <Link className="navbarMenu" to={"/"}>
             MainPage
@@ -28,6 +33,9 @@ function Navbar() {
           </Link>
           <Link className="navbarMenu" to={"login"}>
             로그인
+          </Link>
+          <Link className="navbarMenu" to={"mypage"}>
+            마이페이지
           </Link>
         </div>
       </NavbarMenu>

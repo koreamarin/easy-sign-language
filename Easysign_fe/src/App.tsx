@@ -5,6 +5,7 @@ import Join from "./components/common/Join";
 import Navbar from "./components/common/Navbar";
 import Sidebar from "./components/common/Sidebar";
 import StoreMain from "./components/store/StoreMain";
+import Mypage from "./components/mypage/Mypage";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { Counter } from "./features/counter/Counter";
 import styled from "styled-components";
@@ -42,6 +43,7 @@ function App() {
               <Route path="/login" element={<Login />} />
               <Route path="/join" element={<Join />} />
               <Route path="/store" element={<StoreMain />} />
+              <Route path="/mypage" element={<Mypage />} />
             </Routes>
           </div>
         </MainContent>
