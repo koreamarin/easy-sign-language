@@ -6,7 +6,7 @@ import numpy as np
 from tensorflow.keras.models import load_model
 
 
-test_data_version = "v1.1.0"
+test_data_version = "v1.1.4"
 
 path = os.path.dirname(os.path.abspath(__file__))
 
@@ -82,120 +82,134 @@ with mp_holistic.Holistic(
             
         
             if results.pose_landmarks:
-
+                
+                # 필요 keypoint만 저장
                 # 빈 벡터 생성
                 joint_p = np.zeros((14, 2))
                 
-                # 필요 keypoint만 저장하기 위한 알고리즘 -> 기존 pose는 33개의 keypoint
+                # 빈 벡터에 필요 keypoint 저장(11~ 24)
                 i = 0
                 for j, lm in enumerate(results.pose_landmarks.landmark):
                     if j in list(range(11, 25)):
                         joint_p[i] = [lm.x, lm.y]
                         i += 1  
-                        
-                v1_p = joint_p[[0, 0, 1, 12], :]
-                v2_p = joint_p[[1, 12, 0, 0], :]
-                v_p = v2_p - v1_p    
+                
+                # 기준벡터 및 필요 벡터 추출
+                v1_p = joint_p[[0, 2, 3, 4, 5, 0, 0, 1, 1, 12, 12, 13, 13], :]
+                v2_p = joint_p[[1, 0, 1, 2, 3, 1, 12, 0, 13, 0, 13, 1, 12], :]
+                
+                v_p = v2_p - v1_p
+                
+                # 벡터 정규화(크기 1)
+                v_p = v_p/np.linalg.norm(v_p, axis=1)[:, np.newaxis]
+                
+                # 기준벡터 설정
+                strd_v = np.zeros((3, 2))
+                strd_v[0] = v_p[0]
+                
+                strd_v[1] = v_p[6]
+                strd_v[2] = v_p[8]
                 
                 
+                # strd_v -> 기준벡터 2*1짜리 2개
+                
+                
+                # ==========================오른손 + 오른팔 각도 벡터=============================
+                # 오른손 존재 시
                 if results.right_hand_landmarks:
-                    joint_p = np.zeros((14, 2))
                     
-                    # 필요 keypoint만 저장하기 위한 알고리즘 -> 기존 pose는 33개의 keypoint
-                    i = 0
-                    for j, lm in enumerate(results.pose_landmarks.landmark):
-                        if j in list(range(11, 25)):
-                            joint_p[i] = [lm.x, lm.y]
-                            i += 1  
-                            
-                    v1_p = joint_p[[1, 13], :]
-                    v2_p = joint_p[[0, 1], :]
-                    v_p = v2_p - v1_p    
-                        
-                    
-                    joint_r = np.zeros((21, 2))
+                    # 빈벡터 준비 및 데이터 삽입
+                    joint_r_h = np.zeros((21, 2))
                     for j, lm in enumerate(results.right_hand_landmarks.landmark):
-                        joint_r[j] = [lm.x, lm.y]
-                        
-                    v1_r = joint_r[[1, 2, 3, 5, 6, 7, 9, 10, 11, 13, 14, 15, 17, 18, 19, 0, 0, 5], :]
-                    v2_r = joint_r[[2, 3, 4, 6, 7, 8, 10, 11, 12, 14, 15, 16, 18, 19, 20, 5, 17, 17], :]
-                    v_r = v2_r - v1_r  
+                        joint_r_h[j] = [lm.x, lm.y]
                     
-                    v_p = v_p /np.linalg.norm(v_p, axis=1)[:, np.newaxis]
-                    v_r = v_r /np.linalg.norm(v_r, axis=1)[:, np.newaxis]
-                    # v_l = v_l /np.linalg.norm(v_l, axis=1)[:, np.newaxis]
+                    # 손가락 벡터
+                    v1_r_h = joint_r_h[[1, 2, 3, 5, 6, 7, 9, 10, 11, 13, 14, 15, 17, 18, 19, 0, 0, 5], :]
+                    v2_r_h = joint_r_h[[2, 3, 4, 6, 7, 8, 10, 11, 12, 14, 15, 16, 18, 19, 20, 5, 17, 17], :]
+                    v_r_h = v2_r_h - v1_r_h
                     
-
-                    angle_p2 = np.arccos(np.einsum('nt,nt->n',
-                            v_p[[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1], :],
-                            v_r[[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17], :]))
+                    # 정규화
+                    v_r_h = v_r_h /np.linalg.norm(v_r_h, axis=1)[:, np.newaxis]
                     
-                    # angle_p1 = np.degrees(angle_p1)
-                    angle_p2 = np.degrees(angle_p2)
+                    # 팔 벡터 병합
+                    v_r = np.concatenate([v_r_h, v_p[[1, 3], :]])
+                    # 20 * 2 벡터
                     
-                    d_pose = np.concatenate([angle_p2])
-                    # 13 * 1 벡터(12 각도데이터 + 1 라벨데이터)
+                    # 각도 계산
+                    d_right = np.arccos(np.einsum('nt,nt->n', 
+                                strd_v[[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1], :], 
+                                v_r[[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19], :]
+                                ))
+                    d_right = np.degrees(d_right)
+                    # d_right => 40 * 1 벡터
                     
-                elif results.left_hand_landmarks:
-                                        # 빈 벡터 생성
-                    joint_p = np.zeros((14, 2))
-                    
-                    # 필요 keypoint만 저장하기 위한 알고리즘 -> 기존 pose는 33개의 keypoint
-                    i = 0
-                    for j, lm in enumerate(results.pose_landmarks.landmark):
-                        if j in list(range(11, 25)):
-                            joint_p[i] = [lm.x, lm.y]
-                            i += 1  
-                            
-                    v1_p = joint_p[[1, 13], :]
-                    v2_p = joint_p[[0, 1], :]
-                    v_p = v2_p - v1_p    
-                        
-                    
-                    joint_r = np.zeros((21, 2))
-                    for j, lm in enumerate(results.left_hand_landmarks.landmark):
-                        joint_r[j] = [lm.x, lm.y]
-                        
-                    v1_r = joint_r[[1, 2, 3, 5, 6, 7, 9, 10, 11, 13, 14, 15, 17, 18, 19, 0, 0, 5], :]
-                    v2_r = joint_r[[2, 3, 4, 6, 7, 8, 10, 11, 12, 14, 15, 16, 18, 19, 20, 5, 17, 17], :]
-                    v_r = v2_r - v1_r  
-                    
-                    v_p = v_p /np.linalg.norm(v_p, axis=1)[:, np.newaxis]
-                    v_r = v_r /np.linalg.norm(v_r, axis=1)[:, np.newaxis]
-                    # v_l = v_l /np.linalg.norm(v_l, axis=1)[:, np.newaxis]
-                    
-
-                    angle_p2 = np.arccos(np.einsum('nt,nt->n',
-                            v_p[[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1], :],
-                            v_r[[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17], :]))
-                    
-                    # angle_p1 = np.degrees(angle_p1)
-                    angle_p2 = np.degrees(angle_p2)
-                    
-                    d_pose = np.concatenate([angle_p2])
-                    # 13 * 1 벡터(12 각도데이터 + 1 라벨데이터)
-                
+                # 만약 오른손 없으면
                 else:
-                # 라벨 데이터를 붙여줘야함 -> 더미데이터 : 12 * 1, 라벨 데이터 -> 1 * 1
-                    d_pose = np.zeros((36,))
+                    d_right = np.zeros((40, ))
+                
+                
+                # ==========================왼손 + 왼팔 각도 벡터=============================
+                # 왼손 존재 시
+                if results.left_hand_landmarks:
                     
+                    # 빈벡터 준비 및 데이터 삽입
+                    joint_l_h = np.zeros((21, 2))
+                    for j, lm in enumerate(results.left_hand_landmarks.landmark):
+                        joint_l_h[j] = [lm.x, lm.y]
+                    
+                    # 손가락 벡터
+                    v1_l_h = joint_l_h[[1, 2, 3, 5, 6, 7, 9, 10, 11, 13, 14, 15, 17, 18, 19, 0, 0, 5], :]
+                    v2_l_h = joint_l_h[[2, 3, 4, 6, 7, 8, 10, 11, 12, 14, 15, 16, 18, 19, 20, 5, 17, 17], :]
+                    v_l_h = v2_l_h - v1_l_h
+                    
+                    # 정규화
+                    v_l_h = v_l_h /np.linalg.norm(v_l_h, axis=1)[:, np.newaxis]
+                    
+                    # 팔 벡터 병합
+                    v_l = np.concatenate([v_l_h, v_p[[2, 4], :]])
+                    # 20 * 2 벡터
+                    
+                    # 각도 계산
+                    d_left = np.arccos(np.einsum('nt,nt->n', 
+                                strd_v[[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2], :], 
+                                v_l[[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19], :]
+                                ))
+                    d_left = np.degrees(d_left)
+                    # d_left => 40 * 1 벡터
+                    
+                # 만약 왼손 없으면
+                else:
+                    d_left = np.zeros((40, ))
+                    
+                    
+                # =============몸통 : 몸의 회전정도 판단===========
+                d_body_i = np.arccos(np.einsum('nt,nt->n', 
+                                v_p[[5, 7, 9, 11], :], 
+                                v_p[[6, 8, 10, 12], :]
+                                ))
+                
+                d_body_i = np.degrees(d_body_i)
+                
+                # 상 하 합산을 통해 사다리꼴의 비틀림 정도를 판단
+                d_body = np.zeros((2, ))
+                # d_body[0] = d_body_i[0] + d_body_i[3]
+                # d_body[1] = d_body_i[1] + d_body_i[2]
+                
+                
+                
+                # 전부 합산
+                d = np.concatenate([d_right, d_left, d_body])
+                # d => right : 40 * 1, left : 40 * 1, body : 2 * 1. label : 1 * 1 => 83
+                
+                data.append(d)
+                
+            # 포즈 인식이 안될 경우
             else:
-                # 라벨 데이터를 붙여줘야함 -> 더미데이터 : 12 * 1, 라벨 데이터 -> 1 * 1
-                d_pose = np.zeros((36,))
+                dummy_data = np.zeros((82, ))
+                data.append(dummy_data)
             
 
 
-            # ==========================================================================
-            # ==========================================================================
-            
-            # # 병합
-            
-            # d_pose 마지막에 라벨링이 존재하므로 pose를 마지막에 붙여줌
-            # d_left : 15 * 1, d_right : 15 * 1, d_pose : 12 * 1 => 42 * 1
-            d = d_pose
-            # d = np.concatenate([d_pose])
-
-            # print(np.shape(d))
             data.append(d)
             if len(data) > seq_length:
                 data.pop(0)
@@ -229,8 +243,6 @@ with mp_holistic.Holistic(
                 landmark_drawing_spec=mp_drawing_styles
                     .get_default_hand_landmarks_style())
   
-
-
             input_data = np.expand_dims(np.array(data, dtype=np.float32), axis=0)
 
             # print(model.predict(input_data))
@@ -241,7 +253,7 @@ with mp_holistic.Holistic(
             conf = y_pred[i_pred]
 
             if conf < 0.5:
-                print('못찾음!', model.predict(input_data))
+                print('못찾음!')
                 continue
             
             print(move[i_pred])
