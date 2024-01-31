@@ -13,11 +13,18 @@ public class SignInfo {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long signId;
+
+    @Column(nullable = false)
     private Long categoryId;
+
     @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
     private Gubun gubun;
+
     @Column(unique = true)
     private String content;
+
+    @Column(nullable = false)
     private String imagePath;
     private String videoPath;
 }

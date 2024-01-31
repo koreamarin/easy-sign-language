@@ -10,10 +10,12 @@ public class GameRoom {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long gameId;
+
     @ColumnDefault("0")
     private int currentUserCnt;
     private String inviteCode;
-    @Column(columnDefinition = "TINYINT(1)")
-    private boolean isPublic;
 
+    @Column(columnDefinition = "TINYINT(1)")
+    @ColumnDefault("1")
+    private boolean isPublic;
 }

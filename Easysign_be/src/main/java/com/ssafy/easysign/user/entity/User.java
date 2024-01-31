@@ -15,18 +15,28 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long userId;
-    @Column(unique = true)
+
+    @Column(unique = true, nullable = false)
     private String loginId;
+
+    @Column(nullable = false)
     private String password;
-    @Column(unique = true)
+
+    @Column(unique = true, nullable = false)
     private String name;
+
+    @Column(nullable = false)
     private String email;
+
     @CreationTimestamp
     private Timestamp createDate;
+
     private String provider;
     private String providerId;
+
     @ColumnDefault("0")
     private int sticker;
+
     @ColumnDefault("0")
     private int wordCount;
 

@@ -12,8 +12,13 @@ public class Store {
     private Long itemId;
 
     @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
     private StoreCategory categoryName;
+
+    @Column(nullable = false)
     private int price;
     private String description;
+
+    @Column(nullable = false)
     private String imagePath;
 }
