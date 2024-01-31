@@ -21,7 +21,7 @@ public class UserController {
     @GetMapping("/info")
     public ResponseEntity<UserInfoResponse> getNavUserInfo(Authentication authentication) {
         try{
-            log.info("현재 접속 id : " + authentication.getPrincipal());
+            log.info("현재 접속 id : " + authentication.getName());
             UserInfoResponse response = userService.getNavUserInfo(authentication.getName());
             return new ResponseEntity<>(response, HttpStatus.OK);
         } catch(NotFoundException e) {
