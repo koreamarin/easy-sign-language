@@ -2,7 +2,7 @@
 
 import styled from "styled-components";
 
-function ConfirmPurchase() {
+function AfterPurchase() {
   const PopUp = styled.div`
     width: 371px;
     height: 279px;
@@ -27,7 +27,7 @@ function ConfirmPurchase() {
     padding: 10px;
   `;
 
-  const QuestionPurchase = styled.div`
+  const FinishPurchase = styled.div`
     color: white;
     width: 254px;
     height: 36px;
@@ -69,8 +69,8 @@ function ConfirmPurchase() {
     align-items: center;
     display: flex;
     justify-content: center;
-    width: 113px;
-    height: 40px;
+    width: 73px;
+    height: 25px;
     background-color: #eda311;
     border-radius: 10px;
     box-shadow: 0 0 0 5px white;
@@ -80,14 +80,15 @@ function ConfirmPurchase() {
     <div>
       <PopUp>
         <InnerBox>
-          <QuestionPurchase>정말 구매하시겠습니까?</QuestionPurchase>
+          <FinishPurchase>구매가 완료되었습니다.</FinishPurchase>
           <Sticker>
-            {/* 필요한 스티커 부분은 나중에 db와 연결해서 받아와야 하는 부분 */}
-            구매에 필요한 스티커:<StickerChange>25</StickerChange>
+            {/* 남은 스티커 부분은 나중에 db와 연결해서 받아와야 하는 부분 */}
+            구매 후 남은 스티커:<StickerChange>10,000</StickerChange>
           </Sticker>
           <ButtonDiv>
-            <Button>구매</Button>
-            <Button>취소</Button>
+            <Button>상점 가기</Button>
+            <Button>확인</Button>
+            <Button>바로 적용</Button>
           </ButtonDiv>
         </InnerBox>
       </PopUp>
@@ -95,4 +96,4 @@ function ConfirmPurchase() {
   );
 }
 
-export default ConfirmPurchase;
+export default AfterPurchase;
