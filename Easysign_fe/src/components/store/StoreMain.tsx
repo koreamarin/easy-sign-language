@@ -7,6 +7,7 @@ import Modal from "@mui/material/Modal";
 import ConfirmPurchase from "../modals/ConfirmPurchase";
 import Purchase from "../modals/Purchase";
 import AfterPurchase from "../modals/AfterPurchase";
+import ShortageSticker from "../modals/ShortageSticker";
 
 function StoreMain() {
   // 구매확인 모달 작동하는 함수
@@ -23,6 +24,11 @@ function StoreMain() {
   const [open3, setOpen3] = React.useState(false);
   const handleOpen3 = () => setOpen3(true);
   const handleClose3 = () => setOpen3(false);
+
+  // 구매이후 모달 작동하는 함수
+  const [open4, setOpen4] = React.useState(false);
+  const handleOpen4 = () => setOpen4(true);
+  const handleClose4 = () => setOpen4(false);
 
   const style = {
     position: "absolute" as "absolute",
@@ -63,6 +69,13 @@ function StoreMain() {
         <Modal open={open3} onClose={handleClose3}>
           <Box sx={style}>
             <AfterPurchase />
+          </Box>
+        </Modal>
+        {/* 잔액부족 모달 */}
+        <Button onClick={handleOpen4}>잔액부족 모달 창</Button>
+        <Modal open={open4} onClose={handleClose4}>
+          <Box sx={style}>
+            <ShortageSticker />
           </Box>
         </Modal>
       </div>
