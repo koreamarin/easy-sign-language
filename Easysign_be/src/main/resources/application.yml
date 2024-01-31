@@ -6,3 +6,6 @@ spring:
       ddl-auto: none
       dialect: org.hibernate.dialect.MySQLDialect
 
+server:
+  servlet:
+    contextPath: /api/v1
