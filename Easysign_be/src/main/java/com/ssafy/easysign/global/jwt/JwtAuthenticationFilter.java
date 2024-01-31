@@ -9,7 +9,6 @@ import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -22,12 +21,15 @@ import java.util.Date;
 // 스프링 시큐리티에서 UsernamePasswordAuthenticationFilter가 있음.
 // /login 요청해서 username, password 전송하면 (post)
 // UsernamePasswordAuthenticationFilter 동작을 함.
-@RequiredArgsConstructor
 public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 
-    private final AuthenticationManager authenticationManager;
+    private AuthenticationManager authenticationManager;
     // /login 요청을 하면 로그인 시도를 위해서 실행되는 함수
 
+    public JwtAuthenticationFilter(AuthenticationManager authenticationManager) {
+        setFilterProcessesUrl("/api/v1/login");
+        this.authenticationManager = authenticationManager;
+    }
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException {
         try {
