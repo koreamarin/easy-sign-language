@@ -9,11 +9,11 @@ import lombok.Data;
 public class Store {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long item_id;
+    private Long itemId;
 
     @Enumerated(EnumType.STRING)
-    private StoreCategory category_name;
+    private StoreCategory categoryName;
     private int price;
     private String description;
-    private String image_path;
+    private String imagePath;
 }
