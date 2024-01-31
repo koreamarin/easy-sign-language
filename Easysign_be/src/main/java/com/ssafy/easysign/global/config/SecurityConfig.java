@@ -2,7 +2,7 @@ package com.ssafy.easysign.global.config;
 
 import com.ssafy.easysign.global.jwt.JwtAuthenticationFilter;
 import com.ssafy.easysign.global.jwt.JwtAuthorizationFilter;
-import com.ssafy.easysign.user.repository.UserRepository;
+import com.ssafy.easysign.user.repository.AuthRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -31,7 +31,7 @@ public class SecurityConfig {
     private CorsFilter corsFilter;
 
     @Autowired
-    private UserRepository userRepository;
+    private AuthRepository authRepository;
 
     @Bean
     public BCryptPasswordEncoder passwordEncoder() {
@@ -43,7 +43,7 @@ public class SecurityConfig {
     @Bean
     public WebSecurityCustomizer webSecurityCustomizer() {
         return (web) -> web.ignoring()
-                .requestMatchers("/auth/**");
+                .requestMatchers("/api/v1/auth/**");
     }
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -57,11 +57,11 @@ public class SecurityConfig {
                 .formLogin(AbstractHttpConfigurer::disable)
                 .httpBasic(AbstractHttpConfigurer::disable)
                 .addFilter(new JwtAuthenticationFilter(authenticationManager))
-                .addFilter(new JwtAuthorizationFilter(authenticationManager, userRepository))
+                .addFilter(new JwtAuthorizationFilter(authenticationManager, authRepository))
                 .authorizeHttpRequests((authorizeRequests) ->
                         authorizeRequests
-                                .requestMatchers("/login").permitAll()
-                                .requestMatchers("/auth/**").permitAll()
+                                .requestMatchers("/api/v1/login").permitAll()
+                                .requestMatchers("/api/v1/auth/**").permitAll()
                                 .anyRequest().authenticated());
         return http.build();
     }

@@ -4,7 +4,7 @@ import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.ssafy.easysign.global.auth.PrincipalDetails;
 import com.ssafy.easysign.user.entity.User;
-import com.ssafy.easysign.user.repository.UserRepository;
+import com.ssafy.easysign.user.repository.AuthRepository;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -25,11 +25,11 @@ import java.util.Optional;
 @Slf4j
 public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
 
-    private UserRepository userRepository;
+    private AuthRepository authRepository;
 
-    public JwtAuthorizationFilter(AuthenticationManager authenticationManager, UserRepository userRepository) {
+    public JwtAuthorizationFilter(AuthenticationManager authenticationManager, AuthRepository authRepository) {
         super(authenticationManager);
-        this.userRepository = userRepository;
+        this.authRepository = authRepository;
     }
 
     //인증이나 권한이 필요한 주소요청이 있을 떄 해당 필터를 타게 될 것
@@ -50,7 +50,7 @@ public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
                 JWT.require(Algorithm.HMAC512(JwtProperties.SECRET)).build().verify(jwtToken).getClaim("loginId").asString();
         // 서명이 정상적으로 됨
         if(loginId != null) {
-            Optional<User> userEntity = userRepository.findByLoginId(loginId);
+            Optional<User> userEntity = authRepository.findByLoginId(loginId);
             PrincipalDetails principalDetails = new PrincipalDetails(userEntity.get());
 
             // Jwt 토큰 서명을 통해서 서명이 정상이면 Authentication 객체를 만들어준다.

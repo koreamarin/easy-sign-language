@@ -1,7 +1,7 @@
 package com.ssafy.easysign.global.auth;
 
 import com.ssafy.easysign.user.entity.User;
-import com.ssafy.easysign.user.repository.UserRepository;
+import com.ssafy.easysign.user.repository.AuthRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -15,11 +15,11 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class PrincipalDetailsService implements UserDetailsService {
 
-    private final UserRepository userRepository;
+    private final AuthRepository authRepository;
 
     @Override
     public UserDetails loadUserByUsername(String loginId) throws UsernameNotFoundException {
-        Optional<User> userEntity = userRepository.findByLoginId(loginId);
+        Optional<User> userEntity = authRepository.findByLoginId(loginId);
         return new PrincipalDetails(userEntity.get());
     }
 }
