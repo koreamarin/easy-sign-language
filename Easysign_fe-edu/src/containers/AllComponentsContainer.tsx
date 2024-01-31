@@ -12,6 +12,7 @@ import logo_pink from "../assets/images/logo_pink.png";
 import Logo from "../components/nav/NavLogo";
 import ProfileImg from "../components/nav/ProfileImg";
 import Progress from "../components/nav/Progress";
+import Nav from "./Nav";
 
 const AllComponentsContainer = () => {
   return (
@@ -87,9 +88,12 @@ const AllComponentsContainer = () => {
             "https://kookbang.dema.mil.kr/newspaper/tmplat/upload/20170515/thumb1/BBS_201705150542235040.jpeg"
           }
         />
-        <Progress percentage={56} wrong_answer={true} />
-        <Progress percentage={56} wrong_answer={false} />
-        <Progress percentage={56} />
+        <Progress percentage={76} wrong_answer={true} />
+        <Progress percentage={76} wrong_answer={false} />
+        <Progress percentage={76} />
+
+        <Nav />
+
       </div>
     </div>
   );

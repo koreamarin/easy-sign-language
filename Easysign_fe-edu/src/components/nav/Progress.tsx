@@ -43,17 +43,18 @@ const Progress = ({ percentage, wrong_answer = false }: ProgressProps) => {
               alignItems: "center",
             }}
             dangerouslySetInnerHTML={{ __html: text }}
-          ></div>
+           />
+          <div
+            style={{
+              fontSize: 33,
+              marginTop: percentMarginTop,
+              fontWeight: 700,
+            }}
+          >
+            {percentage}%
+          </div>
         </div>
-        <div
-          style={{
-            fontSize: 33,
-            marginTop: percentMarginTop,
-            fontWeight: 700,
-          }}
-        >
-          {percentage}%
-        </div>
+        
       </CircularProgressbarWithChildren>
     </div>
   );
