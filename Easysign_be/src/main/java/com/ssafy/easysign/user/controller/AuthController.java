@@ -1,7 +1,9 @@
 package com.ssafy.easysign.user.controller;
 
 import com.ssafy.easysign.user.dto.request.RegistRequest;
+import com.ssafy.easysign.user.entity.User;
 import com.ssafy.easysign.user.service.AuthService;
+import com.ssafy.easysign.user.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -15,6 +17,9 @@ public class AuthController {
     @Autowired
     private AuthService authService;
 
+    @Autowired
+    private UserService userService;
+
     /**
      * 회원가입
      * @param registRequest
@@ -25,7 +30,12 @@ public class AuthController {
         try {
             // 사용자 등록 서비스 호출
             authService.registerUser(registRequest);
-            // 성공 시 200 OK 응답
+
+            User user = userService.getUser(registRequest.getLoginId());
+            //기본 이미지, 배경 등록
+            userService.registProfile(user.getUserId(), 1L);
+            userService.registProfile(user.getUserId(), 2L);
+
             log.info("request : " + registRequest);
             return new ResponseEntity<>("회원가입이 완료되었습니다.", HttpStatus.OK);
         } catch (IllegalArgumentException e) {

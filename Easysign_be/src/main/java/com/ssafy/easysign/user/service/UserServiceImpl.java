@@ -27,7 +27,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserInfoResponse getNavUserInfo(String loginId) {
         UserInfoResponse response = new UserInfoResponse();
-        Optional<User> user = userRepository.findByLoginId(loginId);
+        Optional<User> user = userRepository.findByLoginIdAndIsDeleted(loginId, false);
         if(user.isEmpty()) throw new NotFoundException("사용자를 찾을 수 없습니다.");
         response.setName(user.get().getName());
         response.setSticker(user.get().getSticker());
@@ -47,8 +47,30 @@ public class UserServiceImpl implements UserService {
             } else {
                 response.setProfileCharacterPath(itemInfo.get().getImagePath());
             }
-            System.out.println(item);
         }
         return response;
     }
+
+    @Override
+    public User getUser(String loginId) {
+        Optional <User> user = userRepository.findByLoginIdAndIsDeleted(loginId, false);
+        if(user.isEmpty()) throw new NotFoundException("사용자를 찾을 수 없습니다.");
+        return user.get();
+    }
+
+    @Override
+    public void registProfile(Long userId, Long itemId) {
+        UserItem userItem = new UserItem();
+        User user = new User();
+        Store item = new Store();
+        user.setUserId(userId);
+        item.setItemId(itemId);
+
+        userItem.setUser(user);
+        userItem.setItem(item);
+        userItem.setUse(true);
+        userItemRepository.save(userItem);
+    }
+
+
 }
