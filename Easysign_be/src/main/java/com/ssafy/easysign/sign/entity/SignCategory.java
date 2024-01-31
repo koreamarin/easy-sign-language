@@ -8,24 +8,15 @@ import lombok.NoArgsConstructor;
 @Entity
 @Data
 @NoArgsConstructor
-public class SignInfo {
-
+public class SignCategory {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long signId;
+    private Long categoryId;
 
-    @ManyToOne
-    @JoinColumn(name = "category_id")
-    private SignCategory category;
+    @Column(nullable = false)
+    private String categoryName;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private Gubun gubun;
-
-    @Column(unique = true)
-    private String content;
-
-    @Column(nullable = false)
-    private String imagePath;
-    private String videoPath;
 }
