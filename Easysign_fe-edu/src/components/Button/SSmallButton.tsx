@@ -44,6 +44,7 @@ const Containers = styled.button<ContainersProps>`
   line-height: 40px;
   word-wrap: break-word;
   border: none;
+  box-shadow: 1px 1px 1px 1px gray;
   &:hover {
     background: ${(props) => {
       switch (props.color) {
@@ -67,11 +68,18 @@ export interface ButtonProps {
   text: string;
   color?: string;
   onClick: () => void;
+  onMouseEnter?: () => void;
+  onMouseLeave?: () => void;
 }
 
-const SSmallButton = ({ text, color, onClick }: ButtonProps) => {
+const SSmallButton = ({ text, color, onClick, onMouseEnter, onMouseLeave }: ButtonProps) => {
   return (
-    <Containers color={color} onClick={onClick}>
+    <Containers
+      color={color}
+      onClick={onClick}
+      onMouseEnter={onMouseEnter}
+      onMouseLeave={onMouseLeave}
+    >
       {text}
     </Containers>
   );

@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import { ButtonProps, ContainersProps } from "./SmallButton";
+import { ButtonProps, ContainersProps } from "./SSmallButton";
 
 const Containers = styled.button<ContainersProps>`
   width: 215px;
@@ -41,6 +41,7 @@ const Containers = styled.button<ContainersProps>`
   line-height: 75px;
   word-wrap: break-word;
   border: none;
+  box-shadow: 2px 2px 2px 2px gray;
   &:hover {
     background: ${(props) => {
       switch (props.color) {
@@ -60,9 +61,14 @@ const Containers = styled.button<ContainersProps>`
   cursor: pointer;
 `;
 
-const MediumButton = ({ text, color, onClick }: ButtonProps) => {
+const MediumButton = ({ text, color, onClick, onMouseEnter, onMouseLeave }: ButtonProps) => {
   return (
-    <Containers color={color} onClick={onClick}>
+    <Containers
+      color={color}
+      onClick={onClick}
+      onMouseEnter={onMouseEnter}
+      onMouseLeave={onMouseLeave}
+    >
       {text}
     </Containers>
   );

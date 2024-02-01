@@ -1,9 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-
-export interface ContainersProps {
-  color?: string;
-}
+import { ButtonProps, ContainersProps } from "./SSmallButton";
 
 const Containers = styled.button<ContainersProps>`
   width: 152px;
@@ -44,6 +41,7 @@ const Containers = styled.button<ContainersProps>`
   line-height: 75px;
   word-wrap: break-word;
   border: none;
+  box-shadow: 2px 2px 2px 2px gray;
   &:hover {
     background: ${(props) => {
       switch (props.color) {
@@ -63,15 +61,14 @@ const Containers = styled.button<ContainersProps>`
   cursor: pointer;
 `;
 
-export interface ButtonProps {
-  text: string;
-  color?: string;
-  onClick: () => void;
-}
-
-const SmallButton = ({ text, color, onClick }: ButtonProps) => {
+const SmallButton = ({ text, color, onClick, onMouseEnter, onMouseLeave }: ButtonProps) => {
   return (
-    <Containers color={color} onClick={onClick}>
+    <Containers
+      color={color}
+      onClick={onClick}
+      onMouseEnter={onMouseEnter}
+      onMouseLeave={onMouseLeave}
+    >
       {text}
     </Containers>
   );

@@ -1,11 +1,20 @@
 import { createBrowserRouter } from "react-router-dom";
-import AllComponentsContainer from "./containers/AllComponentsContainer";
-import App from "./App";
+import AllComponentsContainer from "./pages/AllComponentsContainer";
+import Main from "./pages/Main";
+import Edu from "./pages/Edu";
 
 const router = createBrowserRouter([
   {
-    path: "/allcomponent", // 루트 경로
-    element: <AllComponentsContainer />, // 루트 컴포넌트
+    path: "/edu-all",
+    element: <AllComponentsContainer />,
+  },
+  {
+    path: "/edu-main",
+    element: <Main />,
+  },
+  {
+    path: "/edu",
+    element: <Edu />,
   },
 ]);
 

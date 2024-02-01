@@ -7,26 +7,20 @@ const Containers = styled.img`
   border-radius: 50%;
   cursor: pointer;
   &:hover {
-    width: 132px;
-    height: 132px;
-    border: 5px solid #FFCFD8;
+    width: 130px;
+    height: 130px;
+    border: 5px solid #ffcfd8;
   }
-`
-  
+`;
 
 interface ProfileImgProps {
   src?: string;
 }
 
-
 const ProfileImg = ({ src = basic_profile_img }: ProfileImgProps) => {
   return (
     <div>
-      <Containers
-        src={src}
-        alt="profile_img"
-        onClick={ () => ""}
-      />
+      <Containers src={src} alt="profile_img" onClick={() => ""} />
     </div>
   );
 };

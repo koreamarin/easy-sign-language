@@ -12,9 +12,14 @@ import logo_pink from "../assets/images/logo_pink.png";
 import Logo from "../components/nav/NavLogo";
 import ProfileImg from "../components/nav/ProfileImg";
 import Progress from "../components/nav/Progress";
-import Nav from "./Nav";
+import Nav from "../components/nav/Nav";
+import { useNavigate } from "react-router-dom";
 
 const AllComponentsContainer = () => {
+  const navigate = useNavigate();
+  const onClick = () => {
+    navigate("/");
+  };
   return (
     <div>
       <h1>Button</h1>
@@ -29,7 +34,7 @@ const AllComponentsContainer = () => {
       <br />
       <br />
       <div>
-        <SSmallButton text={"s스몰버튼"} color={"mint"} onClick={() => ""} />
+        <SSmallButton text={"ss스몰버튼"} color={"mint"} onClick={onClick} />
         <SSmallButton text={"s스몰버튼"} color={"skyblue"} onClick={() => ""} />
         <SSmallButton text={"s스몰버튼"} color={"orange"} onClick={() => ""} />
         <SSmallButton text={"s스몰버튼"} color={"blue"} onClick={() => ""} />
@@ -91,9 +96,7 @@ const AllComponentsContainer = () => {
         <Progress percentage={76} wrong_answer={true} />
         <Progress percentage={76} wrong_answer={false} />
         <Progress percentage={76} />
-
         <Nav />
-
       </div>
     </div>
   );

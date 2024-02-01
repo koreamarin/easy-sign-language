@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import { ButtonProps, ContainersProps } from "./SmallButton";
+import { ButtonProps, ContainersProps } from "./SSmallButton";
 import Arrow_brown from "../../assets/images/Arrow_brown.png";
 import Arrow_blue from "../../assets/images/Arrow_blue.png";
 import Arrow_skyblue from "../../assets/images/Arrow_skyblue.png";
@@ -45,6 +45,7 @@ const Containers = styled.button<ContainersProps>`
   line-height: 25px;
   word-wrap: break-word;
   border: none;
+  box-shadow: 3px 3px 3px 3px gray;
   &:hover {
     background: ${(props) => {
       switch (props.color) {
@@ -64,8 +65,8 @@ const Containers = styled.button<ContainersProps>`
   cursor: pointer;
 `;
 
-const BackButton = ({ text, color = "", onClick }: ButtonProps) => {
-  const ArrowColor = (color: string): string => {
+const BackButton = ({ text, color, onClick, onMouseEnter, onMouseLeave }: ButtonProps) => {
+  const ArrowColor = (color: string | undefined): string => {
     switch (color) {
       case "mint":
         return Arrow_brown;
@@ -80,7 +81,12 @@ const BackButton = ({ text, color = "", onClick }: ButtonProps) => {
     }
   };
   return (
-    <Containers color={color} onClick={onClick}>
+    <Containers
+      color={color}
+      onClick={onClick}
+      onMouseEnter={onMouseEnter}
+      onMouseLeave={onMouseLeave}
+    >
       <img src={ArrowColor(color)} alt="arrow" width={"50%"} />
       <br />
       {text}
