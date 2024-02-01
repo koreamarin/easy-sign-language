@@ -4,28 +4,39 @@ import com.ssafy.easysign.store.entity.Store;
 import com.ssafy.easysign.store.repository.StoreRepository;
 import com.ssafy.easysign.user.dto.request.ProfileRequest;
 import com.ssafy.easysign.user.dto.response.UserInfoResponse;
+import com.ssafy.easysign.user.entity.StickerLog;
 import com.ssafy.easysign.user.entity.User;
 import com.ssafy.easysign.user.entity.UserItem;
 import com.ssafy.easysign.user.exception.NotFoundException;
+import com.ssafy.easysign.user.repository.StickerLogRepository;
 import com.ssafy.easysign.user.repository.UserItemRepository;
 import com.ssafy.easysign.user.repository.UserRepository;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.sql.Timestamp;
 import java.util.List;
 import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
 @Slf4j
+@Transactional
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
     private final UserItemRepository userItemRepository;
     private final StoreRepository storeRepository;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
+    private final StickerLogRepository stickerLogRepository;
+    @PersistenceContext
+    private EntityManager entityManager;
+
     @Override
     public UserInfoResponse getNavUserInfo(String loginId, Long userId) {
         UserInfoResponse response = new UserInfoResponse();
@@ -130,4 +141,68 @@ public class UserServiceImpl implements UserService {
 
         userRepository.delete(user.get());
     }
+
+    @Override
+    public void updateStickerCountAfter(Long userId, int count) {
+        try {
+            // 이전 스티커 갯수 조회
+            int stickerCountBefore = getStickerCount(userId);
+
+            log.info("stickerCountBefore : " + stickerCountBefore);
+
+            // 스티커 갯수 업데이트
+            updateUserSticker(userId, stickerCountBefore+count);
+
+            // 변경된 스티커 갯수 조회
+            int stickerCountAfter = stickerCountBefore+count;
+
+            log.info("stickerCountAfter : " + stickerCountAfter);
+
+            // StickerLog에 저장
+            StickerLog stickerLog = new StickerLog();
+            stickerLog.setUserId(getUser(userId));
+            stickerLog.setStickerCountBefore(stickerCountBefore);
+            stickerLog.setStickerCountAfter(stickerCountAfter);
+            stickerLog.setOccurDate(new Timestamp(System.currentTimeMillis()));
+            stickerLogRepository.save(stickerLog);
+        } catch (Exception e) {
+            // 예외 처리
+            log.error("스티커 갯수 업데이트 및 로그 저장 실패. userId: {}, count: {}", userId, count, e);
+            throw new RuntimeException("스티커 갯수 업데이트 및 로그 저장 실패.", e);
+        }
+    }
+
+    private User getUser(Long userId) {
+        Optional<User> user = userRepository.findById(userId);
+        if (user.isPresent()) {
+            return user.get();
+        } else {
+            throw new NotFoundException("사용자를 찾을 수 없습니다.");
+        }
+    }
+
+    private int getStickerCount(Long userId) {
+        // 스티커 갯수 조회
+        Optional<User> user = userRepository.findById(userId);
+        if (user.isPresent()) {
+            return user.get().getSticker();
+        } else {
+            throw new NotFoundException("사용자를 찾을 수 없습니다.");
+        }
+    }
+
+    private void updateUserSticker(Long userId, int count) {
+        try {
+            // 네이티브 쿼리 대신 JPQL 사용
+            entityManager.createQuery("UPDATE User SET sticker = : count WHERE userId = :userId")
+                    .setParameter("count", count)
+                    .setParameter("userId", userId)
+                    .executeUpdate();
+        } catch (Exception e) {
+            // 예외 처리
+            log.error("사용자 스티커 갯수 업데이트 실패. userId: {}, count: {}", userId, count, e);
+            throw new RuntimeException("사용자 스티커 갯수 업데이트 실패.", e);
+        }
+    }
+
 }

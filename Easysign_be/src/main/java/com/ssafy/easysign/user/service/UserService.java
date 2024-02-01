@@ -19,4 +19,6 @@ public interface UserService {
     void updatePassword(Long userId, String password);
 
     void deleteUser(Long userId);
+
+    void updateStickerCountAfter(Long userId, int count);
 }
