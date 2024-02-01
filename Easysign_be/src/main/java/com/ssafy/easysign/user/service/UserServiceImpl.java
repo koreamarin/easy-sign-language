@@ -95,4 +95,13 @@ public class UserServiceImpl implements UserService {
         userItem.setItem(item);
         userItemRepository.save(userItem);
     }
+
+    @Override
+    public void updateName(Long userId, String name) {
+        Optional<User> user = userRepository.findById(userId);
+        if(user.isEmpty()) throw new NotFoundException("사용자를 찾을 수 없습니다.");
+
+        user.get().setName(name);
+        userRepository.save(user.get());
+    }
 }

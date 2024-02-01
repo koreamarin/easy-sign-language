@@ -18,6 +18,12 @@ import org.springframework.web.bind.annotation.*;
 public class UserController {
     @Autowired
     private UserService userService;
+
+    /**
+     * 유저 표시 정보들 가져오기
+     * @param authentication
+     * @return UserInfoResponse(닉네임, 스티커, 캐릭터 이미지경로, 배경 이미지 경로)
+     */
     @GetMapping("/info")
     public ResponseEntity<UserInfoResponse> getNavUserInfo(Authentication authentication) {
         try{
@@ -30,6 +36,11 @@ public class UserController {
         }
     }
 
+    /**
+     * 프로필 정보(캐릭터, 배경) 변경
+     * @param profileRequest(바꿀 배경, 캐릭터 id)
+     * @param authentication
+     */
     @PutMapping("/profile")
     public ResponseEntity<String> updateProfile(@RequestBody ProfileRequest profileRequest , Authentication authentication) {
         try{
@@ -37,6 +48,23 @@ public class UserController {
             PrincipalDetails userDetails = (PrincipalDetails) authentication.getPrincipal();
             userService.updateProfile(userDetails.getUserId(), profileRequest);
             return new ResponseEntity<>("프로필 업데이트 성공!", HttpStatus.OK);
+        } catch(NotFoundException e) {
+            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+        }
+    }
+
+    /**
+     * 닉네임 변경
+     * @param name
+     * @param authentication
+     */
+    @PutMapping("/name")
+    public ResponseEntity<String> updateName(@RequestParam String name, Authentication authentication) {
+        try{
+            log.info("/name " + authentication.getName() + "의 닉네임 변경요청 ");
+            PrincipalDetails userDetails = (PrincipalDetails) authentication.getPrincipal();
+            userService.updateName(userDetails.getUserId(), name);
+            return new ResponseEntity<>("닉네임 업데이트 성공!", HttpStatus.OK);
         } catch(NotFoundException e) {
             return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
         }
