@@ -74,6 +74,26 @@ public class SignController {
             return new ResponseEntity<>(HttpStatus.FORBIDDEN);
         }
     }
+    @GetMapping("/sentence")
+    public ResponseEntity<List<SignResponse>> getSignResponseListSentence(
+            @RequestParam(value = "Gubun", required = false) Gubun gubun,
+            @RequestParam(value = "categoryId", required = false) Long categoryId) {
+        if (gubun != null && categoryId != null) {
+            try {
+                List<SignResponse> signResponses = signService.getSignResponseList(categoryId, gubun);
+                log.info("signResponses : " + signResponses);
+                return new ResponseEntity<>(signResponses, HttpStatus.OK);
+            } catch (Exception e) {
+                // 실패 시 400 Bad Request 반환
+                log.error("Error retrieving sign responses: " + e.getMessage());
+                return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            }
+        } else {
+            // 실패 시 403 Forbidden 반환
+            log.info("gubun : " + gubun + ", categoryId: " + categoryId);
+            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+        }
+    }
 
 
 }
