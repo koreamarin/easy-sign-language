@@ -3,5 +3,6 @@ spring:
     active: dev
   jpa:
     hibernate:
+      ddl-auto: update
       show_sql: true
       dialect: org.hibernate.dialect.MySQLDialect

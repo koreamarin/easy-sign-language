@@ -2,7 +2,6 @@ package com.ssafy.easysign.user.controller;
 
 import com.ssafy.easysign.global.auth.PrincipalDetails;
 import com.ssafy.easysign.user.dto.response.UserInfoResponse;
-import com.ssafy.easysign.user.dto.response.UserProfileResponse;
 import com.ssafy.easysign.user.exception.NotFoundException;
 import com.ssafy.easysign.user.service.UserService;
 import lombok.extern.slf4j.Slf4j;
@@ -24,19 +23,8 @@ public class UserController {
     public ResponseEntity<UserInfoResponse> getNavUserInfo(Authentication authentication) {
         try{
             log.info("/info 현재 접속 id : " + authentication.getName());
-            UserInfoResponse response = userService.getNavUserInfo(authentication.getName());
-            return new ResponseEntity<>(response, HttpStatus.OK);
-        } catch(NotFoundException e) {
-            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
-        }
-    }
-
-    @GetMapping("/profile")
-    public ResponseEntity<UserProfileResponse> getProfileInfo(Authentication authentication) {
-        try{
-            log.info("/profile 현재 접속 id : " + authentication.getName());
             PrincipalDetails userDetails = (PrincipalDetails) authentication.getPrincipal();
-            UserProfileResponse response = userService.getProfileInfo(userDetails.getUserId());
+            UserInfoResponse response = userService.getNavUserInfo(authentication.getName(), userDetails.getUserId());
             return new ResponseEntity<>(response, HttpStatus.OK);
         } catch(NotFoundException e) {
             return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);

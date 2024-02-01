@@ -3,7 +3,6 @@ package com.ssafy.easysign.user.service;
 import com.ssafy.easysign.store.entity.Store;
 import com.ssafy.easysign.store.repository.StoreRepository;
 import com.ssafy.easysign.user.dto.response.UserInfoResponse;
-import com.ssafy.easysign.user.dto.response.UserProfileResponse;
 import com.ssafy.easysign.user.entity.User;
 import com.ssafy.easysign.user.entity.UserItem;
 import com.ssafy.easysign.user.exception.NotFoundException;
@@ -25,20 +24,15 @@ public class UserServiceImpl implements UserService {
     private final UserItemRepository userItemRepository;
     private final StoreRepository storeRepository;
     @Override
-    public UserInfoResponse getNavUserInfo(String loginId) {
+    public UserInfoResponse getNavUserInfo(String loginId, Long userId) {
         UserInfoResponse response = new UserInfoResponse();
         Optional<User> user = userRepository.findByLoginIdAndIsDeleted(loginId, false);
+
         if(user.isEmpty()) throw new NotFoundException("사용자를 찾을 수 없습니다.");
         response.setName(user.get().getName());
         response.setSticker(user.get().getSticker());
-        return response;
-    }
 
-    @Override
-    public UserProfileResponse getProfileInfo(Long userId) {
-        UserProfileResponse response = new UserProfileResponse();
         Optional<List<UserItem>> userProfile = userItemRepository.findByUser_UserIdAndIsUse(userId, true);
-        if(userProfile.get().size()==0) throw new NotFoundException("사용자를 찾을 수 없습니다.");
         for(UserItem item : userProfile.get()) {
             Optional<Store> itemInfo = storeRepository.findByItemId(item.getItem().getItemId());
             if(itemInfo.isEmpty()) throw new NotFoundException("해당하는 아이템을 찾을 수 없습니다.");
