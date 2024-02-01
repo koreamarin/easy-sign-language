@@ -29,7 +29,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserInfoResponse getNavUserInfo(String loginId, Long userId) {
         UserInfoResponse response = new UserInfoResponse();
-        Optional<User> user = userRepository.findByLoginIdAndIsDeleted(loginId, false);
+        Optional<User> user = userRepository.findByLoginId(loginId);
 
         if(user.isEmpty()) throw new NotFoundException("사용자를 찾을 수 없습니다.");
         response.setName(user.get().getName());
@@ -50,7 +50,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User getUser(String loginId) {
-        Optional <User> user = userRepository.findByLoginIdAndIsDeleted(loginId, false);
+        Optional <User> user = userRepository.findByLoginId(loginId);
         if(user.isEmpty()) throw new NotFoundException("사용자를 찾을 수 없습니다.");
         return user.get();
     }
@@ -114,5 +114,20 @@ public class UserServiceImpl implements UserService {
 
         user.get().setPassword(bCryptPasswordEncoder.encode(password));
         userRepository.save(user.get());
+    }
+
+    @Override
+    public void deleteUser(Long userId) {
+        Optional<User> user = userRepository.findById(userId);
+        if(user.isEmpty()) throw new NotFoundException("사용자를 찾을 수 없습니다.");
+
+        //유저 보유 아이템 삭제
+        userItemRepository.deleteByUserId(userId);
+
+        //TODO 학습된 단어 삭제
+        //TODO 즐겨찾기 삭제
+        //TODO 아이템 찜하기 삭제
+
+        userRepository.delete(user.get());
     }
 }

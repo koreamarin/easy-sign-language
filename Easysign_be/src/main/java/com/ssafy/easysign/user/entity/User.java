@@ -5,12 +5,16 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.SQLRestriction;
 
 import java.sql.Timestamp;
 
 @Entity
 @Data
 @NoArgsConstructor
+@SQLDelete(sql="UPDATE user set deleted_at = NOW(), is_deleted = true where user_id = ?")
+@SQLRestriction("is_deleted = false")
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -41,7 +45,7 @@ public class User {
     private int wordCount;
 
     @ColumnDefault("false")
-    @Column(columnDefinition = "TINYINT(1)")
+    @Column(columnDefinition = "TINYINT(1)",  nullable = false)
     private boolean isDeleted;
     private Timestamp deletedAt;
 }

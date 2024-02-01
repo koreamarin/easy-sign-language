@@ -33,6 +33,9 @@ public class UserController {
             return new ResponseEntity<>(response, HttpStatus.OK);
         } catch(NotFoundException e) {
             return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+        } catch (Exception e) {
+            // 실패 시 400 Bad Request 응답
+            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
         }
     }
 
@@ -50,6 +53,9 @@ public class UserController {
             return new ResponseEntity<>("프로필 업데이트가 완료되었습니다!", HttpStatus.OK);
         } catch(NotFoundException e) {
             return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+        } catch (Exception e) {
+            // 실패 시 400 Bad Request 응답
+            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
         }
     }
 
@@ -67,18 +73,44 @@ public class UserController {
             return new ResponseEntity<>("닉네임 변경이 완료되었습니다!", HttpStatus.OK);
         } catch(NotFoundException e) {
             return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+        } catch (Exception e) {
+            // 실패 시 400 Bad Request 응답
+            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
         }
     }
 
+    /**
+     * 비밀번호 변경
+     * @param password 변경될 비밀번호
+     * @param authentication
+     */
     @PutMapping("/password")
     public ResponseEntity<String> updatePassword(@RequestParam String password, Authentication authentication) {
         try{
-            log.info("/name " + authentication.getName() + "의 비밀번호 변경요청 ");
+            log.info("/password " + authentication.getName() + "의 비밀번호 변경요청 ");
             PrincipalDetails userDetails = (PrincipalDetails) authentication.getPrincipal();
             userService.updatePassword(userDetails.getUserId(), password);
             return new ResponseEntity<>("비밀번호 변경이 완료되었습니다!", HttpStatus.OK);
         } catch(NotFoundException e) {
             return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+        } catch (Exception e) {
+            // 실패 시 400 Bad Request 응답
+            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @DeleteMapping
+    public ResponseEntity<String> deleteUser(Authentication authentication) {
+        try{
+            log.info("/user " + authentication.getName() + "의 회원탈퇴 요청 ");
+            PrincipalDetails userDetails = (PrincipalDetails) authentication.getPrincipal();
+            userService.deleteUser(userDetails.getUserId());
+            return new ResponseEntity<>("회원 탈퇴가 완료되었습니다!", HttpStatus.OK);
+        } catch(NotFoundException e) {
+            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+        } catch (Exception e) {
+            // 실패 시 400 Bad Request 응답
+            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
         }
     }
 }
