@@ -1,3 +1,14 @@
+/**
+ * 여기 FaceLandmarkCanvas.tsx 에서는 최종적으로
+ * <video> 태그 (카메라로 촬영된 영상) 와
+ * <AvatarCanvas> 컴포넌트를 return합니다.
+ * 
+ * 즉, 출력되는 영상에 아바타 모델 이미지가 씌워졌다기 보단,
+ * 출력되는 영상 <video> 태그가 따로 있고,
+ * 아바타 모델만을 출력하는 <AvatarCanvas> 가 따로 존재하는데
+ * <video> 위에 <AvatarCanvas>를 position = "absolute" 로 겹쳐서 출력하는 것입니다.
+ * 
+ */
 "use client";
 
 import { useEffect, useRef, useState } from "react";
@@ -8,8 +19,6 @@ const FaceLandmarkCanvas = () => {
   const videoRef = useRef<HTMLVideoElement>(null);
   const lastVideoTimeRef = useRef(-1);
   const requestRef = useRef(0);
-  const [avatarView, setAvatarView] = useState(true);
-  const [showAvatarCreator, setShowAvatarCreator] = useState(false);
 
   const [modelUrl, setModelUrl] = useState(
     "../assets/glb/animal_face_pack.gltf"
@@ -22,8 +31,6 @@ const FaceLandmarkCanvas = () => {
     height: number;
   }>();
 
-  const toggleAvatarView = () => setAvatarView((prev) => !prev);
-  const toggleAvatarCreatorView = () => setShowAvatarCreator((prev) => !prev);
   const changeAvatar = (avatar: string) => setAvatar((avatar));
 
   const animate = () => {
@@ -76,18 +83,6 @@ const FaceLandmarkCanvas = () => {
   return (
     <div className="flex flex-col items-center">
       <div className="flex justify-center gap-10 mt-5 mb-10">
-        <button
-          className="self-end bg-purple-700 hover:bg-purple-600 transition text-white px-2 py-1 rounded mb-2 shadow-md text-sm sm:text-base"
-          onClick={toggleAvatarView}
-        >
-          {avatarView ? "Switch to Landmark View" : "Switch to Avatar View"}
-        </button>
-        <button
-          className="self-end bg-purple-700 hover:bg-purple-600 transition text-white px-2 py-1 rounded mb-2 shadow-md text-sm sm:text-base"
-          onClick={toggleAvatarCreatorView}
-        >
-          {"Customize your Avatar!"}
-        </button>
       </div>
       <div className="flex justify-center" style={{ position: "relative" }}>
           <video
