@@ -15,6 +15,8 @@ const FaceLandmarkCanvas = () => {
     "../assets/glb/animal_face_pack.gltf"
   );
 
+  const [avatar, setAvatar] = useState("Chicken");
+
   const [videoSize, setVideoSize] = useState<{
     width: number;
     height: number;
@@ -22,7 +24,7 @@ const FaceLandmarkCanvas = () => {
 
   const toggleAvatarView = () => setAvatarView((prev) => !prev);
   const toggleAvatarCreatorView = () => setShowAvatarCreator((prev) => !prev);
-
+  const changeAvatar = (avatar: string) => setAvatar((avatar));
 
   const animate = () => {
     if (
@@ -68,6 +70,8 @@ const FaceLandmarkCanvas = () => {
 
     return () => cancelAnimationFrame(requestRef.current);
   }, []);
+  
+  
 
   return (
     <div className="flex flex-col items-center">
@@ -102,11 +106,15 @@ const FaceLandmarkCanvas = () => {
                   width={videoSize.width}
                   height={videoSize.height}
                   url={modelUrl}
+                  avatar_name={avatar}
                 />
               }
               
             </>
           )}
+          <button onClick={() => changeAvatar("Cat")}>고양이로 변신</button>
+          <button onClick={() => changeAvatar("Bear")}>곰으로 변신</button>
+          <button onClick={() => changeAvatar("Chicken")}>닭으로 변신</button>
         
       </div>
     </div>

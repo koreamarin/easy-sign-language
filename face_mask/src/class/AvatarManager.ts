@@ -52,6 +52,7 @@ class AvatarManager {
     });
 
     gltf.scene.traverse((obj) => (obj.frustumCulled = false));
+    this.scene.clear();
     this.scene.add(gltf.scene);
     this.scene.scale.set(1, 1, 1);
     this.scene.position.set(0, 0, 0);

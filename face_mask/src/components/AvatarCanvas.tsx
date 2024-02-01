@@ -9,9 +9,10 @@ interface AvatarCanvasProps {
   width: number;
   height: number;
   url: string;
+  avatar_name: string;
 }
 
-const AvatarCanvas = ({ width, height, url }: AvatarCanvasProps) => {
+const AvatarCanvas = ({ width, height, url, avatar_name }: AvatarCanvasProps) => {
   const [scene, setScene] = useState<THREE.Scene | null>();
   const [isLoading, setIsLoading] = useState(true);
   const avatarManagerRef = useRef<AvatarManager>(AvatarManager.getInstance());
@@ -33,7 +34,7 @@ const AvatarCanvas = ({ width, height, url }: AvatarCanvasProps) => {
     setIsLoading(true);
     const avatarManager = AvatarManager.getInstance();
     avatarManager
-      .loadAnimal(url, "Chicken")
+      .loadAnimal(url, avatar_name)
       .then(() => {
         setScene(avatarManager.getScene());
         setIsLoading(false);
@@ -41,7 +42,7 @@ const AvatarCanvas = ({ width, height, url }: AvatarCanvasProps) => {
       .catch((e) => {
         alert(e);
       });
-  }, [url]);
+  }, [url, avatar_name]);
 
   return (
     <div className="absolute" style={{ width: width, height: height, position: "absolute", top: 0}}>
