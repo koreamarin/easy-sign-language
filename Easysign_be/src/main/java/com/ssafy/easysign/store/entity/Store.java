@@ -16,6 +16,9 @@ public class Store {
     private StoreCategory categoryName;
 
     @Column(nullable = false)
+    private String itemName;
+
+    @Column(nullable = false)
     private int price;
     private String description;
 
