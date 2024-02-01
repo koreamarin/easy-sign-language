@@ -70,11 +70,12 @@ function Sidebar() {
   // 표 스타일 적용
   const StyledTableCell = styled(TableCell)`
     border-bottom: 1px solid black;
-    padding: 8px;
+    padding: 2px;
   `;
 
   const StyledTableRow = styled(TableRow)`
     border-bottom: 1px solid black;
+    border-top: 1px solid black;
   `;
 
   return (

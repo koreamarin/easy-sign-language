@@ -9,7 +9,6 @@ import Mypage from "./components/mypage/Mypage";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { Counter } from "./features/counter/Counter";
 import styled from "styled-components";
-import "./App.css";
 
 const AppContainer = styled.div`
   display: flex;
