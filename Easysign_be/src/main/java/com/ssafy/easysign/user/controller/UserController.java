@@ -47,7 +47,7 @@ public class UserController {
             log.info("/profile " + authentication.getName() + "의 프로필 변경요청");
             PrincipalDetails userDetails = (PrincipalDetails) authentication.getPrincipal();
             userService.updateProfile(userDetails.getUserId(), profileRequest);
-            return new ResponseEntity<>("프로필 업데이트 성공!", HttpStatus.OK);
+            return new ResponseEntity<>("프로필 업데이트가 완료되었습니다!", HttpStatus.OK);
         } catch(NotFoundException e) {
             return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
         }
@@ -64,7 +64,19 @@ public class UserController {
             log.info("/name " + authentication.getName() + "의 닉네임 변경요청 ");
             PrincipalDetails userDetails = (PrincipalDetails) authentication.getPrincipal();
             userService.updateName(userDetails.getUserId(), name);
-            return new ResponseEntity<>("닉네임 업데이트 성공!", HttpStatus.OK);
+            return new ResponseEntity<>("닉네임 변경이 완료되었습니다!", HttpStatus.OK);
+        } catch(NotFoundException e) {
+            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+        }
+    }
+
+    @PutMapping("/password")
+    public ResponseEntity<String> updatePassword(@RequestParam String password, Authentication authentication) {
+        try{
+            log.info("/name " + authentication.getName() + "의 비밀번호 변경요청 ");
+            PrincipalDetails userDetails = (PrincipalDetails) authentication.getPrincipal();
+            userService.updatePassword(userDetails.getUserId(), password);
+            return new ResponseEntity<>("비밀번호 변경이 완료되었습니다!", HttpStatus.OK);
         } catch(NotFoundException e) {
             return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
         }

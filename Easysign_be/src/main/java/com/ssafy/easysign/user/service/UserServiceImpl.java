@@ -11,6 +11,7 @@ import com.ssafy.easysign.user.repository.UserItemRepository;
 import com.ssafy.easysign.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -24,6 +25,7 @@ public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final UserItemRepository userItemRepository;
     private final StoreRepository storeRepository;
+    private final BCryptPasswordEncoder bCryptPasswordEncoder;
     @Override
     public UserInfoResponse getNavUserInfo(String loginId, Long userId) {
         UserInfoResponse response = new UserInfoResponse();
@@ -102,6 +104,15 @@ public class UserServiceImpl implements UserService {
         if(user.isEmpty()) throw new NotFoundException("사용자를 찾을 수 없습니다.");
 
         user.get().setName(name);
+        userRepository.save(user.get());
+    }
+
+    @Override
+    public void updatePassword(Long userId, String password) {
+        Optional<User> user = userRepository.findById(userId);
+        if(user.isEmpty()) throw new NotFoundException("사용자를 찾을 수 없습니다.");
+
+        user.get().setPassword(bCryptPasswordEncoder.encode(password));
         userRepository.save(user.get());
     }
 }
