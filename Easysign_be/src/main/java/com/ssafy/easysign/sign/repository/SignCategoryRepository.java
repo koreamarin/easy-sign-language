@@ -8,6 +8,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
 
 public interface SignCategoryRepository extends JpaRepository<SignCategory, Long> {
-    List<CategoryResponse> findAllByCategoryId(Long categoryId);
+    List<SignCategory> findByGubun(Gubun gubun);
 }
+
 

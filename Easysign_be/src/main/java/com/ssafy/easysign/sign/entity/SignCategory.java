@@ -13,10 +13,8 @@ public class SignCategory {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long categoryId;
 
-    @Column(nullable = false)
     private String categoryName;
 
     @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
     private Gubun gubun;
 }
