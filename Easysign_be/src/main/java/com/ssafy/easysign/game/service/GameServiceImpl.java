@@ -1,5 +1,6 @@
 package com.ssafy.easysign.game.service;
 
+import com.ssafy.easysign.global.jpaEnum.Gubun;
 import com.ssafy.easysign.sign.dto.response.SignResponse;
 import com.ssafy.easysign.sign.entity.SignInfo;
 import com.ssafy.easysign.sign.repository.SignRepository;
@@ -30,7 +31,10 @@ public class GameServiceImpl implements GameService  {
 
     @Override
     public List<SignResponse> getGameList() {
-        List<SignResponse> signResponses = em.createQuery("SELECT s FROM SignInfo s ORDER BY RAND()", SignInfo.class)
+        List<SignResponse> signResponses = em.createQuery(
+                        "SELECT s FROM SignInfo s WHERE s.gubun = :enumValue ORDER BY RAND()",
+                        SignInfo.class)
+                .setParameter("enumValue", Gubun.word)
                 .setMaxResults(20)
                 .getResultList()
                 .stream().map(this::mapToSignResponses)
