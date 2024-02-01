@@ -18,6 +18,9 @@ public class SignInfo {
     @JoinColumn(name = "category_id")
     private SignCategory category;
 
+    @Column(name = "category_id", insertable = false, updatable = false)
+    private Long categoryId;
+
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private Gubun gubun;
@@ -28,4 +31,8 @@ public class SignInfo {
     @Column(nullable = false)
     private String imagePath;
     private String videoPath;
+
+    public Long getCategoryId() {
+        return this.category.getCategoryId();
+    }
 }
