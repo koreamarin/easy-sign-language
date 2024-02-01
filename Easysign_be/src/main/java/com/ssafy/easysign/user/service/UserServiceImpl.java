@@ -2,6 +2,7 @@ package com.ssafy.easysign.user.service;
 
 import com.ssafy.easysign.store.entity.Store;
 import com.ssafy.easysign.store.repository.StoreRepository;
+import com.ssafy.easysign.user.dto.request.ProfileRequest;
 import com.ssafy.easysign.user.dto.response.UserInfoResponse;
 import com.ssafy.easysign.user.entity.User;
 import com.ssafy.easysign.user.entity.UserItem;
@@ -66,5 +67,32 @@ public class UserServiceImpl implements UserService {
         userItemRepository.save(userItem);
     }
 
+    @Override
+    public void updateProfile(Long userId, ProfileRequest profileRequest) {
+        Optional<List<UserItem>> userItems = userItemRepository.findByUser_UserIdAndIsUse(userId, true);
+        if(userItems.isEmpty()) throw new NotFoundException("사용자를 찾을 수 없습니다.");
+        // 아이템 적용 전체 해제
+        for(UserItem item : userItems.get()) {
+            item.setUse(false);
+            userItemRepository.save(item);
+        }
 
+        // 새 아이템 적용
+        UserItem userItem = new UserItem();
+        User user = new User();
+        user.setUserId(userId);
+
+        // 배경 적용
+        Store item = new Store();
+        item.setItemId(profileRequest.getBackgroundId());
+        userItem.setUser(user);
+        userItem.setItem(item);
+        userItem.setUse(true);
+        userItemRepository.save(userItem);
+
+        // 캐릭터 적용
+        item.setItemId(profileRequest.getCharacterId());
+        userItem.setItem(item);
+        userItemRepository.save(userItem);
+    }
 }
