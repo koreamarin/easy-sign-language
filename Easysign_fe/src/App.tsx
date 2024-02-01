@@ -19,7 +19,7 @@ const AppContainer = styled.div`
 
 const SidebarContainer = styled.div`
   text-align: center;
-  width: 357px;
+  width: 25%;
   flex-direction: column;
 `;
 

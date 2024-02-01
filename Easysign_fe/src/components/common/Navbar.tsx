@@ -1,12 +1,11 @@
 import { Link } from "react-router-dom";
 import styled from "styled-components";
-import Button from "@mui/material/Button";
 import React from "react";
 
 // styled components 적용
 
 const NavbarMenu = styled.div`
-  height: 150px;
+  height: 100px;
   background-color: #ffd9fa;
 `;
 
@@ -16,10 +15,6 @@ function Navbar() {
   return (
     <div>
       <NavbarMenu>
-        <div>
-          현재는 임시로 작업 중입니다. 추후 로그인 이전 / 로그인 이후로 나누어
-          구현될 예정.
-        </div>
         <div className="navbar">
           <Link className="navbarMenu" to={"/"}>
             MainPage
