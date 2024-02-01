@@ -1,8 +1,6 @@
 package com.ssafy.easysign.sign.service;
 
-import com.ssafy.easysign.global.jpaEnum.Gubun;
 import com.ssafy.easysign.sign.dto.response.CategoryResponse;
-import com.ssafy.easysign.sign.entity.SignCategory;
 import com.ssafy.easysign.sign.repository.SignCategoryRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

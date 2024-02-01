@@ -6,4 +6,6 @@ import lombok.Data;
 public class UserInfoResponse {
     private String name;
     private int sticker;
+    private String profileCharacterPath;
+    private String profileBackgroundPath;
 }
