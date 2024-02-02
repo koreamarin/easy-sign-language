@@ -1,38 +1,36 @@
 import React from "react";
 import styled from "styled-components";
 
+// 이미지 pagination 적용을 위한 mui 요소 import
+import Tabs from "@mui/material/Tabs";
+import Tab from "@mui/material/Tab";
+import Box from "@mui/material/Box";
+
 // 큰 상자 이름 - container
 // 캐릭터 모음 - Characters
 // 배경 모음 - Backgrounds
 
 function Mypage() {
   const Content = styled.div`
-    margin: 0 auto;
-    text-align: center;
+    display: flex;
+    justify-content: center; /* 수평 가운데 정렬 */
+    align-items: center; /* 수직 가운데 정렬 */
+    height: 100vh; /* 화면 전체 높이를 차지하도록 설정 */
   `;
 
   const Container = styled.div`
-    // padding: 5px;
-    // margin: 0 auto;
-    width: 924px;
-    height: 500px;
+    padding: 5px;
     background-color: #ececec;
     text-align: center;
   `;
 
   const Characters = styled.div`
     padding: 5px;
-    margin: 0 auto;
-    width: 824px;
-    height: 240px;
     background-color: pink;
   `;
 
   const Backgrounds = styled.div`
     padding: 5px;
-    margin: 0 auto;
-    width: 824px;
-    height: 240px;
     background-color: skyblue;
   `;
 
