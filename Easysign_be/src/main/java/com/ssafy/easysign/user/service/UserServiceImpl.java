@@ -1,19 +1,20 @@
 package com.ssafy.easysign.user.service;
-import com.ssafy.easysign.sign.entity.SignInfo;
-import com.ssafy.easysign.user.entity.BookMark;
-import com.ssafy.easysign.user.repository.UserBookMarkRepository;
-import org.springframework.security.core.Authentication;
+
 import com.ssafy.easysign.global.auth.PrincipalDetails;
+import com.ssafy.easysign.sign.dto.response.SignResponse;
+import com.ssafy.easysign.sign.entity.SignInfo;
 import com.ssafy.easysign.store.dto.response.ItemResponse;
 import com.ssafy.easysign.store.entity.Store;
 import com.ssafy.easysign.store.repository.StoreRepository;
 import com.ssafy.easysign.user.dto.request.ProfileRequest;
 import com.ssafy.easysign.user.dto.response.UserInfoResponse;
+import com.ssafy.easysign.user.entity.BookMark;
 import com.ssafy.easysign.user.entity.StickerLog;
 import com.ssafy.easysign.user.entity.User;
 import com.ssafy.easysign.user.entity.UserItem;
 import com.ssafy.easysign.user.exception.NotFoundException;
 import com.ssafy.easysign.user.repository.StickerLogRepository;
+import com.ssafy.easysign.user.repository.UserBookMarkRepository;
 import com.ssafy.easysign.user.repository.UserItemRepository;
 import com.ssafy.easysign.user.repository.UserRepository;
 import jakarta.persistence.EntityManager;
@@ -21,6 +22,7 @@ import jakarta.persistence.PersistenceContext;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -72,6 +74,25 @@ public class UserServiceImpl implements UserService {
         if(user.isEmpty()) throw new NotFoundException("사용자를 찾을 수 없습니다.");
         return user.get();
     }
+
+    @Override
+    public List<SignResponse> getSigns(Authentication authentication) {
+        PrincipalDetails userDetails = (PrincipalDetails) authentication.getPrincipal();
+        Long userId = userDetails.getUserId();
+        User user = userRepository.findById(userId).orElseThrow(()->new NotFoundException("no user"));
+        List<BookMark> bookMarkList = userBookMarkRepository.findBookMarksByUser(user);
+        List<SignInfo> signInfos =bookMarkList.stream()
+                .map(BookMark::getSignInfo)
+                .toList();
+        log.info("signInfos : " + signInfos);
+        List<SignResponse> signResponses = signInfos.stream()
+                .map(SignResponse::fromSignInfo)
+                .toList();
+        return signResponses;
+    }
+
+
+
 
     @Override
     public void registProfile(Long userId, Long itemId) {

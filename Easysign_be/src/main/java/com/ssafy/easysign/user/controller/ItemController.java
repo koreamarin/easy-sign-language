@@ -20,7 +20,6 @@ public class ItemController {
     @Autowired
     private UserService userService;
 
-
     @GetMapping
     public ResponseEntity<List<ItemResponse>> getUserItems(Authentication authentication){
         try {

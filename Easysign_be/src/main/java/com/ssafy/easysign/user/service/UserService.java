@@ -1,12 +1,13 @@
 package com.ssafy.easysign.user.service;
 
 
+import com.ssafy.easysign.sign.dto.response.SignResponse;
 import com.ssafy.easysign.store.dto.response.ItemResponse;
 import com.ssafy.easysign.user.dto.request.ProfileRequest;
 import com.ssafy.easysign.user.dto.response.UserInfoResponse;
 import com.ssafy.easysign.user.entity.User;
-//import org.apache.tomcat.util.net.openssl.ciphers.Authentication;
 import org.springframework.security.core.Authentication;
+
 import java.util.List;
 
 public interface UserService {
@@ -17,6 +18,8 @@ public interface UserService {
     void registBookMark(Long userId, Long signId);
 
     User getUser(String loginId);
+
+    List<SignResponse> getSigns(Authentication authentication);
 
     void updateProfile(Long userId, ProfileRequest profileRequest);
 
