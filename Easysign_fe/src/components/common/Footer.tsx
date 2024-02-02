@@ -46,6 +46,7 @@ function Footer() {
         <div>고객센터</div>
         <div>문의하기</div>
       </FooterTextBox1>
+      <br></br>
       <FooterTextBox2>
         <div>
           (주) 팀장만E조<br></br>광주 광산구 하남산단6번로 107
