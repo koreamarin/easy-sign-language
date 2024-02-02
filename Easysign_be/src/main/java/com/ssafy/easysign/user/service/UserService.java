@@ -14,6 +14,8 @@ public interface UserService {
 
     void registProfile(Long userid, Long itemId);
 
+    void registBookMark(Long userId, Long signId);
+
     User getUser(String loginId);
 
     void updateProfile(Long userId, ProfileRequest profileRequest);

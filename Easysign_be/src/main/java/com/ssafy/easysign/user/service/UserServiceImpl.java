@@ -1,4 +1,7 @@
 package com.ssafy.easysign.user.service;
+import com.ssafy.easysign.sign.entity.SignInfo;
+import com.ssafy.easysign.user.entity.BookMark;
+import com.ssafy.easysign.user.repository.UserBookMarkRepository;
 import org.springframework.security.core.Authentication;
 import com.ssafy.easysign.global.auth.PrincipalDetails;
 import com.ssafy.easysign.store.dto.response.ItemResponse;
@@ -37,6 +40,7 @@ public class UserServiceImpl implements UserService {
     private final StoreRepository storeRepository;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
     private final StickerLogRepository stickerLogRepository;
+    private final UserBookMarkRepository userBookMarkRepository;
     @PersistenceContext
     private EntityManager entityManager;
 
@@ -82,6 +86,22 @@ public class UserServiceImpl implements UserService {
         userItem.setUse(true);
         userItemRepository.save(userItem);
     }
+
+    @Override
+    public void registBookMark(Long userId, Long signId) {
+        User user = new User();
+        user.setUserId(userId);
+
+        SignInfo signInfo = new SignInfo();
+        signInfo.setSignId(signId);
+
+        BookMark bookMark = new BookMark();
+        bookMark.setUser(user);
+        bookMark.setSignInfo(signInfo);
+
+        userBookMarkRepository.save(bookMark);
+    }
+
 
     @Override
     public void updateProfile(Long userId, ProfileRequest profileRequest) {
