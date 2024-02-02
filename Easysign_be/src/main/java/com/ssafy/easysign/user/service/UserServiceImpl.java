@@ -1,5 +1,6 @@
 package com.ssafy.easysign.user.service;
-
+import org.springframework.security.core.Authentication;
+import com.ssafy.easysign.global.auth.PrincipalDetails;
 import com.ssafy.easysign.store.dto.response.ItemResponse;
 import com.ssafy.easysign.store.entity.Store;
 import com.ssafy.easysign.store.repository.StoreRepository;
@@ -109,6 +110,36 @@ public class UserServiceImpl implements UserService {
         item.setItemId(profileRequest.getCharacterId());
         userItem.setItem(item);
         userItemRepository.save(userItem);
+    }
+
+    @Override
+    public void updateItem(Long itemId, Authentication authentication) {
+
+        PrincipalDetails userDetails = (PrincipalDetails) authentication.getPrincipal();
+        Long userId = userDetails.getUserId();
+
+        // userId로 user_item 테이블에서 모든 아이템 조회
+        Optional<List<UserItem>> userItemsOptional = userItemRepository.findByUser_UserId(userId);
+
+        if (userItemsOptional.isPresent()) {
+            List<UserItem> userItems = userItemsOptional.get();
+
+            // 아이템 리스트에서 반복문을 돌면서 itemId와 일치하는 아이템 찾기
+            for (UserItem userItem : userItems) {
+                if (userItem.getItem().getItemId().equals(itemId)) {
+                    // is_use 값 변경 (0이면 1로, 1이면 0으로 toggle)
+                    userItem.setUse(!userItem.isUse());
+
+                    // 변경된 정보 저장
+                    userItemRepository.save(userItem);
+
+                    // 반복문 탈출
+                    break;
+                }
+            }
+        } else {
+            throw new NotFoundException("사용자를 찾을 수 없습니다.");
+        }
     }
 
     @Override
