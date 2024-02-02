@@ -7,4 +7,6 @@ import java.util.List;
 
 public interface StoreService {
     List<ItemResponse> getItemResponseList();
+
+
 }

@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.Optional;
 
 public interface UserItemRepository extends JpaRepository<UserItem, Long> {
+    Optional<List<UserItem>> findByUser_UserId(Long userId);
     Optional<List<UserItem>> findByUser_UserIdAndIsUse(Long userId, boolean isUse);
 
     @Modifying

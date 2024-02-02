@@ -1,9 +1,12 @@
 package com.ssafy.easysign.user.service;
 
 
+import com.ssafy.easysign.store.dto.response.ItemResponse;
 import com.ssafy.easysign.user.dto.request.ProfileRequest;
 import com.ssafy.easysign.user.dto.response.UserInfoResponse;
 import com.ssafy.easysign.user.entity.User;
+
+import java.util.List;
 
 public interface UserService {
     UserInfoResponse getNavUserInfo(String loginId, Long userId);
@@ -21,4 +24,6 @@ public interface UserService {
     void deleteUser(Long userId);
 
     void updateStickerCountAfter(Long userId, int count);
+
+    List<ItemResponse> getUserItems(Long userId);
 }

@@ -1,5 +1,6 @@
 package com.ssafy.easysign.user.service;
 
+import com.ssafy.easysign.store.dto.response.ItemResponse;
 import com.ssafy.easysign.store.entity.Store;
 import com.ssafy.easysign.store.repository.StoreRepository;
 import com.ssafy.easysign.user.dto.request.ProfileRequest;
@@ -20,6 +21,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -170,6 +172,30 @@ public class UserServiceImpl implements UserService {
             log.error("스티커 갯수 업데이트 및 로그 저장 실패. userId: {}, count: {}", userId, count, e);
             throw new RuntimeException("스티커 갯수 업데이트 및 로그 저장 실패.", e);
         }
+    }
+
+    @Override
+    public List<ItemResponse> getUserItems(Long userId) {
+        // 유저 아이디로 인해서 UserItemList를 가져와야한다.
+        Optional<List<UserItem>> userItems = userItemRepository.findByUser_UserId(userId);
+        List<ItemResponse> userItemResponses = new ArrayList<>();
+        if(userItems.isPresent()){
+            for (UserItem userItem : userItems.get()) {
+                Long itemId = userItem.getItem().getItemId();
+                Optional<Store> storeOptional = storeRepository.findByItemId(itemId);
+                storeOptional.ifPresent(store -> {
+                    // Store에서 필요한 정보를 이용하여 ItemResponse를 생성
+                    ItemResponse itemResponse = new ItemResponse();
+                    itemResponse.setItemId(store.getItemId());
+                    itemResponse.setItemName(store.getItemName());
+                    itemResponse.setCategoryName(store.getCategoryName().toString());
+                    itemResponse.setImagePath(store.getImagePath());
+                    // 생성된 ItemResponse를 리스트에 추가
+                    userItemResponses.add(itemResponse);
+                });
+            }
+        }
+        return userItemResponses;
     }
 
     private User getUser(Long userId) {
