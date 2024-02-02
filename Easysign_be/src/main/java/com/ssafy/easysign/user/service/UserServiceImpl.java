@@ -8,15 +8,9 @@ import com.ssafy.easysign.store.entity.Store;
 import com.ssafy.easysign.store.repository.StoreRepository;
 import com.ssafy.easysign.user.dto.request.ProfileRequest;
 import com.ssafy.easysign.user.dto.response.UserInfoResponse;
-import com.ssafy.easysign.user.entity.BookMark;
-import com.ssafy.easysign.user.entity.StickerLog;
-import com.ssafy.easysign.user.entity.User;
-import com.ssafy.easysign.user.entity.UserItem;
+import com.ssafy.easysign.user.entity.*;
 import com.ssafy.easysign.user.exception.NotFoundException;
-import com.ssafy.easysign.user.repository.StickerLogRepository;
-import com.ssafy.easysign.user.repository.UserBookMarkRepository;
-import com.ssafy.easysign.user.repository.UserItemRepository;
-import com.ssafy.easysign.user.repository.UserRepository;
+import com.ssafy.easysign.user.repository.*;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.transaction.Transactional;
@@ -43,6 +37,7 @@ public class UserServiceImpl implements UserService {
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
     private final StickerLogRepository stickerLogRepository;
     private final UserBookMarkRepository userBookMarkRepository;
+    private final UserProgressRepository userProgressRepository;
     @PersistenceContext
     private EntityManager entityManager;
 
@@ -79,7 +74,7 @@ public class UserServiceImpl implements UserService {
     public List<SignResponse> getSigns(Authentication authentication) {
         PrincipalDetails userDetails = (PrincipalDetails) authentication.getPrincipal();
         Long userId = userDetails.getUserId();
-        User user = userRepository.findById(userId).orElseThrow(()->new NotFoundException("no user"));
+        User user = userRepository.findById(userId).orElseThrow(()->new NotFoundException("사용자가 없습니다."));
         List<BookMark> bookMarkList = userBookMarkRepository.findBookMarksByUser(user);
         List<SignInfo> signInfos =bookMarkList.stream()
                 .map(BookMark::getSignInfo)
@@ -91,7 +86,17 @@ public class UserServiceImpl implements UserService {
         return signResponses;
     }
 
-
+    @Override
+    public List<SignInfo> getUserProgress(Long signId, Authentication authentication) {
+        PrincipalDetails userDetails = (PrincipalDetails) authentication.getPrincipal();
+        Long userId = userDetails.getUserId();
+        User user = userRepository.findById(userId).orElseThrow(()->new NotFoundException("사용자가 없습니다."));
+        List<UserProgress> userProgressList = userProgressRepository.findUserProgressByUser(user);
+        List<SignInfo> signInfos = userProgressList.stream()
+                .map(UserProgress::getSignInfo)
+                .toList();
+        return signInfos;
+    }
 
 
     @Override
