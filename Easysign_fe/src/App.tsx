@@ -29,7 +29,6 @@ const SidebarContainer = styled.div`
 
 const MainContent = styled.div`
   display: flex;
-  width: 75%;
   flex: 1;
 `;
 

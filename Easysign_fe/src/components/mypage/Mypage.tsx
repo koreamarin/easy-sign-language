@@ -12,8 +12,8 @@ function Mypage() {
   `;
 
   const Container = styled.div`
-    padding: 5px;
-    margin: 0 auto;
+    // padding: 5px;
+    // margin: 0 auto;
     width: 924px;
     height: 500px;
     background-color: #ececec;
