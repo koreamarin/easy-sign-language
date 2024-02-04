@@ -1,5 +1,5 @@
 import React from "react";
-import LandmarkerCanvas from "./test_tensorflow/Result";
+import LandmarkerCanvas from "./components/Result";
 
 
 function App() {
