@@ -24,7 +24,9 @@ public class ItemController {
     public ResponseEntity<List<ItemResponse>> getUserItems(Authentication authentication){
         try {
             PrincipalDetails userDetails = (PrincipalDetails) authentication.getPrincipal();
+            log.info("apply, userDetails : " + userDetails);
             Long userId = userDetails.getUserId();
+            log.info("userId : " + userId);
             List<ItemResponse> userItems = userService.getUserItems(userId);
             return ResponseEntity.ok(userItems);
         } catch (Exception e) {
@@ -38,6 +40,7 @@ public class ItemController {
         try {
             PrincipalDetails userDetails = (PrincipalDetails) authentication.getPrincipal();
             Long userId = userDetails.getUserId();
+
             userService.updateItem(itemId, authentication);
             return ResponseEntity.ok("아이템 업데이트 성공");
         } catch (NotFoundException e) {

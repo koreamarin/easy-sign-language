@@ -2,22 +2,20 @@ package com.ssafy.easysign.global.auth;
 
 import com.ssafy.easysign.user.entity.User;
 import lombok.Data;
+import lombok.Getter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.ArrayList;
 import java.util.Collection;
 
+@Getter
 @Data
 public class PrincipalDetails implements UserDetails {
     private User user;
 
     public PrincipalDetails(User user) {
         this.user = user;
-    }
-
-    public User getUser() {
-        return user;
     }
 
     @Override
@@ -58,5 +56,9 @@ public class PrincipalDetails implements UserDetails {
 
     public Long getUserId() {
         return user.getUserId();
+    }
+
+    public String getUserEmail(){
+        return user.getEmail();
     }
 }

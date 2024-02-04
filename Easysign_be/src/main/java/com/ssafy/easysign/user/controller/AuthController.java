@@ -2,6 +2,8 @@ package com.ssafy.easysign.user.controller;
 
 import com.ssafy.easysign.user.dto.request.RegistRequest;
 import com.ssafy.easysign.user.entity.User;
+import com.ssafy.easysign.user.repository.AuthRepository;
+import com.ssafy.easysign.user.repository.UserRepository;
 import com.ssafy.easysign.user.service.AuthService;
 import com.ssafy.easysign.user.service.UserService;
 import lombok.extern.slf4j.Slf4j;
@@ -19,6 +21,12 @@ public class AuthController {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private AuthRepository authRepository;
+
+    @Autowired
+    private UserRepository userRepository;
 
     /**
      * 회원가입
@@ -60,6 +68,29 @@ public class AuthController {
         }
     }
 
+    @GetMapping("/id")
+    public ResponseEntity<Boolean> findId(@RequestParam String email) {
+        try {
+            log.info("Controller email : " + email);
+            return new ResponseEntity<>(authService.findId(email), HttpStatus.OK);
+        } catch (Exception e) {
+            // 실패 시 400 Bad Request 응답
+            return new ResponseEntity<>(false, HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @GetMapping("/verification-requests")
+    public ResponseEntity<Boolean> findPasswordEmail(@RequestParam String email) {
+        try {
+            log.info("Controller email : " + email);
+            return new ResponseEntity<>(authService.findId(email), HttpStatus.OK);
+        } catch (Exception e) {
+            // 실패 시 400 Bad Request 응답
+            return new ResponseEntity<>(false, HttpStatus.BAD_REQUEST);
+        }
+    }
+
+
     /**
      * 닉네임 중복체크
      * @param name
@@ -75,4 +106,5 @@ public class AuthController {
             return new ResponseEntity<>(false, HttpStatus.BAD_REQUEST);
         }
     }
+
 }

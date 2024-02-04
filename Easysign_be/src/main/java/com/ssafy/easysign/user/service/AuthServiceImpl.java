@@ -43,6 +43,14 @@ public class AuthServiceImpl implements AuthService {
         return user.isEmpty();
     }
 
+    @Override
+    public boolean findId(String email) {
+        log.info("Service email Check : " + email);
+        Optional<User> user = authRepository.findByEmail(email);
+        return user.isEmpty();
+    }
+
+
     //닉네임 중복검사
     @Override
     public boolean nameCheck(String name) {

@@ -91,6 +91,7 @@ public class UserServiceImpl implements UserService {
         PrincipalDetails userDetails = (PrincipalDetails) authentication.getPrincipal();
         Long userId = userDetails.getUserId();
         User user = userRepository.findById(userId).orElseThrow(()->new NotFoundException("사용자가 없습니다."));
+        log.info("user : " + user);
         List<UserProgress> userProgressList = userProgressRepository.findUserProgressByUser(user);
         List<SignInfo> signInfos = userProgressList.stream()
                 .map(UserProgress::getSignInfo)

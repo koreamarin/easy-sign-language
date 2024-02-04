@@ -8,7 +8,6 @@ import java.io.Serializable;
 
 @Data
 public class UserProgressId implements Serializable {
-
     private User user;
     private SignInfo signInfo;
 }
