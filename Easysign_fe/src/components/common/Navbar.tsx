@@ -22,10 +22,9 @@ import Logout from "@mui/icons-material/Logout";
 const NavbarMenu = styled.div`
   position: relative;
   height: 70px;
-  // 색상은 임시로 설정한 것에 불과함.
-  background-color: #ffd9fa;
   display: flex;
   align-items: center;
+  border-bottom: 1px solid gray;
 `;
 
 // 왼쪽에 배치할 것들 감싸는 것
@@ -45,6 +44,16 @@ const RightMenu = styled.div`
   > * {
     margin-left: 10px;
     margin-right: 10px;
+`;
+
+// 하이퍼링크 보라색으로 변하는 것을 막기 위한 코드
+const StyledLink = styled(Link)`
+  color: inherit; /* 기존 텍스트 색상 상속 */
+  text-decoration: none; /* 밑줄 제거 */
+
+  &:hover {
+    color: inherit; /* 호버 시 텍스트 색상 상속 */
+  }
 `;
 
 // 코드 적용
@@ -69,7 +78,7 @@ function Navbar() {
             <img src="../images/signeasy_logo.png" alt="수어쉬워 로고" />
           </Link>
           <span>수어연습</span>
-          <Link to={"/store"}>상점</Link>
+          <StyledLink to={"/store"}>상점</StyledLink>
         </LeftMenu>
         <RightMenu>
           {/* accountmenu */}
@@ -83,7 +92,8 @@ function Navbar() {
               aria-haspopup="true"
               aria-expanded={open ? "true" : undefined}
             >
-              <Avatar sx={{ width: 32, height: 32 }}>M</Avatar>
+              {/* signeasy_logo.png를 제외한 나머지 이미지가 전부 엑박뜨는 현상이 발생. 원인을 모르겠음. */}
+              <Avatar src="../../../public/images/normal_profileimage.png" />
             </IconButton>
           </Tooltip>
           <Menu
@@ -147,9 +157,9 @@ function Navbar() {
               Logout
             </MenuItem>
           </Menu>
-          <Link to={"join"}>회원가입</Link>
-          <Link to={"login"}>로그인</Link>
-          <Link to={"mypage"}>마이페이지</Link>
+          <StyledLink to={"join"}>회원가입</StyledLink>
+          <StyledLink to={"login"}>로그인</StyledLink>
+          <StyledLink to={"mypage"}>마이페이지</StyledLink>
         </RightMenu>
       </NavbarMenu>
     </div>

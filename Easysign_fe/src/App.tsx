@@ -34,12 +34,9 @@ const MainContent = styled.div`
 
 const FooterContainer = styled.div`
   height: 200px;
-  // 색상은 임시 적용. 추후 완성 시 뺍니다.
-  background-color: #cefbc9;
+  border-top: 1px solid gray;
   bottom: 0;
   width: 100%; /* 가로 전체를 차지하도록 설정 */
-  // position: relative;
-  // transform: translateY(-100%);
 `;
 
 function App() {

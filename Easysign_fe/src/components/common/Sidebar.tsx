@@ -17,7 +17,7 @@ import TableCell from "@mui/material/TableCell";
 import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
-// import Paper from "@mui/material/Paper";
+import Paper from "@mui/material/Paper";
 import { create } from "domain";
 
 interface IconData {
@@ -34,11 +34,13 @@ function Sidebar() {
   const Title = styled.div`
     font-family: "Inter", sans-serif;
     font-weight: 800;
-    font-size: 48px;
+    font-size: 36px;
   `;
 
+  // 프로필 이미지 url인데 백엔드에서 등록된 사진을 가져오는 것으로 추후 변경해야 함.
+  // 왜 webp 파일이면 이미지가 잘 뜨는데 jpg 파일이면 이미지가 안 뜨는지 모르겠음
   const imageUrl =
-    "https://i.namu.wiki/i/kjdsQdzkaqQ7qKzMcZPL69oGATdNzkbuSc4OgZ_-Ti_tXJ0vh1H8vG4g1_US5QMoJa5vchtL85t9Ew4X1D0V38wut8GlLIpXM5JWpvjKEI6Q2BO4b-UXEYqGTmLPjKShxsqp0X4I8nXSqRb908zoqQ.webp";
+    "https://i.namu.wiki/i/qVIBxIh_6TrrLgAT9M3pEyr6RkY-032svYwFRxnVMBwk4zkrsSHfjSHd19QNZ1n6XbRX2KRUlR-kFEvZjLWOtFTZFgBat-1_34BSsz1SSjmcNa-ZMRQoyWsuaJfT85DMQQvkCttlTWPOTF2rIIAmjg.webp";
 
   const ProfileImage = styled.div`
     background-image: url(${imageUrl});
