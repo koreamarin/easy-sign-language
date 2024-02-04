@@ -26,54 +26,56 @@ const Main = () => {
     "과일 강의",
     "과일 연습",
   ];
-  const SentenceSubtitle = ["짧은글연습", "긴글연습"];
+  const SentenceSubtitle = ["문장 강의", "문장 연습"];
   const GameSubtitle = ["스피드퀴즈", "캐치마인드", "소나기", "끝말잇기"];
+
   const JihwaSubtitleOnClick = [
     () => {
-      navigate("../edu/vowel/lecture");
+      navigate("../edu/lecture/jihwa/vowel");
     },
     () => {
-      navigate("../edu/vowel/practice");
+      navigate("../edu/practice/jihwa/vowel");
     },
     () => {
-      navigate("../edu/consonant/lecture");
+      navigate("../edu/lecture/jihwa/consonant");
     },
     () => {
-      navigate("../edu/consonant/practice");
+      navigate("../edu/practice/jihwa/consonant");
     },
     () => {
-      navigate("../edu/number/lecture");
+      navigate("../edu/lecture/jihwa/number");
     },
     () => {
-      navigate("../edu/number/practice");
+      navigate("../edu/practice/jihwa/number");
     },
   ];
+
   const WordSubtitleOnClick = [
     () => {
-      navigate("../edu/animal/lecture");
+      navigate("../edu/lecture/word/animal");
     },
     () => {
-      navigate("../edu/animal/practice");
+      navigate("../edu/practice/word/animal");
     },
     () => {
-      navigate("../edu/object/lecture");
+      navigate("../edu/lecture/word/object");
     },
     () => {
-      navigate("../edu/object/practice");
+      navigate("../edu/practice/word/object");
     },
     () => {
-      navigate("../edu/fruit/lecture");
+      navigate("../edu/lecture/word/fruit");
     },
     () => {
-      navigate("../edu/fruit/practice");
+      navigate("../edu/practice/word/fruit");
     },
   ];
   const SentenceSubtitleOnClick = [
     () => {
-      navigate("../edu/shortsentence/practice");
+      navigate("../edu/lecture/setence");
     },
     () => {
-      navigate("../edu/longsentence/practice");
+      navigate("../edu/practice/setence");
     },
   ];
   const GameSubtitleOnClick = [
@@ -84,7 +86,7 @@ const Main = () => {
       navigate("../edu/game/catchmind");
     },
     () => {
-      navigate("../edu/game/rain");
+      navigate("../edu/game/shower");
     },
     () => {
       navigate("../edu/game/wordchain");
@@ -92,9 +94,20 @@ const Main = () => {
   ];
   const [imageSrc, setImageSrc] = useState(hand5);
 
-  const onMouseEnter = (a: any) => {
-    console.log(a);
-    setImageSrc(a);
+  const onMouseEnter1 = (a: any) => {
+    setImageSrc(hand1);
+  };
+
+  const onMouseEnter2 = (a: any) => {
+    setImageSrc(hand2);
+  };
+
+  const onMouseEnter3 = (a: any) => {
+    setImageSrc(hand3);
+  };
+
+  const onMouseEnter4 = (a: any) => {
+    setImageSrc(hand4);
   };
 
   const onMouseLeave = () => {
@@ -130,7 +143,7 @@ const Main = () => {
           height: "240px",
         }}
       >
-        <div onMouseEnter={(hand1) => onMouseEnter(hand1)} onMouseLeave={onMouseLeave}>
+        <div onMouseEnter={onMouseEnter1} onMouseLeave={onMouseLeave}>
           {" "}
           <EduButtons
             title={"지화공부"}
@@ -138,23 +151,27 @@ const Main = () => {
             subtitleOnClick={JihwaSubtitleOnClick}
           />
         </div>
-        <div onMouseEnter={onMouseEnter} onMouseLeave={onMouseLeave}>
+        <div onMouseEnter={onMouseEnter2} onMouseLeave={onMouseLeave}>
           <EduButtons
             title={"단어공부"}
             subtitle={WordSubtitle}
             subtitleOnClick={WordSubtitleOnClick}
           />
         </div>
-        <EduButtons
-          title={"문장공부"}
-          subtitle={SentenceSubtitle}
-          subtitleOnClick={SentenceSubtitleOnClick}
-        />
-        <EduButtons
-          title={"게임하기"}
-          subtitle={GameSubtitle}
-          subtitleOnClick={GameSubtitleOnClick}
-        />
+        <div onMouseEnter={onMouseEnter3} onMouseLeave={onMouseLeave}>
+          <EduButtons
+            title={"문장공부"}
+            subtitle={SentenceSubtitle}
+            subtitleOnClick={SentenceSubtitleOnClick}
+          />
+        </div>
+        <div onMouseEnter={onMouseEnter4} onMouseLeave={onMouseLeave}>
+          <EduButtons
+            title={"게임하기"}
+            subtitle={GameSubtitle}
+            subtitleOnClick={GameSubtitleOnClick}
+          />
+        </div>
       </div>
     </div>
   );

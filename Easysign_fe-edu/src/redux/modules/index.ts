@@ -1,6 +1,7 @@
 import { combineReducers } from "redux";
+import lecture from "./LectureSlice";
 
-const rootReducer = combineReducers({});
+const rootReducer = combineReducers({ lecture });
 
 export default rootReducer;
 

@@ -2,6 +2,9 @@ import { createBrowserRouter } from "react-router-dom";
 import AllComponentsContainer from "./pages/AllComponentsContainer";
 import Main from "./pages/Main";
 import Edu from "./pages/Edu";
+import { Outlet } from "react-router-dom";
+import Lecture from "./components/edu/Lecture";
+import JihwaComponent from "./components/edu/jihwa/JihwaComponent";
 
 const router = createBrowserRouter([
   {
@@ -15,6 +18,149 @@ const router = createBrowserRouter([
   {
     path: "/edu",
     element: <Edu />,
+    children: [
+      {
+        path: "lecture",
+        element: <Lecture />,
+        children: [
+          {
+            path: "jihwa",
+            element: <JihwaComponent />,
+            children: [
+              {
+                path: "vowel",
+                element: <div>모음진행바</div>,
+              },
+              {
+                path: "consonant",
+                element: <div>자음진행바</div>,
+              },
+              {
+                path: "number",
+                element: <div>숫자진행바</div>,
+              },
+            ],
+          },
+          {
+            path: "word",
+            element: (
+              <div>
+                <div>
+                  <Outlet />
+                </div>
+                <div>단어 사진/영상</div>
+              </div>
+            ),
+            children: [
+              {
+                path: "animal",
+                element: <div>동물</div>,
+              },
+              {
+                path: "object",
+                element: <div>사물</div>,
+              },
+              {
+                path: "fruit",
+                element: <div>과일</div>,
+              },
+            ],
+          },
+          {
+            path: "setence",
+            element: <div>문장</div>,
+          },
+        ],
+      },
+      {
+        path: "practice",
+        element: (
+          <div>
+            연습
+            <Outlet />
+          </div>
+        ),
+        children: [
+          {
+            path: "jihwa",
+            element: (
+              <div>
+                지화
+                <Outlet />
+              </div>
+            ),
+            children: [
+              {
+                path: "vowel",
+                element: <div>모음</div>,
+              },
+              {
+                path: "consonant",
+                element: <div>자음</div>,
+              },
+              {
+                path: "number",
+                element: <div>숫자</div>,
+              },
+            ],
+          },
+          {
+            path: "word",
+            element: (
+              <div>
+                단어
+                <Outlet />
+              </div>
+            ),
+            children: [
+              {
+                path: "animal",
+                element: <div>동물</div>,
+              },
+              {
+                path: "object",
+                element: <div>사물</div>,
+              },
+              {
+                path: "fruit",
+                element: <div>과일</div>,
+              },
+            ],
+          },
+          {
+            path: "setence",
+            element: <div>문장</div>,
+          },
+        ],
+      },
+      {
+        path: "game",
+        element: (
+          <div>
+            게임
+            <Outlet />
+          </div>
+        ),
+        children: [
+          {
+            path: "speedquiz",
+            element: <div>스피드퀴즈</div>,
+          },
+          {
+            path: "catchmind",
+            element: <div>캐치마인드(미구현)</div>,
+          },
+          {
+            path: "shower",
+            element: <div>소나기(미구현)</div>,
+          },
+          {
+            path: "wordchain",
+            element: <div>끝말잇기(미구현)</div>,
+          },
+        ],
+      },
+    ],
   },
 ]);
 

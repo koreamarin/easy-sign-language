@@ -1,26 +1,27 @@
 import Nav from "../components/nav/Nav";
+import { Outlet } from "react-router-dom";
 
 const Edu = () => {
   return (
     <div
       style={{
         display: "flex",
-        flexDirection: "column",
+        flexDirection: "row",
         justifyContent: "center",
         alignItems: "center",
-        border: "1px solid black",
-        width: "98vw",
-        height: "98vh",
       }}
     >
       <div
         style={{
           border: "1px solid black",
-          width: "90%",
-          height: "100%",
+          width: "1300px",
+          height: "900px",
+          display: "flex", // 추가
+          flexDirection: "row", // 추가
         }}
       >
         <Nav />
+        <Outlet />
       </div>
     </div>
   );

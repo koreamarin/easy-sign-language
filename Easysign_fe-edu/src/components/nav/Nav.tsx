@@ -1,10 +1,11 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import BackButton from "../Button/BackButton";
 import NavLogo from "./NavLogo";
 import ProfileImg from "./ProfileImg";
 import Progress from "./Progress";
 
 const Nav = () => {
+  const navigate = useNavigate();
   return (
     <div
       style={{
@@ -17,20 +18,22 @@ const Nav = () => {
           "linear-gradient(180deg, rgba(243.41, 44.46, 46.17, 0.09) 0%, rgba(194, 234, 243, 0.39) 68%)",
       }}
     >
-      <div
+      <a
         style={{
           padding: "20px",
           borderBottom: "3px solid pink",
         }}
+        href="/"
+        target="_blank"
       >
         <NavLogo />
-      </div>
+      </a>
       <div
         style={{
           paddingTop: "30px",
         }}
       >
-        <a href="/profile">
+        <a href="/mypage" target="_blank">
           <ProfileImg />
         </a>
       </div>
@@ -53,7 +56,7 @@ const Nav = () => {
           paddingTop: "30px",
         }}
       >
-        <BackButton text={"뒤로가기"} color={"pink"} onClick={() => ""} />
+        <BackButton text={"뒤로가기"} color={"pink"} onClick={() => navigate(-1)} />
       </div>
     </div>
   );

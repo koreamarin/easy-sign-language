@@ -20,7 +20,7 @@ interface ProfileImgProps {
 const ProfileImg = ({ src = basic_profile_img }: ProfileImgProps) => {
   return (
     <div>
-      <Containers src={src} alt="profile_img" onClick={() => ""} />
+      <Containers src={src} alt="profile_img" />
     </div>
   );
 };
