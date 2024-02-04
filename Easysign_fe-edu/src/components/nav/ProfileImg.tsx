@@ -7,8 +7,8 @@ const Containers = styled.img`
   border-radius: 50%;
   cursor: pointer;
   &:hover {
-    width: 130px;
-    height: 130px;
+    width: 131px;
+    height: 131px;
     border: 5px solid #ffcfd8;
   }
 `;

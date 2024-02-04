@@ -1,7 +1,8 @@
 import { combineReducers } from "redux";
 import lecture from "./LectureSlice";
+import progress from "./ProgressSlice";
 
-const rootReducer = combineReducers({ lecture });
+const rootReducer = combineReducers({ lecture, progress });
 
 export default rootReducer;
 

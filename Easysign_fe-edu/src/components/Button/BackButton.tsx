@@ -40,7 +40,6 @@ const Containers = styled.button<ContainersProps>`
     }
   }};
   font-size: 18px;
-  font-family: Inter;
   font-weight: 700;
   line-height: 25px;
   word-wrap: break-word;
@@ -87,7 +86,7 @@ const BackButton = ({ text, color, onClick, onMouseEnter, onMouseLeave }: Button
       onMouseEnter={onMouseEnter}
       onMouseLeave={onMouseLeave}
     >
-      <img src={ArrowColor(color)} alt="arrow" width={"50%"} />
+      <img src={ArrowColor(color)} alt="arrow" width={"50 % "} />
       <br />
       {text}
     </Containers>

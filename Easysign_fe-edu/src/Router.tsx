@@ -5,6 +5,7 @@ import Edu from "./pages/Edu";
 import { Outlet } from "react-router-dom";
 import Lecture from "./components/edu/Lecture";
 import JihwaComponent from "./components/edu/jihwa/JihwaComponent";
+import JihwaProgressBar from "./components/edu/jihwa/JihwaProgressBar";
 
 const router = createBrowserRouter([
   {
@@ -29,7 +30,7 @@ const router = createBrowserRouter([
             children: [
               {
                 path: "vowel",
-                element: <div>모음진행바</div>,
+                element: <JihwaProgressBar />,
               },
               {
                 path: "consonant",

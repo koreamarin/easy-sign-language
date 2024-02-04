@@ -13,7 +13,7 @@ const Edu = () => {
     >
       <div
         style={{
-          border: "1px solid black",
+          border: "1px solid #b8b8b8",
           width: "1300px",
           height: "900px",
           display: "flex", // 추가

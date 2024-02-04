@@ -1,11 +1,15 @@
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import BackButton from "../Button/BackButton";
 import NavLogo from "./NavLogo";
 import ProfileImg from "./ProfileImg";
 import Progress from "./Progress";
+import { useSelector } from "react-redux";
+import { rootState } from "../../redux/modules";
 
 const Nav = () => {
   const navigate = useNavigate();
+  const progress = useSelector((state: rootState) => state.progress);
+
   return (
     <div
       style={{
@@ -42,14 +46,14 @@ const Nav = () => {
           paddingTop: "30px",
         }}
       >
-        <Progress percentage={66} />
+        <Progress percentage={progress.LearningProgress} />
       </div>
       <div
         style={{
           paddingTop: "30px",
         }}
       >
-        <Progress percentage={66} wrong_answer={true} />
+        <Progress percentage={progress.IncorrectAnswerRate} wrong_answer={true} />
       </div>
       <div
         style={{

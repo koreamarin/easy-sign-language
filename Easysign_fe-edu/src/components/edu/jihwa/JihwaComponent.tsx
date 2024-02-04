@@ -1,11 +1,33 @@
 import { Outlet, useOutletContext } from "react-router-dom";
+import Spinner from "../../common/Spinner";
+import BracketButton from "../../Button/BracketButton";
+import Sticker from "../../../assets/images/sticker.png";
+import ResultModal from "../../common/ResultModal";
+import { useState } from "react";
 
 const JihwaComponent = () => {
+  const [modalShown, setModalShown] = useState<boolean>(false);
+  const [success, setSuccess] = useState<boolean>(false);
   interface IFollowersContext {
     followStatus: Boolean;
-    words: string[];
+    trainingData: {
+      signid: number;
+      word: string;
+      image: string;
+      video: string;
+      stiker: number;
+    }[];
+    currentNum: number;
+    currentNumModify: (currentNum: number) => void;
   }
-  const { followStatus, words } = useOutletContext<IFollowersContext>();
+  const { followStatus, trainingData, currentNum, currentNumModify } =
+    useOutletContext<IFollowersContext>();
+
+  const outletProps = {
+    trainingData: trainingData,
+    currentNum: currentNum,
+    currentNumModify: currentNumModify,
+  };
   return (
     <div
       style={{
@@ -17,57 +39,153 @@ const JihwaComponent = () => {
     >
       <div
         style={{
-          border: "1px solid black",
           width: "1080px",
           height: "200px",
-        }}
-      >
-        <Outlet context={words} />
-      </div>
-      <div
-        style={{
           display: "flex",
-          flexDirection: "row",
-          justifyContent: "space-around",
+          flexDirection: "column",
+          justifyContent: "center",
           alignItems: "center",
-          width: "1080px",
-          height: "510px",
-          border: "1px solid black",
         }}
       >
-        {followStatus ? (
-          <>
+        <Outlet context={outletProps} />
+      </div>
+
+      {followStatus ? (
+        <>
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "row",
+              justifyContent: "space-around",
+              alignItems: "center",
+              width: "1080px",
+              height: "510px",
+            }}
+          >
+            <div
+              style={{
+                width: "533px",
+                height: "510px",
+                borderRadius: "40px",
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                fontSize: "40px",
+                fontWeight: "bold",
+                border: "1px solid black",
+              }}
+            >
+              지화 모델
+            </div>
             <img
               style={{
                 width: "533px",
                 height: "510px",
                 borderRadius: "40px",
               }}
-              src="http://kookbang.dema.mil.kr/newspaper/tmplat/upload/20170515/thumb1/BBS_201705150542235040.jpeg"
+              src={trainingData[currentNum - 1].image}
               alt="jihwa"
             />
-            <img
+          </div>
+          <div
+            style={{
+              height: "0px",
+              position: "relative",
+              top: "90px",
+              left: "70px",
+              display: "flex",
+              flexDirection: "row",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
+            <Spinner />
+            <span
               style={{
-                width: "533px",
-                height: "510px",
-                borderRadius: "40px",
+                position: "relative",
+                left: "350px",
+                display: "flex",
+                flexDirection: "row",
+                justifyContent: "center",
+                alignItems: "center",
               }}
-              src="http://kookbang.dema.mil.kr/newspaper/tmplat/upload/20170515/thumb1/BBS_201705150542235040.jpeg"
-              alt="jihwa"
+            >
+              <img src={Sticker} alt="sticker" />
+              <span
+                style={{
+                  fontSize: "40px",
+                  fontWeight: "bold",
+                  marginLeft: "10px",
+                }}
+              >
+                X {trainingData[currentNum - 1].stiker}
+              </span>
+              <button onClick={() => setModalShown(!modalShown)}>모달 테스트</button>
+            </span>
+          </div>
+          <ResultModal
+            success={true}
+            setSuccess={setSuccess}
+            shown={modalShown}
+            setModalShown={setModalShown}
+            BookmarkButton={false}
+            stickerNum={trainingData[currentNum - 1].stiker}
+            currentNum={currentNum}
+            currentNumModify={currentNumModify}
+            totalNum={trainingData.length}
+            signid={trainingData[currentNum - 1].signid}
+          />
+        </>
+      ) : (
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "row",
+            justifyContent: "space-around",
+            alignItems: "center",
+            width: "1080px",
+            height: "510px",
+          }}
+        >
+          {currentNum === 1 ? (
+            <div
+              style={{
+                width: "80px",
+                height: "116px",
+              }}
             />
-          </>
-        ) : (
+          ) : (
+            <BracketButton
+              direction="left"
+              currentNum={currentNum}
+              currentNumModify={currentNumModify}
+            />
+          )}
           <img
             style={{
               width: "907px",
               height: "510px",
               borderRadius: "40px",
             }}
-            src="https://i.ibb.co/7tjHwHv/jihwa.png"
+            src={trainingData[currentNum - 1].image}
             alt="jihwa"
           />
-        )}
-      </div>
+          {currentNum === trainingData.length ? (
+            <div
+              style={{
+                width: "80px",
+                height: "116px",
+              }}
+            />
+          ) : (
+            <BracketButton
+              direction="right"
+              currentNum={currentNum}
+              currentNumModify={currentNumModify}
+            />
+          )}
+        </div>
+      )}
     </div>
   );
 };

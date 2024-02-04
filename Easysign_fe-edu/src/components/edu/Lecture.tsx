@@ -1,20 +1,143 @@
-import { Outlet } from "react-router-dom";
+import { Outlet, useLocation, useParams } from "react-router-dom";
 import LargeButton from "../Button/LargeButton";
 import { useDispatch, useSelector } from "react-redux";
 import { rootState } from "../../redux/modules";
 import { followStatusTrue, followStatusFalse } from "../../redux/modules/LectureSlice";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import { IncorrectAnswerRateSet, LearningProgressSet } from "../../redux/modules/ProgressSlice";
 
 const Lecture = () => {
   const followStatus = useSelector((state: rootState) => state.lecture.follow);
   const dispatch = useDispatch();
-  const words: string[] = [];
-  const stikerNum: number = 0;
-  const imageSrc: string = "";
-  const videoSrc: string = "";
+  useEffect(() => {
+    dispatch(LearningProgressSet(0));
+    dispatch(IncorrectAnswerRateSet(0));
+  }, []);
+  console.log("시작");
+  const location = useLocation();
+  console.log(location.pathname);
+
+  type trainingDataType = {
+    signid: number;
+    word: string;
+    image: string;
+    video: string;
+    stiker: number;
+  }[];
+
+  const trainingData: trainingDataType = [
+    {
+      signid: 1,
+      word: "ㄱ",
+      image: "https://via.placeholder.com/320x100?text=1",
+      video: "",
+      stiker: 1,
+    },
+    {
+      signid: 2,
+      word: "ㄴ",
+      image: "https://via.placeholder.com/320x100?text=2",
+      video: "",
+      stiker: 2,
+    },
+    {
+      signid: 3,
+      word: "ㄷ",
+      image: "https://via.placeholder.com/320x100?text=3",
+      video: "",
+      stiker: 3,
+    },
+    {
+      signid: 4,
+      word: "ㄹ",
+      image: "https://via.placeholder.com/320x100?text=4",
+      video: "",
+      stiker: 4,
+    },
+    {
+      signid: 5,
+      word: "ㅁ",
+      image: "https://via.placeholder.com/320x100?text=5",
+      video: "",
+      stiker: 5,
+    },
+    {
+      signid: 6,
+      word: "ㅂ",
+      image: "https://via.placeholder.com/320x100?text=6",
+      video: "",
+      stiker: 6,
+    },
+    {
+      signid: 7,
+      word: "ㅅ",
+      image: "https://via.placeholder.com/320x100?text=7",
+      video: "",
+      stiker: 7,
+    },
+    {
+      signid: 8,
+      word: "ㅇ",
+      image: "https://via.placeholder.com/320x100?text=8",
+      video: "",
+      stiker: 8,
+    },
+    {
+      signid: 9,
+      word: "ㅈ",
+      image: "https://via.placeholder.com/320x100?text=9",
+      video: "",
+      stiker: 9,
+    },
+    {
+      signid: 10,
+      word: "ㅊ",
+      image: "https://via.placeholder.com/320x100?text=10",
+      video: "",
+      stiker: 10,
+    },
+    {
+      signid: 11,
+      word: "ㅋ",
+      image: "https://via.placeholder.com/320x100?text=11",
+      video: "",
+      stiker: 11,
+    },
+    {
+      signid: 12,
+      word: "ㅌ",
+      image: "https://via.placeholder.com/320x100?text=12",
+      video: "",
+      stiker: 12,
+    },
+    {
+      signid: 13,
+      word: "ㅍ",
+      image: "https://via.placeholder.com/320x100?text=13",
+      video: "",
+      stiker: 13,
+    },
+    {
+      signid: 14,
+      word: "ㅎ",
+      image: "https://via.placeholder.com/320x100?text=14",
+      video: "",
+      stiker: 14,
+    },
+  ];
+  // const currentNum: number = 14;
+  const [currentNum, setCurrentNum] = useState<number>(1);
+  const totalNum: number = trainingData.length;
+  const currentNumModify = (currentNum: number) => {
+    if (currentNum > 0 && currentNum < totalNum + 1) {
+      setCurrentNum(currentNum);
+      dispatch(LearningProgressSet(Math.round(((currentNum - 1) / totalNum) * 100)));
+    }
+  };
+
+  const progress = useSelector((state: rootState) => state.progress.LearningProgress);
 
   useEffect(() => {
-    console.log(followStatus);
     return () => {
       dispatch(followStatusFalse());
     };
@@ -22,10 +145,9 @@ const Lecture = () => {
 
   const outletProps = {
     followStatus: followStatus,
-    words: words,
-    stikerNum: stikerNum,
-    imageSrc: imageSrc,
-    videoSrc: videoSrc,
+    trainingData: trainingData,
+    currentNum: currentNum,
+    currentNumModify: currentNumModify,
   };
 
   return (
@@ -38,14 +160,12 @@ const Lecture = () => {
         flexDirection: "column",
         justifyContent: "center",
         alignItems: "center",
-        border: "1px solid black",
       }}
     >
       <div
         style={{
           position: "relative",
           top: "-20px",
-          border: "1px solid black",
           width: "1080px",
           height: "710px",
           display: "flex",

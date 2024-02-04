@@ -14,6 +14,9 @@ import ProfileImg from "../components/nav/ProfileImg";
 import Progress from "../components/nav/Progress";
 import Nav from "../components/nav/Nav";
 import { useNavigate } from "react-router-dom";
+import JihwaProgressBar from "../components/edu/jihwa/JihwaProgressBar";
+import BracketButton from "../components/Button/BracketButton";
+import ResultModal from "../components/common/ResultModal";
 
 const AllComponentsContainer = () => {
   const navigate = useNavigate();
@@ -80,6 +83,8 @@ const AllComponentsContainer = () => {
         <BackButton text={"뒤로가기"} color={"skyblue"} onClick={() => ""} />
         <BackButton text={"뒤로가기"} color={"pink"} onClick={() => ""} />
       </div>
+
+      <div></div>
       <br />
       <br />
       <br />
@@ -97,6 +102,7 @@ const AllComponentsContainer = () => {
         <Progress percentage={76} wrong_answer={false} />
         <Progress percentage={76} />
         <Nav />
+        <JihwaProgressBar />
       </div>
     </div>
   );
