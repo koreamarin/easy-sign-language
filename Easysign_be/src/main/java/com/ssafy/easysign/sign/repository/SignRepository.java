@@ -8,4 +8,5 @@ import java.util.List;
 
 public interface SignRepository extends JpaRepository<SignInfo,Long> {
     List<SignInfo> findByCategoryIdAndGubun(Long categoryId, Gubun gubun);
+
 }

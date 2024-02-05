@@ -12,6 +12,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Optional;
+
 @RestController
 @Slf4j
 @RequestMapping("/api/v1/auth")
@@ -69,24 +71,21 @@ public class AuthController {
     }
 
     @GetMapping("/id")
-    public ResponseEntity<Boolean> findId(@RequestParam String email) {
+    public ResponseEntity<String> findId(@RequestParam String email) {
         try {
             log.info("Controller email : " + email);
-            return new ResponseEntity<>(authService.findId(email), HttpStatus.OK);
-        } catch (Exception e) {
-            // 실패 시 400 Bad Request 응답
-            return new ResponseEntity<>(false, HttpStatus.BAD_REQUEST);
-        }
-    }
+            Optional<User> user = authRepository.findByLoginId(email);
 
-    @GetMapping("/verification-requests")
-    public ResponseEntity<Boolean> findPasswordEmail(@RequestParam String email) {
-        try {
-            log.info("Controller email : " + email);
-            return new ResponseEntity<>(authService.findId(email), HttpStatus.OK);
+            if (user.isPresent()) {
+                // 사용자가 존재하면 200 OK 응답
+                return new ResponseEntity<>(String.valueOf(user.get().getUserId()), HttpStatus.OK);
+            } else {
+                // 사용자가 존재하지 않으면 400 Bad Request 응답
+                return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            }
         } catch (Exception e) {
-            // 실패 시 400 Bad Request 응답
-            return new ResponseEntity<>(false, HttpStatus.BAD_REQUEST);
+            // 예외 발생 시 400 Bad Request 응답
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }
 

@@ -17,4 +17,6 @@ public class SignCategory {
 
     @Enumerated(EnumType.STRING)
     private Gubun gubun;
+
+    private int addSticker;
 }

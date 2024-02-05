@@ -12,7 +12,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -24,23 +23,16 @@ public class SignServiceImpl implements SignService {
 
 
     @Override
-    public List<CategoryResponse> getCategoryResponseList(Gubun gubun) {
-        List<SignCategory> signCategories = signCategoryRepository.findByGubun(gubun);
-        List<CategoryResponse> categoryResponses = signCategories.stream()
-                .map(this::mapToCategoryResponse)
-                .collect(Collectors.toList());
-        log.info("Category Responses: {}", categoryResponses);
-        return categoryResponses;
+    public List<SignCategory> getCategoryList() {
+        List<SignCategory> signCategories = signCategoryRepository.findAll();
+        return signCategories;
     }
 
     @Override
-    public List<SignResponse> getSignResponseList(Long categoryId, Gubun gubun) {
-        List<SignInfo> signInfos = signRepository.findByCategoryIdAndGubun(categoryId, gubun);
-        List<SignResponse> signResponses = signInfos.stream()
-                .map(this::mapToSignResponses)
-                .collect(Collectors.toList());
-        log.info("Sign signResponses : {}", signResponses);
-        return signResponses;
+    public List<SignInfo> getSignResponseList(String categoryName, Gubun gubun) {
+        SignCategory signCategory = signCategoryRepository.findByCategoryName(categoryName);
+        List<SignInfo> signInfos = signRepository.findByCategoryIdAndGubun(signCategory.getCategoryId(), gubun);
+        return signInfos;
     }
 
     public CategoryResponse mapToCategoryResponse(SignCategory signCategory) {

@@ -44,10 +44,11 @@ public class AuthServiceImpl implements AuthService {
     }
 
     @Override
-    public boolean findId(String email) {
+    public String findId(String email) {
         log.info("Service email Check : " + email);
         Optional<User> user = authRepository.findByEmail(email);
-        return user.isEmpty();
+        // 사용자가 존재하면 LoginId 반환, 그렇지 않으면 null 반환
+        return user.map(User::getLoginId).orElse(null);
     }
 
 
