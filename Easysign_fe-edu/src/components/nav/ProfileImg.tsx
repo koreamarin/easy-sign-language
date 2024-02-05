@@ -1,11 +1,16 @@
 import basic_profile_img from "../../assets/images/basic_profile_img.svg";
 import styled from "styled-components";
 
-const Containers = styled.img`
+interface CharacterImgProps {
+  backgroundSrc?: string;
+}
+
+const CharacterImg = styled.img<CharacterImgProps>`
   width: 140px;
   height: 140px;
   border-radius: 50%;
   cursor: pointer;
+  background-image: url(${(props) => props.backgroundSrc});
   &:hover {
     width: 131px;
     height: 131px;
@@ -14,13 +19,21 @@ const Containers = styled.img`
 `;
 
 interface ProfileImgProps {
-  src?: string;
+  backgroundSrc?: string;
+  CharacterSrc?: string;
 }
 
-const ProfileImg = ({ src = basic_profile_img }: ProfileImgProps) => {
+const ProfileImg = ({ backgroundSrc, CharacterSrc }: ProfileImgProps) => {
+  if (typeof CharacterSrc === "undefined" || typeof backgroundSrc === "undefined") {
+    return (
+      <div>
+        <CharacterImg src={basic_profile_img} alt="profile_img" />
+      </div>
+    );
+  }
   return (
     <div>
-      <Containers src={src} alt="profile_img" />
+      <CharacterImg src={CharacterSrc} backgroundSrc={backgroundSrc} alt="profile_img" />
     </div>
   );
 };

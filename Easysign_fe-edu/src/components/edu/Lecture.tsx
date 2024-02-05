@@ -15,7 +15,7 @@ const Lecture = () => {
   }, []);
   console.log("시작");
   const [readSearchParams] = useSearchParams();
-  console.log(readSearchParams.get("category"));
+  const category = readSearchParams.get("category");
 
   type trainingDataType = {
     signid: number;

@@ -93,11 +93,7 @@ const AllComponentsContainer = () => {
       <div>
         <Logo />
         <ProfileImg />
-        <ProfileImg
-          src={
-            "https://kookbang.dema.mil.kr/newspaper/tmplat/upload/20170515/thumb1/BBS_201705150542235040.jpeg"
-          }
-        />
+        <ProfileImg />
         <Progress percentage={76} wrong_answer={true} />
         <Progress percentage={76} wrong_answer={false} />
         <Progress percentage={76} />

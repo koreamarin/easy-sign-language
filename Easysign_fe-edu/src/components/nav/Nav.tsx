@@ -15,11 +15,13 @@ const Nav = () => {
       headers: {
         "Content-Type": "application/json",
         Authorization:
-          "Bearer eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJFYXN5U2lnbiIsImV4cCI6MTcwNzEwMjY4NCwiaWQiOjYsImxvZ2luSWQiOiJzc2FmeSJ9.xfGwzew-RwC6nwrPUZkArr-ab02BG-oeGS_aBOACTvQHsvBx_M8TI6xdWfV90ME7wsUAmw-bhxGfrSPZtWgwzQ",
+          "Bearer eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJFYXN5U2lnbiIsImV4cCI6MTcwNzIwMTIwNCwiaWQiOjYsImxvZ2luSWQiOiJzc2FmeSJ9.RY5jj_VYsOD-pxxoDOR715G6av3l_z-7d66Gh3xRSuvLqTQGbLxOuSEZ7-GU88CrxXLnFEGnvbzgoH2UcH0WpA",
       },
     });
     const json = await response.json();
     console.log(json.name);
+    console.log(json.profileCharacterPath);
+    console.log(json.profileBackgroundPath);
   };
   getMovies();
 
@@ -51,7 +53,10 @@ const Nav = () => {
         }}
       >
         <a href="/mypage" target="_blank">
-          <ProfileImg />
+          <ProfileImg
+            backgroundSrc="https://cdn.pixabay.com/photo/2023/05/15/14/02/cat-7995160_1280.jpg"
+            CharacterSrc="https://pngimg.com/uploads/cat/cat_PNG50550.png"
+          />
         </a>
       </div>
       <div
