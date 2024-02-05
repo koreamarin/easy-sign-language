@@ -10,13 +10,12 @@ const Nav = () => {
   const navigate = useNavigate();
   const progress = useSelector((state: rootState) => state.progress);
   const getMovies = async () => {
-    const response = await fetch("/api/v1/user/info", {
-      method: "GET",
-      headers: {
-        Authorization:
-          "Bearer eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJFYXN5U2lnbiIsImV4cCI6MTcwNzA5NjIyMywiaWQiOjYsImxvZ2luSWQiOiJzc2FmeSJ9.KFPumKLXBYHMwiWyGa72eW-7r21vLWzQXmEieuAGesGnlDN2rt9UF_nrE4VG-ox-YILPiAuk_q-ReqS1lc78lA",
-        Origin: "http://localhost:3000",
-      },
+    const response = await fetch("https://i10c202.p.ssafy.io/api/v1/login", {
+      method: "POST",
+      body: JSON.stringify({
+        loginId: "ssafy",
+        password: "1234",
+      }),
     });
     console.log(response);
   };
