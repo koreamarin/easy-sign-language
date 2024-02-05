@@ -85,7 +85,7 @@ pipeline {
                         try{
                             sh "docker stop -f front-edu || true"
                             sh "docker rm -f front-edu || true"
-                            sh "docker run -d --name front-edu -p 8084:8080 ${DOCKER_USER_ID}/front-edu"
+                            sh "docker run -d --name front-edu -p 8084:3001 ${DOCKER_USER_ID}/front-edu"
                         } catch (Exception e){
                             sh "docker restart front-edu"
                         }
