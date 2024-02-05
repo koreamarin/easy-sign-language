@@ -1,7 +1,7 @@
 {
   "name": "educational_page",
   "version": "0.1.0",
-  "proxy": "http://i10c202.p.ssafy.io",
+  "proxy": "https://i10c202.p.ssafy.io",
   "private": true,
   "dependencies": {
     "@reduxjs/toolkit": "^1.9.7",
