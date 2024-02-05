@@ -21,15 +21,10 @@ const AppContainer = styled.div`
   height: auto;
 `;
 
-const SidebarContainer = styled.div`
-  text-align: center;
-  width: 25%;
-  flex-direction: column;
-`;
-
 const MainContent = styled.div`
   display: flex;
   flex: 1;
+  min-height: 80vh;
 `;
 
 const FooterContainer = styled.div`
@@ -45,9 +40,6 @@ function App() {
       <AppContainer>
         <Navbar />
         <MainContent>
-          <SidebarContainer>
-            <Sidebar />
-          </SidebarContainer>
           <div>
             <Routes>
               <Route path="/" element={<MainPage />} />

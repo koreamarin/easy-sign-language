@@ -1,4 +1,4 @@
-// import { Menu } from "@mui/material";
+import { Link } from "react-router-dom";
 import styled from "styled-components";
 
 // mui 아이콘 관련 import
@@ -7,18 +7,6 @@ import {
   SettingsOutlined,
   LogoutOutlined,
 } from "@mui/icons-material";
-// import { SvgIconComponent } from "@mui/icons-material";
-// import { IconProps } from "@mui/material/Icon";
-
-// mui 테이블 관련 import
-// import Table from "@mui/material/Table";
-// import TableBody from "@mui/material/TableBody";
-// import TableCell from "@mui/material/TableCell";
-// import TableContainer from "@mui/material/TableContainer";
-// import TableHead from "@mui/material/TableHead";
-// import TableRow from "@mui/material/TableRow";
-// import Paper from "@mui/material/Paper";
-// import { create } from "domain";
 
 function Sidebar() {
   // 스타일 적용
@@ -57,6 +45,26 @@ function Sidebar() {
 
   const TableBox = styled.div`
     align-items: center;
+
+    td {
+      border-top: 1px solid #000; /* 상단 경계선 추가 */
+      border-bottom: 1px solid #000; /* 하단 경계선 추가 */
+      padding: 5px; /* 내부 여백 설정 */
+    }
+
+    tr:not(:last-child) td {
+      border-bottom: 1px solid #000; /* 중간 행들에만 하단 경계선 추가 */
+    }
+  `;
+
+  // 하이퍼링크 보라색으로 변하는 것을 막기 위한 코드
+  const StyledLink = styled(Link)`
+    color: inherit; /* 기존 텍스트 색상 상속 */
+    text-decoration: none; /* 밑줄 제거 */
+
+    &:hover {
+      color: inherit; /* 호버 시 텍스트 색상 상속 */
+    }
   `;
 
   return (
@@ -71,17 +79,19 @@ function Sidebar() {
           <table>
             <tr>
               <td>
-                <BookmarksOutlined /> 단 어 장
+                <BookmarksOutlined /> 　단 어 장　　
               </td>
             </tr>
             <tr>
               <td>
-                <SettingsOutlined /> 계정 설정
+                <SettingsOutlined /> 　계정설정　　
               </td>
             </tr>
             <tr>
               <td>
-                <LogoutOutlined /> 로그아웃
+                <StyledLink to={"/"}>
+                  <LogoutOutlined /> 　로그아웃　　
+                </StyledLink>
               </td>
             </tr>
           </table>
