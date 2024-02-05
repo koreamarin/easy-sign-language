@@ -15,6 +15,9 @@ import org.springframework.security.config.annotation.web.configurers.AbstractHt
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
 
 @Configuration
@@ -50,6 +53,8 @@ public class SecurityConfig {
         AuthenticationManager authenticationManager = authenticationConfiguration.getAuthenticationManager();
         http.authenticationManager(authenticationManager);
 
+        http.cors();
+
         //로그인페이지가 없는 api 프로젝트일 때 고정
         http.csrf(AbstractHttpConfigurer::disable);
         http.sessionManagement((sessionManagement) -> sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
@@ -64,6 +69,18 @@ public class SecurityConfig {
                                 .requestMatchers("/api/v1/auth/**").permitAll()
                                 .anyRequest().authenticated());
         return http.build();
+    }
+
+    // CORS 구성
+    @Bean
+    public CorsConfigurationSource corsConfigurationSource() {
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        CorsConfiguration config = new CorsConfiguration();
+        config.addAllowedOrigin("http://localhost:3000"); // 본인의 프론트엔드 URL로 변경
+        config.addAllowedMethod("*");
+        config.addAllowedHeader("*");
+        source.registerCorsConfiguration("/**", config);
+        return source;
     }
 
 }
