@@ -1,6 +1,7 @@
 import MediumButton from "../Button/MediumButton";
 import styled from "styled-components";
 import SSmallButton from "../Button/SSmallButton";
+import { useNavigate } from "react-router";
 const Containers = styled.div`
   width: 300px;
   height: 240px;
@@ -34,10 +35,11 @@ const Containers = styled.div`
 interface EduButtonsProps {
   title: string;
   subtitle: string[];
-  subtitleOnClick: (() => void)[];
+  subtitleOnClick: string[];
 }
 
 const EduButtons = ({ title, subtitle, subtitleOnClick }: EduButtonsProps) => {
+  const navigate = useNavigate();
   return (
     <Containers>
       <span>
@@ -49,7 +51,7 @@ const EduButtons = ({ title, subtitle, subtitleOnClick }: EduButtonsProps) => {
             key={index}
             text={text}
             color={"skyblue"}
-            onClick={subtitleOnClick[index]}
+            onClick={() => navigate(subtitleOnClick[index])}
           />
         ))}
       </div>

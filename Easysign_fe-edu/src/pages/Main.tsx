@@ -5,93 +5,85 @@ import hand3 from "../assets/images/hand3.jpg";
 import hand4 from "../assets/images/hand4.jpg";
 import hand5 from "../assets/images/hand5.jpg";
 import EduButtons from "../components/main/EduButtons";
-import { useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import API from "../config";
 
 const Main = () => {
-  const navigate = useNavigate();
-  const JihwaSubtitle = [
-    "모음 강의",
-    "모음 연습",
-    "자음 강의",
-    "자음 연습",
-    "숫자 강의",
-    "숫자 연습",
-  ];
-  const WordSubtitle = [
-    "동물 강의",
-    "동물 연습",
-    "사물 강의",
-    "사물 연습",
-    "과일 강의",
-    "과일 연습",
-  ];
-  const SentenceSubtitle = ["문장 강의", "문장 연습"];
+  const [category, setCategory] = useState<any>([]);
+
+  // 토큰을 로컬 스토리지에 저장
+  localStorage.setItem(
+    "token",
+    "Bearer eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJFYXN5U2lnbiIsImV4cCI6MTcwNzIzMzM2NSwiaWQiOjYsImxvZ2luSWQiOiJzc2FmeSJ9.5jxuvrd_3OR3zNZZxbo9-2AX9WQftjghxz4IbanF3N9dhUDx3yi2ovJg_UgXWML7d2_PFHPYNJc-1zhoHlMMBA"
+  );
+
+  // 로컬 스토리지에서 토큰을 가져옴
+  const token = localStorage.getItem("token") || "";
+
+  const getSignCategory = async () => {
+    const response = await fetch(`${API.CATEGORY}`, {
+      method: "GET",
+      headers: {
+        Authorization: token,
+      },
+    });
+    const json = await response.json();
+    setCategory(json);
+    console.log(response);
+  };
+
+  useEffect(() => {
+    getSignCategory();
+  }, []);
+
+  const JihwaSubtitle = category
+    .filter((item: any) => item.gubun === "jihwa")
+    .map((item: any) => item.categoryName) // 각 name마다 강의, 연습 붙이기
+    .flatMap((item: any) => [item + " 강의", item + " 연습"]);
+
+  const WordSubtitle = category
+    .filter((item: any) => item.gubun === "word")
+    .map((item: any) => item.categoryName)
+    .flatMap((item: any) => [item + " 강의", item + " 연습"]);
+
+  const SentenceSubtitle = category
+    .filter((item: any) => item.gubun === "sentence")
+    .map((item: any) => item.categoryName)
+    .flatMap((item: any) => [item + " 강의", item + " 연습"]);
+
   const GameSubtitle = ["스피드퀴즈", "캐치마인드", "소나기", "끝말잇기"];
 
-  const JihwaSubtitleOnClick = [
-    () => {
-      navigate("../edu/learn/lecture/jihwa?category=vowel");
-    },
-    () => {
-      navigate("../edu/learn/practice/jihwa?category=vowel");
-    },
-    () => {
-      navigate("../edu/learn/lecture/jihwa?category=consonant");
-    },
-    () => {
-      navigate("../edu/learn/practice/jihwa?category=consonant");
-    },
-    () => {
-      navigate("../edu/learn/lecture/jihwa?category=number");
-    },
-    () => {
-      navigate("../edu/learn/practice/jihwa?category=number");
-    },
+  const JihwaSubtitleURL = category
+    .filter((item: any) => item.gubun === "jihwa")
+    .map((item: any) => item.categoryName)
+    .flatMap((item: any) => [
+      "../learn/lecture/jihwa?category=" + item,
+      "../learn/practice/jihwa?category=" + item,
+    ]);
+
+  const WordSubtitleURL = category
+    .filter((item: any) => item.gubun === "word")
+    .map((item: any) => item.categoryName)
+    .flatMap((item: any) => [
+      "../learn/lecture/word?category=" + item,
+      "../learn/practice/word?category=" + item,
+    ]);
+
+  const SentenceSubtitleURL = category
+    .filter((item: any) => item.gubun === "sentence")
+    .map((item: any) => item.categoryName)
+    .flatMap((item: any) => [
+      "../learn/lecture/sentence?category=" + item,
+      "../learn/practice/sentence?category=" + item,
+    ]);
+
+  const GameSubtitleURL = [
+    "../learn/game/speedquiz",
+    "../learn/game/catchmind",
+    "../learn/game/shower",
+    "../learn/game/wordchain",
   ];
 
-  const WordSubtitleOnClick = [
-    () => {
-      navigate("../edu/learn/lecture/word?category=animal");
-    },
-    () => {
-      navigate("../edu/learn/practice/word?category=animal");
-    },
-    () => {
-      navigate("../edu/learn/lecture/word?category=object");
-    },
-    () => {
-      navigate("../edu/learn/practice/word?category=object");
-    },
-    () => {
-      navigate("../edu/learn/lecture/word?category=fruit");
-    },
-    () => {
-      navigate("../edu/learn/practice/word/fruit");
-    },
-  ];
-  const SentenceSubtitleOnClick = [
-    () => {
-      navigate("../edu/learn/lecture/setence");
-    },
-    () => {
-      navigate("../edu/learn/practice/setence");
-    },
-  ];
-  const GameSubtitleOnClick = [
-    () => {
-      navigate("../edu/learn/game/speedquiz");
-    },
-    () => {
-      navigate("../edu/learn/game/catchmind");
-    },
-    () => {
-      navigate("../edu/learn/game/shower");
-    },
-    () => {
-      navigate("../edu/learn/game/wordchain");
-    },
-  ];
   const [imageSrc, setImageSrc] = useState(hand5);
 
   const onMouseEnter1 = (a: any) => {
@@ -143,32 +135,31 @@ const Main = () => {
         }}
       >
         <div onMouseEnter={onMouseEnter1} onMouseLeave={onMouseLeave}>
-          {" "}
           <EduButtons
             title={"지화공부"}
             subtitle={JihwaSubtitle}
-            subtitleOnClick={JihwaSubtitleOnClick}
+            subtitleOnClick={JihwaSubtitleURL}
           />
         </div>
         <div onMouseEnter={onMouseEnter2} onMouseLeave={onMouseLeave}>
           <EduButtons
             title={"단어공부"}
             subtitle={WordSubtitle}
-            subtitleOnClick={WordSubtitleOnClick}
+            subtitleOnClick={WordSubtitleURL}
           />
         </div>
         <div onMouseEnter={onMouseEnter3} onMouseLeave={onMouseLeave}>
           <EduButtons
             title={"문장공부"}
             subtitle={SentenceSubtitle}
-            subtitleOnClick={SentenceSubtitleOnClick}
+            subtitleOnClick={SentenceSubtitleURL}
           />
         </div>
         <div onMouseEnter={onMouseEnter4} onMouseLeave={onMouseLeave}>
           <EduButtons
             title={"게임하기"}
             subtitle={GameSubtitle}
-            subtitleOnClick={GameSubtitleOnClick}
+            subtitleOnClick={GameSubtitleURL}
           />
         </div>
       </div>

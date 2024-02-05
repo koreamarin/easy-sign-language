@@ -12,11 +12,11 @@ const JihwaComponent = () => {
   interface IFollowersContext {
     followStatus: Boolean;
     trainingData: {
-      signid: number;
-      word: string;
-      image: string;
-      video: string;
-      stiker: number;
+      signId: number;
+      content: string;
+      imagePath: string;
+      videoPath: string;
+      addSticker: number;
     }[];
     currentNum: number;
     currentNumModify: (currentNum: number) => void;
@@ -83,7 +83,7 @@ const JihwaComponent = () => {
                 height: "510px",
                 borderRadius: "40px",
               }}
-              src={trainingData[currentNum - 1].image}
+              src={trainingData[currentNum - 1].imagePath}
               alt="jihwa"
             />
           </div>
@@ -118,7 +118,7 @@ const JihwaComponent = () => {
                   marginLeft: "10px",
                 }}
               >
-                X {trainingData[currentNum - 1].stiker}
+                X {trainingData[currentNum - 1].addSticker}
               </span>
               <button onClick={() => setModalShown(!modalShown)}>모달 테스트</button>
             </span>
@@ -129,11 +129,11 @@ const JihwaComponent = () => {
             shown={modalShown}
             setModalShown={setModalShown}
             BookmarkButton={false}
-            stickerNum={trainingData[currentNum - 1].stiker}
+            stickerNum={trainingData[currentNum - 1].addSticker}
             currentNum={currentNum}
             currentNumModify={currentNumModify}
             totalNum={trainingData.length}
-            signid={trainingData[currentNum - 1].signid}
+            signId={trainingData[currentNum - 1].signId}
           />
         </>
       ) : (
@@ -167,7 +167,7 @@ const JihwaComponent = () => {
               height: "510px",
               borderRadius: "40px",
             }}
-            src={trainingData[currentNum - 1].image}
+            src={trainingData[currentNum - 1].imagePath}
             alt="jihwa"
           />
           {currentNum === trainingData.length ? (

@@ -13,11 +13,11 @@ const router = createBrowserRouter([
     element: <AllComponentsContainer />,
   },
   {
-    path: "/edu",
+    path: "/",
     element: <Main />,
   },
   {
-    path: "/edu/learn",
+    path: "/learn",
     element: <Edu />,
     children: [
       {
@@ -54,7 +54,7 @@ const router = createBrowserRouter([
             ],
           },
           {
-            path: "setence",
+            path: "sentence",
             element: <div>문장</div>,
           },
         ],

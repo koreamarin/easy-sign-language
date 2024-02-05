@@ -16,7 +16,7 @@ interface ResultModalProps {
   currentNum: number;
   currentNumModify: (currentNum: number) => void;
   totalNum: number;
-  signid: number;
+  signId: number;
 }
 
 const ResultModal = ({
@@ -29,7 +29,7 @@ const ResultModal = ({
   currentNum,
   currentNumModify,
   totalNum,
-  signid,
+  signId,
 }: ResultModalProps) => {
   const dispatch = useDispatch();
   const next = () => {
@@ -136,7 +136,7 @@ const ResultModal = ({
                 <MediumButton
                   text={"단어장추가"}
                   color="lightgreen"
-                  onClick={() => console.log(signid + "번 수화를 북마크에 추가합니다.")}
+                  onClick={() => console.log(signId + "번 수화를 북마크에 추가합니다.")}
                 />
                 <MediumButton text={"다음단어로"} color="pink" onClick={next} />
               </>
@@ -215,7 +215,7 @@ const ResultModal = ({
                   <MediumButton
                     text={"단어장추가"}
                     color="lightgreen"
-                    onClick={() => console.log(signid + "번 수화를 북마크에 추가합니다.")}
+                    onClick={() => console.log(signId + "번 수화를 북마크에 추가합니다.")}
                   />
                   <MediumButton text={"다음단어로"} color="pink" onClick={next} />
                 </>

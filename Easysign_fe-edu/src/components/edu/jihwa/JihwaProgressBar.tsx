@@ -13,11 +13,11 @@ const Span = styled.span`
 
 interface JihwaProgressBarProps {
   trainingData: {
-    signid: number;
-    word: string;
-    image: string;
-    video: string;
-    stiker: number;
+    signId: number;
+    content: string;
+    imagePath: string;
+    videoPath: string;
+    addSticker: number;
   }[];
   currentNum: number;
   currentNumModify: (currentNum: number) => void;
@@ -79,7 +79,7 @@ const JihwaProgressBar = ({
             if (currentNum < 4) {
               return "";
             }
-            return trainingData[currentNum - 4].word;
+            return trainingData[currentNum - 4].content;
           })(currentNum)}
         </Span>
         <Span id={(currentNum - 2).toString()} onClick={onClick}>
@@ -87,7 +87,7 @@ const JihwaProgressBar = ({
             if (currentNum < 3) {
               return "";
             }
-            return trainingData[currentNum - 3].word;
+            return trainingData[currentNum - 3].content;
           })(currentNum)}
         </Span>
         <Span id={(currentNum - 1).toString()} onClick={onClick}>
@@ -95,7 +95,7 @@ const JihwaProgressBar = ({
             if (currentNum < 2) {
               return "";
             }
-            return trainingData[currentNum - 2].word;
+            return trainingData[currentNum - 2].content;
           })(currentNum)}
         </Span>
         <span
@@ -118,7 +118,7 @@ const JihwaProgressBar = ({
               top: "-5px",
             }}
           >
-            {trainingData[currentNum - 1].word}
+            {trainingData[currentNum - 1].content}
           </span>
         </span>
         <Span id={(currentNum + 1).toString()} onClick={onClick}>
@@ -126,7 +126,7 @@ const JihwaProgressBar = ({
             if (currentNum > trainingDataLength - 1) {
               return "";
             }
-            return trainingData[currentNum].word;
+            return trainingData[currentNum].content;
           })(currentNum)}
         </Span>
         <Span id={(currentNum + 2).toString()} onClick={onClick}>
@@ -134,7 +134,7 @@ const JihwaProgressBar = ({
             if (currentNum > trainingDataLength - 2) {
               return "";
             }
-            return trainingData[currentNum + 1].word;
+            return trainingData[currentNum + 1].content;
           })(currentNum)}
         </Span>
         <Span id={(currentNum + 3).toString()} onClick={onClick}>
@@ -142,7 +142,7 @@ const JihwaProgressBar = ({
             if (currentNum > trainingDataLength - 3) {
               return "";
             }
-            return trainingData[currentNum + 2].word;
+            return trainingData[currentNum + 2].content;
           })(currentNum)}
         </Span>
       </div>
