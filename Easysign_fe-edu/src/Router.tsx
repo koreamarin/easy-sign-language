@@ -13,11 +13,11 @@ const router = createBrowserRouter([
     element: <AllComponentsContainer />,
   },
   {
-    path: "/edu-main",
+    path: "/edu",
     element: <Main />,
   },
   {
-    path: "/edu",
+    path: "/edu/learn",
     element: <Edu />,
     children: [
       {
@@ -27,20 +27,6 @@ const router = createBrowserRouter([
           {
             path: "jihwa",
             element: <JihwaComponent />,
-            children: [
-              {
-                path: "vowel",
-                element: <JihwaProgressBar />,
-              },
-              {
-                path: "consonant",
-                element: <div>자음진행바</div>,
-              },
-              {
-                path: "number",
-                element: <div>숫자진행바</div>,
-              },
-            ],
           },
           {
             path: "word",

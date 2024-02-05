@@ -1,4 +1,4 @@
-import { Outlet, useLocation, useParams } from "react-router-dom";
+import { Outlet, useLocation, useParams, useSearchParams } from "react-router-dom";
 import LargeButton from "../Button/LargeButton";
 import { useDispatch, useSelector } from "react-redux";
 import { rootState } from "../../redux/modules";
@@ -14,8 +14,8 @@ const Lecture = () => {
     dispatch(IncorrectAnswerRateSet(0));
   }, []);
   console.log("시작");
-  const location = useLocation();
-  console.log(location.pathname);
+  const [readSearchParams] = useSearchParams();
+  console.log(readSearchParams.get("category"));
 
   type trainingDataType = {
     signid: number;
@@ -132,10 +132,9 @@ const Lecture = () => {
     if (currentNum > 0 && currentNum < totalNum + 1) {
       setCurrentNum(currentNum);
       dispatch(LearningProgressSet(Math.round(((currentNum - 1) / totalNum) * 100)));
+      dispatch(followStatusFalse());
     }
   };
-
-  const progress = useSelector((state: rootState) => state.progress.LearningProgress);
 
   useEffect(() => {
     return () => {

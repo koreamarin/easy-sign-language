@@ -4,6 +4,7 @@ import BracketButton from "../../Button/BracketButton";
 import Sticker from "../../../assets/images/sticker.png";
 import ResultModal from "../../common/ResultModal";
 import { useState } from "react";
+import JihwaProgressBar from "./JihwaProgressBar";
 
 const JihwaComponent = () => {
   const [modalShown, setModalShown] = useState<boolean>(false);
@@ -23,11 +24,6 @@ const JihwaComponent = () => {
   const { followStatus, trainingData, currentNum, currentNumModify } =
     useOutletContext<IFollowersContext>();
 
-  const outletProps = {
-    trainingData: trainingData,
-    currentNum: currentNum,
-    currentNumModify: currentNumModify,
-  };
   return (
     <div
       style={{
@@ -47,7 +43,11 @@ const JihwaComponent = () => {
           alignItems: "center",
         }}
       >
-        <Outlet context={outletProps} />
+        <JihwaProgressBar
+          trainingData={trainingData}
+          currentNum={currentNum}
+          currentNumModify={currentNumModify}
+        />
       </div>
 
       {followStatus ? (
@@ -124,7 +124,7 @@ const JihwaComponent = () => {
             </span>
           </div>
           <ResultModal
-            success={true}
+            success={success}
             setSuccess={setSuccess}
             shown={modalShown}
             setModalShown={setModalShown}

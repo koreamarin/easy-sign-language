@@ -11,8 +11,9 @@ const Span = styled.span`
   cursor: pointer;
 `;
 
-interface IFollowersContext {
+interface JihwaProgressBarProps {
   trainingData: {
+    signid: number;
     word: string;
     image: string;
     video: string;
@@ -22,8 +23,11 @@ interface IFollowersContext {
   currentNumModify: (currentNum: number) => void;
 }
 
-const JihwaProgressBar = () => {
-  const { trainingData, currentNum, currentNumModify } = useOutletContext<IFollowersContext>();
+const JihwaProgressBar = ({
+  trainingData,
+  currentNum,
+  currentNumModify,
+}: JihwaProgressBarProps) => {
   const trainingDataLength = trainingData.length;
   const onClick = (e: React.MouseEvent<HTMLInputElement>) => {
     const idNumber = parseInt((e.target as HTMLInputElement).id);

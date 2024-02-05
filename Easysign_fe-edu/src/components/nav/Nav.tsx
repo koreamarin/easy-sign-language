@@ -9,6 +9,21 @@ import { rootState } from "../../redux/modules";
 const Nav = () => {
   const navigate = useNavigate();
   const progress = useSelector((state: rootState) => state.progress);
+  const getMovies = async () => {
+    const response = await fetch(
+      "https://yts.mx/api/v2/list_movies.json?minimum_rating=8.5&sort_by=year",
+      {
+        method: "GET",
+        headers: {
+          Authorization:
+            "Bearer eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJFYXN5U2lnbiIsImV4cCI6MTcwNzA5NDE0NCwiaWQiOjYsImxvZ2luSWQiOiJzc2FmeSJ9.bic6Fx_2vn5SIRdIce8-AdJrgvJey7_ysi_1zE-2COHE3X0haDA7cVI8rxY7ktILO8OBdKPAKFfEwdGbR8yw1Q",
+        },
+      }
+    );
+    const json = await response.json();
+    console.log(json.data.movies);
+  };
+  getMovies();
 
   return (
     <div

@@ -102,7 +102,6 @@ const AllComponentsContainer = () => {
         <Progress percentage={76} wrong_answer={false} />
         <Progress percentage={76} />
         <Nav />
-        <JihwaProgressBar />
       </div>
     </div>
   );

@@ -31,65 +31,65 @@ const Main = () => {
 
   const JihwaSubtitleOnClick = [
     () => {
-      navigate("../edu/lecture/jihwa/vowel");
+      navigate("../edu/learn/lecture/jihwa?category=vowel");
     },
     () => {
-      navigate("../edu/practice/jihwa/vowel");
+      navigate("../edu/learn/practice/jihwa?category=vowel");
     },
     () => {
-      navigate("../edu/lecture/jihwa/consonant");
+      navigate("../edu/learn/lecture/jihwa?category=consonant");
     },
     () => {
-      navigate("../edu/practice/jihwa/consonant");
+      navigate("../edu/learn/practice/jihwa?category=consonant");
     },
     () => {
-      navigate("../edu/lecture/jihwa/number");
+      navigate("../edu/learn/lecture/jihwa?category=number");
     },
     () => {
-      navigate("../edu/practice/jihwa/number");
+      navigate("../edu/learn/practice/jihwa?category=number");
     },
   ];
 
   const WordSubtitleOnClick = [
     () => {
-      navigate("../edu/lecture/word/animal");
+      navigate("../edu/learn/lecture/word?category=animal");
     },
     () => {
-      navigate("../edu/practice/word/animal");
+      navigate("../edu/learn/practice/word?category=animal");
     },
     () => {
-      navigate("../edu/lecture/word/object");
+      navigate("../edu/learn/lecture/word?category=object");
     },
     () => {
-      navigate("../edu/practice/word/object");
+      navigate("../edu/learn/practice/word?category=object");
     },
     () => {
-      navigate("../edu/lecture/word/fruit");
+      navigate("../edu/learn/lecture/word?category=fruit");
     },
     () => {
-      navigate("../edu/practice/word/fruit");
+      navigate("../edu/learn/practice/word/fruit");
     },
   ];
   const SentenceSubtitleOnClick = [
     () => {
-      navigate("../edu/lecture/setence");
+      navigate("../edu/learn/lecture/setence");
     },
     () => {
-      navigate("../edu/practice/setence");
+      navigate("../edu/learn/practice/setence");
     },
   ];
   const GameSubtitleOnClick = [
     () => {
-      navigate("../edu/game/speedquiz");
+      navigate("../edu/learn/game/speedquiz");
     },
     () => {
-      navigate("../edu/game/catchmind");
+      navigate("../edu/learn/game/catchmind");
     },
     () => {
-      navigate("../edu/game/shower");
+      navigate("../edu/learn/game/shower");
     },
     () => {
-      navigate("../edu/game/wordchain");
+      navigate("../edu/learn/game/wordchain");
     },
   ];
   const [imageSrc, setImageSrc] = useState(hand5);
@@ -111,7 +111,6 @@ const Main = () => {
   };
 
   const onMouseLeave = () => {
-    console.log("onMouseLeave");
     setImageSrc(hand5);
   };
 
