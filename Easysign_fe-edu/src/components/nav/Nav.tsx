@@ -5,11 +5,14 @@ import ProfileImg from "./ProfileImg";
 import Progress from "./Progress";
 import { useSelector } from "react-redux";
 import { rootState } from "../../redux/modules";
+import { useEffect, useState } from "react";
 
 const Nav = () => {
   const navigate = useNavigate();
   const progress = useSelector((state: rootState) => state.progress);
-  const getMovies = async () => {
+  const [backgroundSrc, setbackgroundSrc] = useState<string | undefined>(undefined);
+  const [CharacterSrc, setCharacterSrc] = useState<string | undefined>(undefined);
+  const getUserinfo = async () => {
     const response = await fetch("https://i10c202.p.ssafy.io/api/v1/user/info", {
       method: "GET",
       headers: {
@@ -19,11 +22,12 @@ const Nav = () => {
       },
     });
     const json = await response.json();
-    console.log(json.name);
-    console.log(json.profileCharacterPath);
-    console.log(json.profileBackgroundPath);
+    setCharacterSrc(json.profileCharacterPath);
+    setbackgroundSrc(json.profileBackgroundPath);
   };
-  getMovies();
+  useEffect(() => {
+    getUserinfo();
+  }, []);
 
   return (
     <div
@@ -53,10 +57,7 @@ const Nav = () => {
         }}
       >
         <a href="/mypage" target="_blank">
-          <ProfileImg
-            backgroundSrc="https://cdn.pixabay.com/photo/2023/05/15/14/02/cat-7995160_1280.jpg"
-            CharacterSrc="https://pngimg.com/uploads/cat/cat_PNG50550.png"
-          />
+          <ProfileImg backgroundSrc={backgroundSrc} CharacterSrc={CharacterSrc} />
         </a>
       </div>
       <div

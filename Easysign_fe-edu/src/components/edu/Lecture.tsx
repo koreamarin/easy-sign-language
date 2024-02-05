@@ -13,7 +13,6 @@ const Lecture = () => {
     dispatch(LearningProgressSet(0));
     dispatch(IncorrectAnswerRateSet(0));
   }, []);
-  console.log("시작");
   const [readSearchParams] = useSearchParams();
   const category = readSearchParams.get("category");
 
