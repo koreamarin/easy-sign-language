@@ -15,7 +15,7 @@ const Nav = () => {
       headers: {
         "Content-Type": "application/json",
         Authorization:
-          "Bearer eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJFYXN5U2lnbiIsImV4cCI6MTcwNzEwMTU0OSwiaWQiOjYsImxvZ2luSWQiOiJzc2FmeSJ9.Wn1zER2RqxkgYmttPkMOc2KhGe-IuGBbpMEvfnt6nGP10MkargXxixg03qwH7_zDFClaMi8IxsQA0gl79ymC3g",
+          "Bearer eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJFYXN5U2lnbiIsImV4cCI6MTcwNzEwMjY4NCwiaWQiOjYsImxvZ2luSWQiOiJzc2FmeSJ9.xfGwzew-RwC6nwrPUZkArr-ab02BG-oeGS_aBOACTvQHsvBx_M8TI6xdWfV90ME7wsUAmw-bhxGfrSPZtWgwzQ",
       },
     });
     const json = await response.json();
