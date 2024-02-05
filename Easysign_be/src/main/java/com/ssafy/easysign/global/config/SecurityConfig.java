@@ -76,10 +76,10 @@ public class SecurityConfig {
     public CorsConfigurationSource corsConfigurationSource() {
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         CorsConfiguration config = new CorsConfiguration();
-        config.addAllowedOrigin("*"); // 본인의 프론트엔드 URL로 변경
+        config.addAllowedOrigin("http://localhost:3000"); // 본인의 프론트엔드 URL로 변경
         config.addAllowedMethod("*");
         config.addAllowedHeader("*");
-        source.registerCorsConfiguration("/*", config);
+        source.registerCorsConfiguration("/**", config);
         return source;
     }
 
