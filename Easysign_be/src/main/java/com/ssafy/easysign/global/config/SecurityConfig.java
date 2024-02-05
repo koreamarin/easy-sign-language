@@ -53,7 +53,7 @@ public class SecurityConfig {
         AuthenticationManager authenticationManager = authenticationConfiguration.getAuthenticationManager();
         http.authenticationManager(authenticationManager);
 
-        http.cors();
+        //http.cors();
 
         //로그인페이지가 없는 api 프로젝트일 때 고정
         http.csrf(AbstractHttpConfigurer::disable);
