@@ -3,63 +3,63 @@
 	"label": {
 		"default": {
 			"idx": 0,
-			"file_cnt": 20
+			"file_cnt": 25
 		},
 		"ㄱ": {
 			"idx": 1,
-			"file_cnt": 40
+			"file_cnt": 50
 		},
 		"ㄴ": {
 			"idx": 2,
-			"file_cnt": 40
+			"file_cnt": 50
 		},
 		"ㄷ": {
 			"idx": 3,
-			"file_cnt": 40
+			"file_cnt": 50
 		},
 		"ㄹ": {
 			"idx": 4,
-			"file_cnt": 40
+			"file_cnt": 50
 		},
 		"ㅁ": {
 			"idx": 5,
-			"file_cnt": 40
+			"file_cnt": 50
 		},
 		"ㅂ": {
 			"idx": 6,
-			"file_cnt": 40
+			"file_cnt": 50
 		},
 		"ㅅ": {
 			"idx": 7,
-			"file_cnt": 40
+			"file_cnt": 50
 		},
 		"ㅇ": {
 			"idx": 8,
-			"file_cnt": 40
+			"file_cnt": 50
 		},
 		"ㅈ": {
 			"idx": 9,
-			"file_cnt": 40
+			"file_cnt": 50
 		},
 		"ㅊ": {
 			"idx": 10,
-			"file_cnt": 40
+			"file_cnt": 50
 		},
 		"ㅋ": {
 			"idx": 11,
-			"file_cnt": 40
+			"file_cnt": 50
 		},
 		"ㅌ": {
 			"idx": 12,
-			"file_cnt": 40
+			"file_cnt": 50
 		},
 		"ㅍ": {
 			"idx": 13,
-			"file_cnt": 40
+			"file_cnt": 50
 		},
 		"ㅎ": {
 			"idx": 14,
-			"file_cnt": 40
+			"file_cnt": 50
 		}
 	}
 }

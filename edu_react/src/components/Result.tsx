@@ -16,7 +16,7 @@ const LandmarkerCanvas = () => {
 
 
   // const seq = useRef<object[]>([]);
-  const seq: any[] = [];
+  const seq: number[][] = [];
 
 
   // 재생중임을 판단하기 위핸 변수
@@ -104,6 +104,11 @@ const LandmarkerCanvas = () => {
         const angles = calculateTensor.getResults()
 
         console.log(angles)
+
+        seq.push(angles)
+        if (seq.length > 10) {
+          seq.shift()
+        }
 
       }
 

@@ -1,6 +1,8 @@
-import numpy as np
+import tensorflowjs as tfjs
+from tensorflow.keras.models import load_model
+import os
 
 
-a = np.zeros((2, ))
-a[1] = 2
-print(a)
+path = os.path.dirname(os.path.abspath(__file__))
+model = load_model(f'{path}/data_114_train_100_model.h5')
+tfjs.converters.save_keras_model(model, f'{path}/abcd')

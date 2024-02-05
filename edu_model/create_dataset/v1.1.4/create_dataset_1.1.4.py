@@ -213,24 +213,25 @@ with mp_holistic.Holistic(
                         
                         
                     # =============몸통 : 몸의 회전정도 판단===========
-                    d_body_i = np.arccos(np.einsum('nt,nt->n', 
-                                    v_p[[5, 7, 9, 11], :], 
-                                    v_p[[6, 8, 10, 12], :]
-                                    ))
+                    # d_body_i = np.arccos(np.einsum('nt,nt->n', 
+                    #                 v_p[[5, 7, 9, 11], :], 
+                    #                 v_p[[6, 8, 10, 12], :]
+                    #                 ))
                     
-                    d_body_i = np.degrees(d_body_i)
+                    # d_body_i = np.degrees(d_body_i)
                     
-                    # 상 하 합산을 통해 사다리꼴의 비틀림 정도를 판단
-                    d_body = np.zeros((2, ))
-                    # d_body[0] = d_body_i[0] + d_body_i[3]
-                    # d_body[1] = d_body_i[1] + d_body_i[2]
+                    # # 상 하 합산을 통해 사다리꼴의 비틀림 정도를 판단
+                    # d_body = np.zeros((2, ))
+                    # # d_body[0] = d_body_i[0] + d_body_i[3]
+                    # # d_body[1] = d_body_i[1] + d_body_i[2]
                     
-                    # 라벨 추가를 위한 빈공간 생성
-                    d_body = np.array([d_body], dtype=np.float32)
+                    # # 라벨 추가를 위한 빈공간 생성
+                    # d_body = np.array([d_body], dtype=np.float32)
                     
-                    # 라벨 삽입
-                    d_body = np.append(d_body, word_dict[label_name]['idx'] * 2)
+                    # # 라벨 삽입
+                    # d_body = np.append(d_body, word_dict[label_name]['idx'] * 2)
                     
+                    d_body = np.array([word_dict[label_name]['idx'] * 2])
                     
                     # 전부 합산
                     d = np.concatenate([d_right, d_left, d_body])
@@ -240,8 +241,8 @@ with mp_holistic.Holistic(
                     
                 # 포즈 인식이 안될 경우
                 else:
-                    dummy_data = np.zeros((83, ))
-                    dummy_data[82] = word_dict[label_name]['idx'] * 2
+                    dummy_data = np.zeros((81, ))
+                    dummy_data[80] = word_dict[label_name]['idx'] * 2
                     data.append(dummy_data)
                     
                     
@@ -329,28 +330,30 @@ with mp_holistic.Holistic(
 
                         
                     # =============몸통 : 몸의 회전정도 판단===========
-                    d_body_i = np.arccos(np.einsum('nt,nt->n', 
-                                    v_p[[5, 7, 9, 11], :], 
-                                    v_p[[6, 8, 10, 12], :]
-                                    ))
+                    # d_body_i = np.arccos(np.einsum('nt,nt->n', 
+                    #                 v_p[[5, 7, 9, 11], :], 
+                    #                 v_p[[6, 8, 10, 12], :]
+                    #                 ))
                     
-                    d_body_i = np.degrees(d_body_i)
+                    # d_body_i = np.degrees(d_body_i)
 
-                    d_body = np.zeros((2, ))
-                    # d_body[0] = d_body_i[0] + d_body_i[3]
-                    # d_body[1] = d_body_i[1] + d_body_i[2]
+                    # d_body = np.zeros((2, ))
+                    # # d_body[0] = d_body_i[0] + d_body_i[3]
+                    # # d_body[1] = d_body_i[1] + d_body_i[2]
 
-                    d_body = np.array([d_body], dtype=np.float32)
+                    # d_body = np.array([d_body], dtype=np.float32)
 
-                    d_body = np.append(d_body, word_dict[label_name]['idx'] * 2 - 1)
+                    # d_body = np.append(d_body, word_dict[label_name]['idx'] * 2 - 1)
+                    
+                    d_body = np.array([word_dict[label_name]['idx'] * 2])
 
                     d = np.concatenate([d_right, d_left, d_body])
 
                     data_flip.append(d)
 
                 else:
-                    dummy_data = np.zeros((83, ))
-                    dummy_data[82] = word_dict[label_name]['idx'] * 2 - 1
+                    dummy_data = np.zeros((81, ))
+                    dummy_data[80] = word_dict[label_name]['idx'] * 2 - 1
                     data_flip.append(dummy_data)
                     
                     

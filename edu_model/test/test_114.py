@@ -39,6 +39,8 @@ move = ['default',
 print(test_data_version)
 model = load_model(f'{path}/data_{test_data_version}_train_100_model.h5')
 
+# tfjs.converters.save_keras_model(model, f'{path}/abcd')
+
 # MediaPipe hands model
 mp_drawing = mp.solutions.drawing_utils
 mp_drawing_styles = mp.solutions.drawing_styles
@@ -198,14 +200,14 @@ with mp_holistic.Holistic(
                 
                 
                 # 전부 합산
-                d = np.concatenate([d_right, d_left, d_body])
+                d = np.concatenate([d_right, d_left])
                 # d => right : 40 * 1, left : 40 * 1, body : 2 * 1. label : 1 * 1 => 83
                 
                 data.append(d)
                 
             # 포즈 인식이 안될 경우
             else:
-                dummy_data = np.zeros((82, ))
+                dummy_data = np.zeros((80, ))
                 data.append(dummy_data)
             
 
