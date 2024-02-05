@@ -9,6 +9,7 @@ import Sidebar from "./components/common/Sidebar";
 import StoreMain from "./components/store/StoreMain";
 import Mypage from "./components/mypage/Mypage";
 import Footer from "./components/common/Footer";
+import MainStore from "./components/store/MainStore";
 
 // react에 필요한 것들 import
 import { BrowserRouter, Routes, Route } from "react-router-dom";
@@ -45,7 +46,8 @@ function App() {
               <Route path="/" element={<MainPage />} />
               <Route path="/login" element={<Login />} />
               <Route path="/join" element={<Join />} />
-              <Route path="/store" element={<StoreMain />} />
+              <Route path="/store_test" element={<StoreMain />} />
+              <Route path="/store" element={<MainStore />} />
               <Route path="/mypage" element={<Mypage />} />
             </Routes>
           </div>
