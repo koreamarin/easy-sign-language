@@ -10,13 +10,7 @@ const Nav = () => {
   const navigate = useNavigate();
   const progress = useSelector((state: rootState) => state.progress);
   const getMovies = async () => {
-    const response = await fetch("https://i10c202.p.ssafy.io/api/v1/login", {
-      method: "POST",
-      body: JSON.stringify({
-        loginId: "ssafy",
-        password: "1234",
-      }),
-    });
+    const response = await fetch("/api/v1/auth/idCheck?loginId=ssafy");
     console.log(response);
   };
   getMovies();
