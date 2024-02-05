@@ -12,4 +12,4 @@ RUN npm install typescript @types/node @types/react @types/react-dom @types/jest
 
 CMD ["npm", "start"]
 
-EXPOSE 3000
+EXPOSE 3001
