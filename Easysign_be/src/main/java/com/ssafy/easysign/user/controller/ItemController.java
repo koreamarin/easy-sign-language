@@ -41,7 +41,7 @@ public class ItemController {
             PrincipalDetails userDetails = (PrincipalDetails) authentication.getPrincipal();
             Long userId = userDetails.getUserId();
 
-            userService.updateItem(itemId, authentication);
+            userService.updateItem(userId, itemId);
             return ResponseEntity.ok("아이템 업데이트 성공");
         } catch (NotFoundException e) {
             log.error("아이템 업데이트 중 사용자나 아이템을 찾을 수 없습니다.", e);

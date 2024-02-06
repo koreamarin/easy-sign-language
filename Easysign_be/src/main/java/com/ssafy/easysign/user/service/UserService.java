@@ -25,7 +25,7 @@ public interface UserService {
 
     void updateProfile(Long userId, ProfileRequest profileRequest);
 
-    void updateItem(Long itemId, Authentication authentication);
+    void updateItem(Long userId, Long itemId);
 
     void updateName(Long userId, String name);
 

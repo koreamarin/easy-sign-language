@@ -16,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -38,8 +39,11 @@ public class StoreServiceImpl implements StoreService {
     private UserService userService;
     @Override
     public List<ItemResponse> getItemResponseList() {
-        List<Store> stores = storeRepository.findAll();
-        List<ItemResponse> itemResponses = stores.stream()
+        List<Long> except = new ArrayList<>();
+        except.add(1L);
+        except.add(2L);
+        Optional<List<Store>> stores = storeRepository.findAllByItemIdNotIn(except);
+        List<ItemResponse> itemResponses = stores.get().stream()
                 .map(this::mapToItemResponses)
                 .collect(Collectors.toList());
         log.info("Item Responses : {}", itemResponses);

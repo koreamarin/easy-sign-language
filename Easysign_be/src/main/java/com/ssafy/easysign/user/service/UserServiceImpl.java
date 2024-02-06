@@ -164,10 +164,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void updateItem(Long itemId, Authentication authentication) {
-
-        PrincipalDetails userDetails = (PrincipalDetails) authentication.getPrincipal();
-        Long userId = userDetails.getUserId();
+    public void updateItem(Long userId, Long itemId) {
 
         Optional<UserItem> priorUserItem = userItemRepository.findPriorItem(userId, itemId);
         if (priorUserItem.isPresent()) {
