@@ -2,7 +2,6 @@ package com.ssafy.easysign.user.service;
 
 
 import com.ssafy.easysign.sign.dto.response.SignResponse;
-import com.ssafy.easysign.sign.entity.SignInfo;
 import com.ssafy.easysign.store.dto.response.ItemResponse;
 import com.ssafy.easysign.user.dto.request.ProfileRequest;
 import com.ssafy.easysign.user.dto.response.UserInfoResponse;
@@ -22,7 +21,7 @@ public interface UserService {
 
     List<SignResponse> getSigns(Authentication authentication);
 
-    List<SignInfo> getUserProgress(Long signId, Authentication authentication);
+    void saveUserProgress(Long signId, Authentication authentication);
 
     void updateProfile(Long userId, ProfileRequest profileRequest);
 
