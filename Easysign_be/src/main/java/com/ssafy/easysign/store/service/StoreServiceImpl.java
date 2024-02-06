@@ -19,14 +19,13 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 @Slf4j
-
 public class StoreServiceImpl implements StoreService {
 
     @Autowired
     private StoreRepository storeRepository;
 
     @Autowired
-    private final UserRepository userRepository;
+    private  UserRepository userRepository;
 
     @Autowired
     private final UserItemRepository userItemRepository;
@@ -40,6 +39,16 @@ public class StoreServiceImpl implements StoreService {
         return itemResponses;
     }
 
+    @Override
+    public Optional<ItemResponse> getItemDetails(Long itemId) {
+        Optional<Store> store = storeRepository.findByItemId(itemId);
+        ItemResponse itemResponse = new ItemResponse();
+        itemResponse.setItemName(store.get().getItemName());
+        itemResponse.setItemId(store.get().getItemId());
+        itemResponse.setImagePath(store.get().getImagePath());
+        itemResponse.setCategoryName(store.get().getCategoryName().toString());
+        return Optional.of(itemResponse);
+    }
 
 
     private User getUser(Long userId) {
