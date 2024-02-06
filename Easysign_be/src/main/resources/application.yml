@@ -6,6 +6,3 @@ spring:
       ddl-auto: update
       show_sql: true
       dialect: org.hibernate.dialect.MySQLDialect
-  logging:
-    level:
-      org.springframework: DEBUG

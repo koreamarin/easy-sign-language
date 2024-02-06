@@ -10,7 +10,6 @@ import lombok.Data;
 @IdClass(UserProgressId.class) // UserProgressId 클래스를 기본 키로 사용한다고 명시
 public class UserProgress {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;

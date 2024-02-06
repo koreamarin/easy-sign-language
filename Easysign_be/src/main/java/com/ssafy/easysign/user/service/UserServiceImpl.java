@@ -40,6 +40,8 @@ public class UserServiceImpl implements UserService {
     private final StickerLogRepository stickerLogRepository;
     private final UserBookMarkRepository userBookMarkRepository;
     private final UserProgressRepository userProgressRepository;
+    private final SignRepository signRepository;
+
     @PersistenceContext
     private EntityManager entityManager;
 
@@ -89,16 +91,19 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<SignInfo> getUserProgress(Long signId, Authentication authentication) {
+    public void saveUserProgress(Long signId, Authentication authentication) {
         PrincipalDetails userDetails = (PrincipalDetails) authentication.getPrincipal();
         Long userId = userDetails.getUserId();
-        User user = userRepository.findById(userId).orElseThrow(()->new NotFoundException("사용자가 없습니다."));
-        log.info("user : " + user);
-        List<UserProgress> userProgressList = userProgressRepository.findUserProgressByUser(user);
-        List<SignInfo> signInfos = userProgressList.stream()
-                .map(UserProgress::getSignInfo)
-                .toList();
-        return signInfos;
+        UserProgress progress = new UserProgress();
+        Optional<User> user = userRepository.findById(userId);
+        if(user.isEmpty()) throw new NotFoundException("사용자를 찾을 수 없습니다.");
+
+        SignInfo signInfo = signRepository.findBySignId(signId);
+
+        progress.setUser(user.get());
+        progress.setSignInfo(signInfo);
+
+        userProgressRepository.save(progress);
     }
 
 
