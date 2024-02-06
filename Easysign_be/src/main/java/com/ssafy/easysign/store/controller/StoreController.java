@@ -6,10 +6,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.core.Authentication;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
@@ -44,6 +42,23 @@ public class StoreController {
         } else {
             // 값이 없는 경우 400 Bad Request 반환
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @PutMapping("/buyItem")
+    public ResponseEntity<Boolean> buyItem(@RequestParam Long itemId, Authentication authentication) {
+        try {
+            Optional<Boolean> buyCheck = storeService.buyItem(itemId, authentication);
+
+            if (buyCheck.isPresent()) {
+                return ResponseEntity.ok(buyCheck.get());
+            } else {
+                // buyItem 메서드에서 예외 발생 시
+                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(false);
+            }
+        } catch (Exception e) {
+            // 기타 예외 상황에 대한 처리
+            return ResponseEntity.badRequest().body(false);
         }
     }
 }

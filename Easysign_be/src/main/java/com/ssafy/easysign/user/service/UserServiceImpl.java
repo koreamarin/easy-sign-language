@@ -40,7 +40,6 @@ public class UserServiceImpl implements UserService {
     private final StickerLogRepository stickerLogRepository;
     private final UserBookMarkRepository userBookMarkRepository;
     private final UserProgressRepository userProgressRepository;
-    private final SignRepository signRepository;
 
     @PersistenceContext
     private EntityManager entityManager;

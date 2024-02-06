@@ -1,15 +1,18 @@
 package com.ssafy.easysign.store.service;
 
+import com.ssafy.easysign.global.auth.PrincipalDetails;
 import com.ssafy.easysign.store.dto.response.ItemResponse;
 import com.ssafy.easysign.store.entity.Store;
 import com.ssafy.easysign.store.repository.StoreRepository;
 import com.ssafy.easysign.user.entity.User;
+import com.ssafy.easysign.user.entity.UserItem;
 import com.ssafy.easysign.user.exception.NotFoundException;
 import com.ssafy.easysign.user.repository.UserItemRepository;
 import com.ssafy.easysign.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -48,6 +51,35 @@ public class StoreServiceImpl implements StoreService {
         itemResponse.setImagePath(store.get().getImagePath());
         itemResponse.setCategoryName(store.get().getCategoryName().toString());
         return Optional.of(itemResponse);
+    }
+
+    @Override
+    public Optional<Boolean> buyItem(Long itemId, Authentication authentication) {
+        PrincipalDetails principalDetails = (PrincipalDetails) authentication.getPrincipal();
+        User user = principalDetails.getUser();
+        int userSticker = user.getSticker();
+        Optional<Store> storeOptional = storeRepository.findByItemId(itemId);
+
+        if (storeOptional.isPresent()) {
+            Store store = storeOptional.get();
+            int requiredSticker = store.getPrice();
+
+            if (userSticker >= requiredSticker) {
+                UserItem userItem = new UserItem();
+                userItem.setUser(user);
+                userItem.setItem(store);
+                userItemRepository.save(userItem);
+
+                // 성공적으로 아이템을 구매했을 경우
+                return Optional.of(true);
+            } else {
+                // 스티커 잔액이 부족한 경우
+                return Optional.of(false);
+            }
+        } else {
+            // 해당 itemId에 해당하는 상점이 없는 경우
+            throw new RuntimeException("Store not found for itemId: " + itemId);
+        }
     }
 
 
