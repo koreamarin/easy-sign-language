@@ -3,7 +3,6 @@ import PoseLandmarkerCanvas from "./Pose"
 import PoseLandmarkerManager from "../class/PoseLandmarkManager"
 import HandLandmarkerCanvas from "./Hand"
 import HandLandmarkerManager from "../class/HandLandmarkManager"
-import * as tf from "@tensorflow/tfjs"
 import CalculateTensor from "../class/CalculateVector"
 import AiResult from "../class/AiModel"
 
@@ -37,21 +36,47 @@ const LandmarkerCanvas = () => {
     sethidden(!ishidden)
   }
 
+// ================================상위 컴포넌트와 연동할 부분========================== 
+
   const resultList = ['.', 'ㄱ', 'ㄱ', 'ㄴ', 'ㄴ', 'ㄷ', 'ㄷ', 'ㄹ', 'ㄹ', 'ㅁ', 'ㅁ', 
-  'ㅂ', 'ㅂ', 'ㅅ', 'ㅅ', 'ㅇ', 'ㅇ', 'ㅈ', 'ㅈ', 'ㅊ', 'ㅊ', 
-  'ㅋ', 'ㅋ', 'ㅌ', 'ㅌ', 'ㅍ', 'ㅍ', 'ㅎ', 'ㅎ']
+                      'ㅂ', 'ㅂ', 'ㅅ', 'ㅅ', 'ㅇ', 'ㅇ', 'ㅈ', 'ㅈ', 'ㅊ', 'ㅊ', 'ㅋ', 
+                      'ㅋ', 'ㅌ', 'ㅌ', 'ㅍ', 'ㅍ', 'ㅎ', 'ㅎ']
+
+
+// 판단부분 => stopComp가 true가 되면 판단 완료
+// 이후 해당 정보 상위 컴포넌트로 올리기
+// finResult => false : 틀림
+// finResult => true : 맞음
+
+  let finResult: boolean = false
+
+  let stopComp: boolean = false
+
+  const finResultList: string[] = [];
+
+  let hookForTimer: boolean = false
+
+  // porps로 받아오기
+  const compareWord: string = 'ㄱ'
+
+  let startTime:number
 
 
   // 
   const animate = () => {
+    if (stopComp) {
+      console.log(finResult)
+    }
 
     // 만약 비디오 element에서 가져온 값이 존재하고, 재생중(웹)인 시간과 마지막 비디오 시간과 일치하지 않으면
     // 즉 비디오가 실시간 재생중이면
     if (
       videoRef.current && 
-      videoRef.current.currentTime !== lastVideoTimeRef.current
+      videoRef.current.currentTime !== lastVideoTimeRef.current &&
+      !stopComp
     ) {
 
+      videoRef.current.muted = !ishidden
       // 마지막 비디오 시간을 현재 비디오 시간으로 업데이트 후
       lastVideoTimeRef.current = videoRef.current.currentTime
       try {
@@ -118,7 +143,38 @@ const LandmarkerCanvas = () => {
 
         const aiResult = aimodel.getResults()
 
-        console.log('결과인덱스', aiResult, resultList[aiResult])
+        finResultList.push(resultList[aiResult])
+
+        // 쌓인 결과가 60개 초과하면 판단 시작
+        
+        if (finResultList.length > 60) {
+
+          // 오래된 인자 제거
+          finResultList.shift()
+
+          // 비교 문자와 일치하는 개수
+          const checkArray = finResultList.filter((compare) => 
+          compare === compareWord)
+
+          // 일치율이 80% 이상일시
+          if (checkArray.length > 48) {
+            // 정답처리
+            finResult = true
+            // 컴포넌트 정지
+            stopComp = true
+          }
+        }
+        if (!hookForTimer) {
+          startTime = performance.now()
+          hookForTimer = true
+        }
+
+        // 타이머, 10초 이상 실행될 시
+        if (performance.now() - startTime > 10000) {
+          // 컴포넌트 정지 및 오답처리(finResult의 default는 false)
+          stopComp = true
+        }
+        
 
       }
 
@@ -131,6 +187,7 @@ const LandmarkerCanvas = () => {
     // 환경에서 프레임을 만들고 재생할 준비가 되면 animate 함수 실행
     // requestRef에 프레임 번호 저장
     requestRef.current = requestAnimationFrame(animate)
+
   }
 
 
@@ -156,6 +213,8 @@ const LandmarkerCanvas = () => {
 
           // 비디오 변수와 웹켐을 연결
           // 즉 웹켐으로 촬영되는 비디오가 비디오 변수에 저장됨
+          // videoRef.current.srcObject = stream
+
           videoRef.current.srcObject = stream
 
           // 연결된 웹켐의 메타데이터(주사율, 높이, 너비, 영상 품질...)을 불러옴
@@ -169,7 +228,6 @@ const LandmarkerCanvas = () => {
 
             // 비디오가 존재하거나 하지않아도 비디오를 재생시킴
             videoRef.current!.play()
-
             requestRef.current = requestAnimationFrame(animate)
           }
         }
@@ -182,10 +240,11 @@ const LandmarkerCanvas = () => {
     // getusercamera 함수 실행 
     getUserCamera()
 
+    
+
     // 언마운트 되기 직전 프레임 번호에 있는 에니메이션들을 정지
     return () => cancelAnimationFrame(requestRef.current)
   }, [])
-
 
   return (
     <div>
