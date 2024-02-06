@@ -34,6 +34,8 @@ public interface UserService {
 
     void deleteUser(Long userId);
 
+    boolean deleteBookMark(Long signId, Long userId);
+
     void updateStickerCountAfter(Long userId, int count);
 
     List<ItemResponse> getUserItems(Long userId);

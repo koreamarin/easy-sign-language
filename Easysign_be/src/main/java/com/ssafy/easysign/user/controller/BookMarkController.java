@@ -15,7 +15,7 @@ import java.util.List;
 
 @RestController
 @Slf4j
-@RequestMapping("/api/vi/user/bookmark")
+@RequestMapping("/api/v1/user/bookmark")
 public class BookMarkController {
 
     @Autowired
@@ -38,4 +38,27 @@ public class BookMarkController {
         userService.registBookMark(userId, signId);
         return ResponseEntity.ok().build(); // 200 OK
     }
+
+    @DeleteMapping
+    public ResponseEntity<Void> deleteBookMark(@RequestParam Long signId, Authentication authentication) {
+        try {
+            PrincipalDetails userDetails = (PrincipalDetails) authentication.getPrincipal();
+            Long userId = userDetails.getUserId();
+
+            // deleteBookMark 메소드를 호출하여 삭제 작업 수행
+            boolean deleteCheck = userService.deleteBookMark(signId, userId);
+
+            // 삭제 작업이 성공했을 경우에만 200 OK 반환
+            if (deleteCheck) {
+                return new ResponseEntity<>(HttpStatus.OK);
+            } else {
+                // 삭제 작업이 실패한 경우 403 Forbidden 반환
+                return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+            }
+        } catch (Exception e) {
+            // 예외 발생 시에는 403 Forbidden 반환
+            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+        }
+    }
+
 }

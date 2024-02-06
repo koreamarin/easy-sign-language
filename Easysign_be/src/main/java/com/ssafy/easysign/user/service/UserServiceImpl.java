@@ -3,6 +3,7 @@ package com.ssafy.easysign.user.service;
 import com.ssafy.easysign.global.auth.PrincipalDetails;
 import com.ssafy.easysign.sign.dto.response.SignResponse;
 import com.ssafy.easysign.sign.entity.SignInfo;
+import com.ssafy.easysign.sign.repository.SignRepository;
 import com.ssafy.easysign.store.dto.response.ItemResponse;
 import com.ssafy.easysign.store.entity.Store;
 import com.ssafy.easysign.store.repository.StoreRepository;
@@ -34,6 +35,7 @@ public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final UserItemRepository userItemRepository;
     private final StoreRepository storeRepository;
+    private final SignRepository signRepository;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
     private final StickerLogRepository stickerLogRepository;
     private final UserBookMarkRepository userBookMarkRepository;
@@ -221,6 +223,35 @@ public class UserServiceImpl implements UserService {
 
         userRepository.delete(user.get());
     }
+
+    /**
+     * 즐겨찾기 삭제 메소드
+     *
+     * @param signId 삭제할 즐겨찾기의 식별자
+     * @param userId 현재 사용자의 식별자
+     * @return 삭제가 성공한 경우 true, 실패한 경우 false 반환
+     */
+    @Override
+    public boolean deleteBookMark(Long signId, Long userId) {
+        // 주어진 userId와 signId로 즐겨찾기를 찾음
+        Optional<BookMark> bookMark = userBookMarkRepository.findByUser_userIdAndSignInfo_signId(userId, signId);
+
+        // 즐겨찾기가 존재할 경우 삭제 수행
+        if (bookMark.isPresent()) {
+            // 주어진 signId로 SignInfo를 찾음
+            Optional<SignInfo> signInfo = signRepository.findById(signId);
+
+            // 주어진 userId로 User를 찾음
+            Optional<User> user = userRepository.findById(userId);
+
+            // 즐겨찾기 삭제
+            userBookMarkRepository.deleteByUser_userIdAndSignInfo_signId(userId, signId);
+            return true; // 삭제 성공
+        } else {
+            return false; // 삭제할 즐겨찾기가 존재하지 않음
+        }
+    }
+
 
     @Override
     public void updateStickerCountAfter(Long userId, int count) {
