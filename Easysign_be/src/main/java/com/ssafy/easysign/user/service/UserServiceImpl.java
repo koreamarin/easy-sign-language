@@ -109,13 +109,11 @@ public class UserServiceImpl implements UserService {
     @Override
     public void registProfile(Long userId, Long itemId) {
         UserItem userItem = new UserItem();
-        User user = new User();
-        Store item = new Store();
-        user.setUserId(userId);
-        item.setItemId(itemId);
+        Optional<User> user = userRepository.findById(userId);
+        Optional<Store> item = storeRepository.findByItemId(itemId);
 
-        userItem.setUser(user);
-        userItem.setItem(item);
+        userItem.setUser(user.get());
+        userItem.setItem(item.get());
         userItem.setUse(true);
         userItemRepository.save(userItem);
     }
@@ -171,27 +169,21 @@ public class UserServiceImpl implements UserService {
         PrincipalDetails userDetails = (PrincipalDetails) authentication.getPrincipal();
         Long userId = userDetails.getUserId();
 
-        // userId로 user_item 테이블에서 모든 아이템 조회
-        Optional<List<UserItem>> userItemsOptional = userItemRepository.findByUser_UserId(userId);
+        Optional<UserItem> priorUserItem = userItemRepository.findPriorItem(userId, itemId);
+        if (priorUserItem.isPresent()) {
+            //기존 아이템
+            priorUserItem.get().setUse(false);
+            userItemRepository.save(priorUserItem.get());
 
-        if (userItemsOptional.isPresent()) {
-            List<UserItem> userItems = userItemsOptional.get();
+            // 새 아이템 적용
+            Optional<UserItem> userItem = userItemRepository.findByUser_UserIdAndItem_ItemId(userId, itemId);
+            if(userItem.isEmpty()) throw new NotFoundException("해당 아이템을 보유하고 있지 않습니다.");
 
-            // 아이템 리스트에서 반복문을 돌면서 itemId와 일치하는 아이템 찾기
-            for (UserItem userItem : userItems) {
-                if (userItem.getItem().getItemId().equals(itemId)) {
-                    // is_use 값 변경 (0이면 1로, 1이면 0으로 toggle)
-                    userItem.setUse(!userItem.isUse());
+            userItem.get().setUse(true);
+            userItemRepository.save(userItem.get());
 
-                    // 변경된 정보 저장
-                    userItemRepository.save(userItem);
-
-                    // 반복문 탈출
-                    break;
-                }
-            }
         } else {
-            throw new NotFoundException("사용자를 찾을 수 없습니다.");
+            throw new NotFoundException("아이템을 찾을 수 없습니다.");
         }
     }
 

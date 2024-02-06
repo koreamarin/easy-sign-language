@@ -33,8 +33,8 @@ public class AuthController {
 
             User user = userService.getUser(registRequest.getLoginId());
             //기본 이미지, 배경 등록
-            userService.registProfile(user.getUserId(), 1L);
-            userService.registProfile(user.getUserId(), 2L);
+            userService.registProfile(user.getUserId(), (long)1);
+            userService.registProfile(user.getUserId(), (long)2);
 
             log.info("request : " + registRequest);
             return new ResponseEntity<>("회원가입이 완료되었습니다.", HttpStatus.OK);

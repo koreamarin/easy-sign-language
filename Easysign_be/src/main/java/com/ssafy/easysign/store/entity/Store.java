@@ -7,7 +7,6 @@ import org.hibernate.annotations.SQLRestriction;
 
 @Entity
 @Data
-@SQLRestriction("item_id not in (1,2)")
 public class Store {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

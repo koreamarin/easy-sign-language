@@ -40,7 +40,7 @@ public class StoreServiceImpl implements StoreService {
     public List<ItemResponse> getItemResponseList() {
         List<Store> stores = storeRepository.findAll();
         List<ItemResponse> itemResponses = stores.stream()
-                .map(this::mapToitemResponses)
+                .map(this::mapToItemResponses)
                 .collect(Collectors.toList());
         log.info("Item Responses : {}", itemResponses);
         return itemResponses;
@@ -97,7 +97,7 @@ public class StoreServiceImpl implements StoreService {
         }
     }
 
-    public ItemResponse mapToitemResponses(Store store){
+    public ItemResponse mapToItemResponses(Store store){
         ItemResponse itemResponse = new ItemResponse();
         itemResponse.setItemId(store.getItemId());
         itemResponse.setItemName(store.getItemName());

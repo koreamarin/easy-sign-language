@@ -12,7 +12,14 @@ import java.util.Optional;
 public interface UserItemRepository extends JpaRepository<UserItem, Long> {
     Optional<List<UserItem>> findByUser_UserId(Long userId);
     Optional<List<UserItem>> findByUser_UserIdAndIsUse(Long userId, boolean isUse);
-
+    Optional<UserItem> findByUser_UserIdAndItem_ItemId(Long userId, Long itemId);
+    @Query("select i from UserItem i, Store s \n" +
+            "where i.item.itemId = s.itemId \n" +
+            "and i.isUse=true \n" +
+            "and s.categoryName=(select categoryName from Store where itemId = :itemId)\n" +
+            "and i.user.userId = :userId")
+    Optional<UserItem> findPriorItem(Long userId, Long itemId);
+    Optional<UserItem> findByItem_ItemId(Long itemId);
     @Modifying
     @Transactional
     @Query("DELETE FROM UserItem u WHERE u.user.userId = :userId")
