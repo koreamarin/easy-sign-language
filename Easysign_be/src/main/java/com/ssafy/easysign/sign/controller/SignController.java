@@ -1,8 +1,8 @@
 package com.ssafy.easysign.sign.controller;
 
 import com.ssafy.easysign.global.jpaEnum.Gubun;
+import com.ssafy.easysign.sign.dto.response.SignResponse2;
 import com.ssafy.easysign.sign.entity.SignCategory;
-import com.ssafy.easysign.sign.entity.SignInfo;
 import com.ssafy.easysign.sign.service.SignService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -31,27 +31,26 @@ public class SignController {
     }
 
     @GetMapping("/jihwa")
-    public ResponseEntity<List<SignInfo>> getSignResponseListJihwa(
+    public ResponseEntity<List<SignResponse2>> getSignResponseListJihwa(
             @RequestParam(value = "categoryname", required = false) String categoryName) {
         return getSignResponseList(Gubun.jihwa, categoryName);
     }
 
     @GetMapping("/word")
-    public ResponseEntity<List<SignInfo>> getSignResponseListWord(
+    public ResponseEntity<List<SignResponse2>> getSignResponseListWord(
             @RequestParam(value = "categoryname", required = false) String categoryName) {
         return getSignResponseList(Gubun.word, categoryName);
     }
 
     @GetMapping("/sentence")
-    public ResponseEntity<List<SignInfo>> getSignResponseListSentence(
-            @RequestParam(value = "categoryname", required = false) String categoryName) {
+    public ResponseEntity<List<SignResponse2>> getSignResponseListSentence(@RequestParam(value = "categoryname", required = false) String categoryName) {
         return getSignResponseList(Gubun.sentence, categoryName);
     }
 
-    private ResponseEntity<List<SignInfo>> getSignResponseList(Gubun gubun, String categoryName) {
+    private ResponseEntity<List<SignResponse2>> getSignResponseList(Gubun gubun, String categoryName) {
         if (categoryName != null) {
             try {
-                List<SignInfo> signResponses = signService.getSignResponseList(categoryName, gubun);
+                List<SignResponse2> signResponses = signService.getSignResponseList(categoryName, gubun);
                 log.info("signResponses : " + signResponses);
                 return new ResponseEntity<>(signResponses, HttpStatus.OK);
             } catch (Exception e) {
