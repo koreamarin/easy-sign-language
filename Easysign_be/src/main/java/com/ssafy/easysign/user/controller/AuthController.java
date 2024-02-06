@@ -2,8 +2,6 @@ package com.ssafy.easysign.user.controller;
 
 import com.ssafy.easysign.user.dto.request.RegistRequest;
 import com.ssafy.easysign.user.entity.User;
-import com.ssafy.easysign.user.repository.AuthRepository;
-import com.ssafy.easysign.user.repository.UserRepository;
 import com.ssafy.easysign.user.service.AuthService;
 import com.ssafy.easysign.user.service.UserService;
 import lombok.extern.slf4j.Slf4j;
@@ -11,8 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.Optional;
 
 @RestController
 @Slf4j
@@ -23,12 +19,6 @@ public class AuthController {
 
     @Autowired
     private UserService userService;
-
-    @Autowired
-    private AuthRepository authRepository;
-
-    @Autowired
-    private UserRepository userRepository;
 
     /**
      * 회원가입
@@ -74,11 +64,10 @@ public class AuthController {
     public ResponseEntity<String> findId(@RequestParam String email) {
         try {
             log.info("Controller email : " + email);
-            Optional<User> user = authRepository.findByLoginId(email);
-
-            if (user.isPresent()) {
+            String loginId = authService.findId(email);
+            if (loginId != null) {
                 // 사용자가 존재하면 200 OK 응답
-                return new ResponseEntity<>(String.valueOf(user.get().getUserId()), HttpStatus.OK);
+                return new ResponseEntity<>(loginId, HttpStatus.OK);
             } else {
                 // 사용자가 존재하지 않으면 400 Bad Request 응답
                 return new ResponseEntity<>(HttpStatus.BAD_REQUEST);

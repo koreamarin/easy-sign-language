@@ -28,8 +28,8 @@ public class SignController {
         List<SignCategory> signCategories = signService.getCategoryList();
         log.info("categoryResponses : " + signCategories);
         return new ResponseEntity<>(signCategories, HttpStatus.OK);
-
     }
+
     @GetMapping("/jihwa")
     public ResponseEntity<List<SignInfo>> getSignResponseListJihwa(
             @RequestParam(value = "categoryname", required = false) String categoryName) {
