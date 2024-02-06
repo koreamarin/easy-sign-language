@@ -2,6 +2,7 @@ package com.ssafy.easysign.game.controller;
 
 
 import com.ssafy.easysign.game.service.GameService;
+import com.ssafy.easysign.global.jpaEnum.Gubun;
 import com.ssafy.easysign.sign.dto.response.SignResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -21,15 +22,21 @@ public class GameController {
     private final GameService gameService;
 
     @GetMapping("/speed-game")
-    public ResponseEntity<List<SignResponse>> getGameList(){
+    public ResponseEntity<List<SignResponse>> getSpeedGameList() {
         try {
-            List<SignResponse> signResponses = gameService.getGameList();
-            log.info("signResponses : " + signResponses);
+            // 직접 설정한 값을 넘겨줍니다. 여기서는 예시로 Gubun.jihwa를 전달합니다.
+            List<SignResponse> signResponses = gameService.getSpeedGameList(Gubun.jihwa);
+            log.info("signResponses: " + signResponses);
             return new ResponseEntity<>(signResponses, HttpStatus.OK);
         } catch (Exception e) {
-            // 실패 시 400 Bad Request 반환
             log.error("Error retrieving sign responses: " + e.getMessage());
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }
+
+//    @GetMapping
+//    public ResponseEntity<List<SignResponse>> getSonagiGameList(Authentication authentication){
+//        List<SignResponse> signResponses = gameService.getSonagiGameList();
+//        return null;
+//    }
 }

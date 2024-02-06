@@ -10,4 +10,6 @@ public interface SignRepository extends JpaRepository<SignInfo,Long> {
     SignInfo findBySignId(Long signId);
     List<SignInfo> findByCategoryIdAndGubun(Long categoryId, Gubun gubun);
 
+    List<SignInfo> findAll();
+
 }

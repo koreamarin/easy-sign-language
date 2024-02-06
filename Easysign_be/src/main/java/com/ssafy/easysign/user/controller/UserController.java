@@ -31,6 +31,7 @@ public class UserController {
             log.info("/info 현재 접속 id : " + authentication.getName());
             PrincipalDetails userDetails = (PrincipalDetails) authentication.getPrincipal();
             UserInfoResponse response = userService.getNavUserInfo(authentication.getName(), userDetails.getUserId());
+            log.info("response : " + response);
             return new ResponseEntity<>(response, HttpStatus.OK);
         } catch(NotFoundException e) {
             return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);

@@ -11,9 +11,5 @@ public interface UserBookMarkRepository extends JpaRepository<BookMark, Long> {
     List<BookMark> findBookMarksByUser(User user);
     Optional<BookMark> findByUser_userIdAndSignInfo_signId(Long userId, Long signId);
     Optional<BookMark> deleteByUser_userIdAndSignInfo_signId(Long userId, Long signId);
-//    @Modifying
-//    @Query("DELETE FROM BookMark b WHERE b.user = :user AND b.signInfo = :signInfo")
-//    void deleteByUserAndSignInfo(@Param("user") User user, @Param("signInfo") SignInfo signInfo);
-
 }
 
