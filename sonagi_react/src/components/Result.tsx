@@ -38,42 +38,30 @@ const LandmarkerCanvas = () => {
 
 // ================================상위 컴포넌트와 연동할 부분========================== 
 
-  const resultList = ['.', 'ㄱ', 'ㄱ', 'ㄴ', 'ㄴ', 'ㄷ', 'ㄷ', 'ㄹ', 'ㄹ', 'ㅁ', 'ㅁ', 
+  const resultList = ['', 'ㄱ', 'ㄱ', 'ㄴ', 'ㄴ', 'ㄷ', 'ㄷ', 'ㄹ', 'ㄹ', 'ㅁ', 'ㅁ', 
                       'ㅂ', 'ㅂ', 'ㅅ', 'ㅅ', 'ㅇ', 'ㅇ', 'ㅈ', 'ㅈ', 'ㅊ', 'ㅊ', 'ㅋ', 
                       'ㅋ', 'ㅌ', 'ㅌ', 'ㅍ', 'ㅍ', 'ㅎ', 'ㅎ']
 
 
-// 판단부분 => stopComp가 true가 되면 판단 완료
-// 이후 해당 정보 상위 컴포넌트로 올리기
-// finResult => false : 틀림
-// finResult => true : 맞음
-
-  let finResult: boolean = false
-
-  let stopComp: boolean = false
+  // answer부분 상위로 올리기
+   
 
   const finResultList: string[] = [];
 
-  let hookForTimer:boolean = false
+  let answer: string = ''
 
-  // porps로 받아오기
-  const compareWord: string = 'ㄱ'
 
-  let startTime:number
 
 
   // 
   const animate = () => {
-    if (stopComp) {
-      console.log(finResult)
-    }
+    console.log(answer)
 
     // 만약 비디오 element에서 가져온 값이 존재하고, 재생중(웹)인 시간과 마지막 비디오 시간과 일치하지 않으면
     // 즉 비디오가 실시간 재생중이면
     if (
       videoRef.current && 
-      videoRef.current.currentTime !== lastVideoTimeRef.current &&
-      !stopComp
+      videoRef.current.currentTime !== lastVideoTimeRef.current
     ) {
 
       videoRef.current.muted = !ishidden
@@ -153,26 +141,41 @@ const LandmarkerCanvas = () => {
           finResultList.shift()
 
           // 비교 문자와 일치하는 개수
-          const checkArray = finResultList.filter((compare) => 
-          compare === compareWord)
-
-          // 일치율이 80% 이상일시
-          if (checkArray.length > 48) {
-            // 정답처리
-            finResult = true
-            // 컴포넌트 정지
-            stopComp = true
+          const findMostElement = (arr: string[]) => {
+            if (arr.length === 0) return null;
+        
+            let elementMap = {};
+            let maxCount = 0;
+            let maxCountElement = arr[0];
+        
+            arr.forEach(element => {
+                if (elementMap[element]) {
+                  elementMap[element]++;
+                } else {
+                  elementMap[element] = 1;
+                }
+        
+                if (elementMap[element] > maxCount) {
+                  maxCount = elementMap[element];
+                  maxCountElement = element;
+                }
+            });
+        
+            return { element: maxCountElement, count: maxCount };
           }
-        }
-        if (!hookForTimer) {
-          startTime = performance.now()
-          hookForTimer = true
-        }
 
-        // 타이머, 10초 이상 실행될 시
-        if (performance.now() - startTime > 10000) {
-          // 컴포넌트 정지 및 오답처리(finResult의 default는 false)
-          stopComp = true
+          // 결과 리스트 중 가장 많이 나온 인자 find
+          const {element, count} = findMostElement(finResultList)
+
+          // 만약 가장 많이 나온 인자가 48개 이상이면(80%이상)
+          if (count > 48) {
+            // 정답을 인자로 변경
+            answer = element
+          }
+          // 아니면 초기화
+          else {
+            answer = ''
+          }
         }
         
 
