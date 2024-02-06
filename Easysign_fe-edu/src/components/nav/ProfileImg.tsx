@@ -24,16 +24,20 @@ interface ProfileImgProps {
 }
 
 const ProfileImg = ({ backgroundSrc, CharacterSrc }: ProfileImgProps) => {
-  if (typeof CharacterSrc === "undefined" || typeof backgroundSrc === "undefined") {
+  const handleError = (e: React.SyntheticEvent<HTMLImageElement, Event>) => {
+    e.currentTarget.src = basic_profile_img; // 기본 이미지로 설정
+  };
+
+  if (typeof CharacterSrc === undefined || typeof backgroundSrc === undefined) {
     return (
       <div>
-        <CharacterImg src={basic_profile_img} alt="profile_img" />
+        <CharacterImg src={basic_profile_img} onError={handleError} />
       </div>
     );
   }
   return (
     <div>
-      <CharacterImg src={CharacterSrc} backgroundSrc={backgroundSrc} alt="profile_img" />
+      <CharacterImg src={CharacterSrc} backgroundSrc={backgroundSrc} onError={handleError} />
     </div>
   );
 };

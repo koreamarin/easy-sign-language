@@ -1,5 +1,5 @@
-import { useOutletContext } from "react-router-dom";
 import { styled } from "styled-components";
+import { trainingDataType } from "../Lecture";
 
 const Span = styled.span`
   width: 80px;
@@ -17,7 +17,6 @@ interface JihwaProgressBarProps {
     content: string;
     imagePath: string;
     videoPath: string;
-    addSticker: number;
   }[];
   currentNum: number;
   currentNumModify: (currentNum: number) => void;

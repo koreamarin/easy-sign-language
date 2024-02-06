@@ -3,7 +3,6 @@ import lecture from "./LectureSlice";
 import progress from "./ProgressSlice";
 
 const rootReducer = combineReducers({ lecture, progress });
-
 export default rootReducer;
 
 //리듀서 호출 리턴?? 상태!!!

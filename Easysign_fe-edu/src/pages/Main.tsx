@@ -7,14 +7,14 @@ import hand5 from "../assets/images/hand5.jpg";
 import EduButtons from "../components/main/EduButtons";
 import { useEffect, useState } from "react";
 import API from "../config";
+import { useDispatch } from "react-redux";
 
 const Main = () => {
   const [category, setCategory] = useState<any>([]);
-
   // 토큰을 로컬 스토리지에 저장
   localStorage.setItem(
     "token",
-    "Bearer eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJFYXN5U2lnbiIsImV4cCI6MTcwNzIzMzM2NSwiaWQiOjYsImxvZ2luSWQiOiJzc2FmeSJ9.5jxuvrd_3OR3zNZZxbo9-2AX9WQftjghxz4IbanF3N9dhUDx3yi2ovJg_UgXWML7d2_PFHPYNJc-1zhoHlMMBA"
+    "Bearer eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJFYXN5U2lnbiIsImV4cCI6MTcwNzI5MTMxOCwiaWQiOjYsImxvZ2luSWQiOiJzc2FmeSJ9.lMGoAJLXhsWvoOQhRkZloDNkqDyufGpwMzrX_IwyQCaBMjDx5wRvOB0nG-CV7YMvYFqMwsNE3JlXlb1SaMGwbA"
   );
 
   // 로컬 스토리지에서 토큰을 가져옴
@@ -29,7 +29,6 @@ const Main = () => {
     });
     const json = await response.json();
     setCategory(json);
-    console.log(response);
   };
 
   useEffect(() => {

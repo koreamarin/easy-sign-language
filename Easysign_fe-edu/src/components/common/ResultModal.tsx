@@ -3,8 +3,11 @@ import Sticker from "../../assets/images/sticker.png";
 import MediumButton from "../Button/MediumButton";
 import CryingEmoji from "../../assets/images/CryingEmoji.png";
 import { useDispatch } from "react-redux";
-import { IncorrectAnswerRateSet, LearningProgressSet } from "../../redux/modules/ProgressSlice";
+
 import { followStatusFalse } from "../../redux/modules/LectureSlice";
+import API from "../../config";
+import { useEffect, useState } from "react";
+import check from "../../assets/images/check.png";
 
 interface ResultModalProps {
   success: boolean;
@@ -28,19 +31,42 @@ const ResultModal = ({
   stickerNum,
   currentNum,
   currentNumModify,
-  totalNum,
   signId,
 }: ResultModalProps) => {
-  const dispatch = useDispatch();
   const next = () => {
     setSuccess(false);
     setModalShown(false);
     currentNumModify(currentNum + 1);
-    dispatch(followStatusFalse());
   };
   const replay = () => {
     setModalShown(false);
   };
+
+  const token = localStorage.getItem("token") || "";
+
+  const [showMessage, setShowMessage] = useState(false);
+
+  const addBookmark = async () => {
+    console.log(signId + "번 수화를 북마크에 추가합니다.");
+    setShowMessage(true);
+    const response = await fetch(`${API.ADDBOOKMARK}${signId}`, {
+      method: "POST",
+      headers: {
+        Authorization: token,
+      },
+    });
+    console.log(response);
+  };
+
+  useEffect(() => {
+    if (showMessage) {
+      const timer = setTimeout(() => {
+        setShowMessage(false);
+      }, 3000);
+
+      return () => clearTimeout(timer);
+    }
+  }, [showMessage]);
 
   return (
     <div
@@ -132,12 +158,30 @@ const ResultModal = ({
           >
             {BookmarkButton ? (
               <>
-                <MediumButton text={"다시s해보기"} color="skyblue" onClick={replay} />
-                <MediumButton
-                  text={"단어장추가"}
-                  color="lightgreen"
-                  onClick={() => console.log(signId + "번 수화를 북마크에 추가합니다.")}
-                />
+                <MediumButton text={"다시해보기"} color="skyblue" onClick={replay} />
+                {showMessage && (
+                  <div
+                    style={{
+                      position: "absolute",
+                      top: "-50px",
+                      backgroundColor: "white",
+                      fontSize: "25px",
+                      color: "black",
+                      fontWeight: "bold",
+                      border: "1px solid #b8b8b8",
+                      textAlign: "right",
+                      display: "flex",
+                      flexDirection: "row",
+                      justifyContent: "space-between",
+                      width: "150px",
+                      borderRadius: "5px",
+                    }}
+                  >
+                    <img src={check} alt="check" width="30px" />
+                    <div>추가 성공</div>
+                  </div>
+                )}
+                <MediumButton text={"단어장추가"} color="lightgreen" onClick={addBookmark} />
                 <MediumButton text={"다음단어로"} color="pink" onClick={next} />
               </>
             ) : (
@@ -212,11 +256,29 @@ const ResultModal = ({
                     </div>
                     <MediumButton text={"다시해보기"} color="skyblue" onClick={replay} />
                   </div>
-                  <MediumButton
-                    text={"단어장추가"}
-                    color="lightgreen"
-                    onClick={() => console.log(signId + "번 수화를 북마크에 추가합니다.")}
-                  />
+                  {showMessage && (
+                    <div
+                      style={{
+                        position: "absolute",
+                        top: "-50px",
+                        backgroundColor: "white",
+                        fontSize: "25px",
+                        color: "black",
+                        fontWeight: "bold",
+                        border: "1px solid #b8b8b8",
+                        textAlign: "right",
+                        display: "flex",
+                        flexDirection: "row",
+                        justifyContent: "space-between",
+                        width: "150px",
+                        borderRadius: "5px",
+                      }}
+                    >
+                      <img src={check} alt="check" width="30px" />
+                      <div>추가 성공</div>
+                    </div>
+                  )}
+                  <MediumButton text={"단어장추가"} color="lightgreen" onClick={addBookmark} />
                   <MediumButton text={"다음단어로"} color="pink" onClick={next} />
                 </>
               ) : (

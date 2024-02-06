@@ -1,28 +1,34 @@
-import { Outlet, useOutletContext } from "react-router-dom";
+import { useOutletContext } from "react-router-dom";
 import Spinner from "../../common/Spinner";
 import BracketButton from "../../Button/BracketButton";
 import Sticker from "../../../assets/images/sticker.png";
 import ResultModal from "../../common/ResultModal";
 import { useState } from "react";
 import JihwaProgressBar from "./JihwaProgressBar";
+import { trainingDataType } from "../Lecture";
 
 const JihwaComponent = () => {
   const [modalShown, setModalShown] = useState<boolean>(false);
   const [success, setSuccess] = useState<boolean>(false);
   interface IFollowersContext {
     followStatus: Boolean;
-    trainingData: {
-      signId: number;
-      content: string;
-      imagePath: string;
-      videoPath: string;
-      addSticker: number;
-    }[];
+    trainingData: trainingDataType[];
+    setTrainingData: (trainingData: trainingDataType) => void;
     currentNum: number;
     currentNumModify: (currentNum: number) => void;
+    addSticker: number;
   }
-  const { followStatus, trainingData, currentNum, currentNumModify } =
+  const { followStatus, trainingData, currentNum, currentNumModify, addSticker } =
     useOutletContext<IFollowersContext>();
+
+  const successModal = () => {
+    setModalShown(!modalShown);
+    setSuccess(modalShown ? false : true);
+  };
+  const failModal = () => {
+    setModalShown(!modalShown);
+    setSuccess(false);
+  };
 
   return (
     <div
@@ -118,9 +124,14 @@ const JihwaComponent = () => {
                   marginLeft: "10px",
                 }}
               >
-                X {trainingData[currentNum - 1].addSticker}
+                X {addSticker}
               </span>
-              <button onClick={() => setModalShown(!modalShown)}>모달 테스트</button>
+              <div>
+                <div>
+                  <button onClick={successModal}>성공 모달 테스트</button>
+                </div>
+                <button onClick={failModal}>실패 모달 테스트</button>
+              </div>
             </span>
           </div>
           <ResultModal
@@ -128,8 +139,8 @@ const JihwaComponent = () => {
             setSuccess={setSuccess}
             shown={modalShown}
             setModalShown={setModalShown}
-            BookmarkButton={false}
-            stickerNum={trainingData[currentNum - 1].addSticker}
+            BookmarkButton={true}
+            stickerNum={addSticker}
             currentNum={currentNum}
             currentNumModify={currentNumModify}
             totalNum={trainingData.length}

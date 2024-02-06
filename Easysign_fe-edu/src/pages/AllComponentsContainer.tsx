@@ -14,9 +14,6 @@ import ProfileImg from "../components/nav/ProfileImg";
 import Progress from "../components/nav/Progress";
 import Nav from "../components/nav/Nav";
 import { useNavigate } from "react-router-dom";
-import JihwaProgressBar from "../components/edu/jihwa/JihwaProgressBar";
-import BracketButton from "../components/Button/BracketButton";
-import ResultModal from "../components/common/ResultModal";
 
 const AllComponentsContainer = () => {
   const navigate = useNavigate();
@@ -92,8 +89,6 @@ const AllComponentsContainer = () => {
       <h1>Nav Bar</h1>
       <div>
         <Logo />
-        <ProfileImg />
-        <ProfileImg />
         <Progress percentage={76} wrong_answer={true} />
         <Progress percentage={76} wrong_answer={false} />
         <Progress percentage={76} />
