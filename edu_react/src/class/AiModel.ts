@@ -1,4 +1,5 @@
 import * as tf from "@tensorflow/tfjs"
+// import modelJson from "../ai_model/model.json"
 
 
 class AiResult {
@@ -31,12 +32,22 @@ class AiResult {
         return this.results
     }
 
-    // 받은 랜드마커 좌표를 각도로 치환하여 저장시켜주는 함수
-    aiCalculate = (seq: number[][]) => {
-        const model = tf.loadLayersModel('../ai_model/model.json')
-        const inputData = tf.tensor2d(seq, [1, 80])
-
-    }
+    // 받은 인풋값을 모델로 인식
+    aiCalculate = async (seq: number[][]) => {
+        const model = await tf.loadLayersModel('https://cdn.jsdelivr.net/gh/bsh4766/testJS/model.json')
+        const inputData = tf.tensor3d(seq.flat(), [1, 10, 80])
+        const output = model.predict(inputData) as tf.Tensor
+        const preArray = output.dataSync()
+        const resultArray = Array.from(preArray)
+        const maxIdx: {maxValue: number, maxIndex: number} = resultArray.reduce((acc: {maxValue: number, maxIndex: number},cur: number,idx: number) => {
+            if (cur > acc.maxValue) {
+                acc.maxValue = cur
+                acc.maxIndex = idx
+            }
+            return acc
+        }, { maxValue: -Infinity, maxIndex: -1 })
+        this.results = maxIdx.maxIndex
+    }   
 }
 
 export default AiResult

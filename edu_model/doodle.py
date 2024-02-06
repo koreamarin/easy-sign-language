@@ -1,8 +1,16 @@
-import tensorflowjs as tfjs
-from tensorflow.keras.models import load_model
-import os
+import numpy as np
 
 
-path = os.path.dirname(os.path.abspath(__file__))
-model = load_model(f'{path}/data_114_train_100_model.h5')
-tfjs.converters.save_keras_model(model, f'{path}/abcd')
+a = np.array([1, 2, 3])
+
+b = np.array([1, 2, 4])
+
+
+c = []
+c.append(a)
+
+c.append(b)
+print(c)
+# c =c[1:]
+c.pop(0)
+print(c)

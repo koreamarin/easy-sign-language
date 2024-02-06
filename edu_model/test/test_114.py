@@ -6,6 +6,7 @@ import numpy as np
 from tensorflow.keras.models import load_model
 
 
+
 test_data_version = "v1.1.4"
 
 path = os.path.dirname(os.path.abspath(__file__))
@@ -211,14 +212,16 @@ with mp_holistic.Holistic(
                 data.append(dummy_data)
             
 
-
+            print('데이터 길이', len(data))
             data.append(d)
             if len(data) > seq_length:
-                data.pop(0)
+                print('내부')
+                data = data[1:]
+                print(data)
             # print(len(data))
+            print('팝 결과', len(data))
             if len(data) < seq_length:
                 continue
-            # print(len(data))
             
             mp_drawing.draw_landmarks(
                     # 이미지에 적용
@@ -244,10 +247,8 @@ with mp_holistic.Holistic(
                 mp_holistic.HAND_CONNECTIONS,
                 landmark_drawing_spec=mp_drawing_styles
                     .get_default_hand_landmarks_style())
-  
+            # print(len(data))
             input_data = np.expand_dims(np.array(data, dtype=np.float32), axis=0)
-
-            # print(model.predict(input_data))
             
             y_pred = model.predict(input_data).squeeze()
 
@@ -261,6 +262,8 @@ with mp_holistic.Holistic(
             print(move[i_pred])
 
             action = actions[i_pred]
+            
+            # input_data = 0
 
             # cv2.putText(img, f'{this_action.upper()}', org=(int(res.landmark[0].x * img.shape[1]), int(res.landmark[0].y * img.shape[0] + 20)), fontFace=cv2.FONT_HERSHEY_SIMPLEX, fontScale=1, color=(255, 255, 255), thickness=2)
 

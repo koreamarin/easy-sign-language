@@ -5,6 +5,7 @@ import HandLandmarkerCanvas from "./Hand"
 import HandLandmarkerManager from "../class/HandLandmarkManager"
 import * as tf from "@tensorflow/tfjs"
 import CalculateTensor from "../class/CalculateVector"
+import AiResult from "../class/AiModel"
 
 
 const LandmarkerCanvas = () => {
@@ -35,6 +36,10 @@ const LandmarkerCanvas = () => {
   const clickButton = () => {
     sethidden(!ishidden)
   }
+
+  const resultList = ['.', 'ㄱ', 'ㄱ', 'ㄴ', 'ㄴ', 'ㄷ', 'ㄷ', 'ㄹ', 'ㄹ', 'ㅁ', 'ㅁ', 
+  'ㅂ', 'ㅂ', 'ㅅ', 'ㅅ', 'ㅇ', 'ㅇ', 'ㅈ', 'ㅈ', 'ㅊ', 'ㅊ', 
+  'ㅋ', 'ㅋ', 'ㅌ', 'ㅌ', 'ㅍ', 'ㅍ', 'ㅎ', 'ㅎ']
 
 
   // 
@@ -103,12 +108,17 @@ const LandmarkerCanvas = () => {
         // 인스턴스에 저장된 각도 불러오기
         const angles = calculateTensor.getResults()
 
-        console.log(angles)
+        const aimodel = AiResult.getInstance()
 
         seq.push(angles)
         if (seq.length > 10) {
           seq.shift()
+          aimodel.aiCalculate(seq)
         }
+
+        const aiResult = aimodel.getResults()
+
+        console.log('결과인덱스', aiResult, resultList[aiResult])
 
       }
 
