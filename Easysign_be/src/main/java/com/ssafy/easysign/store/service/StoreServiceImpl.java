@@ -9,6 +9,7 @@ import com.ssafy.easysign.user.entity.UserItem;
 import com.ssafy.easysign.user.exception.NotFoundException;
 import com.ssafy.easysign.user.repository.UserItemRepository;
 import com.ssafy.easysign.user.repository.UserRepository;
+import com.ssafy.easysign.user.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,7 +32,10 @@ public class StoreServiceImpl implements StoreService {
     private  UserRepository userRepository;
 
     @Autowired
-    private final UserItemRepository userItemRepository;
+    private  UserItemRepository userItemRepository;
+
+    @Autowired
+    private UserService userService;
     @Override
     public List<ItemResponse> getItemResponseList() {
         List<Store> stores = storeRepository.findAll();
@@ -58,18 +62,19 @@ public class StoreServiceImpl implements StoreService {
         PrincipalDetails principalDetails = (PrincipalDetails) authentication.getPrincipal();
         User user = principalDetails.getUser();
         int userSticker = user.getSticker();
+        log.info("userSticker : " + userSticker);
         Optional<Store> storeOptional = storeRepository.findByItemId(itemId);
 
         if (storeOptional.isPresent()) {
             Store store = storeOptional.get();
             int requiredSticker = store.getPrice();
-
+            log.info("requiredSticker : " + requiredSticker);
             if (userSticker >= requiredSticker) {
                 UserItem userItem = new UserItem();
                 userItem.setUser(user);
                 userItem.setItem(store);
                 userItemRepository.save(userItem);
-
+                userService.updateStickerCountAfter(user.getUserId(),-requiredSticker);
                 // 성공적으로 아이템을 구매했을 경우
                 return Optional.of(true);
             } else {
