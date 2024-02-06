@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -29,14 +30,17 @@ public class GameController {
             log.info("signResponses: " + signResponses);
             return new ResponseEntity<>(signResponses, HttpStatus.OK);
         } catch (Exception e) {
-            log.error("Error retrieving sign responses: " + e.getMessage());
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }
 
-//    @GetMapping
-//    public ResponseEntity<List<SignResponse>> getSonagiGameList(Authentication authentication){
-//        List<SignResponse> signResponses = gameService.getSonagiGameList();
-//        return null;
-//    }
+    @GetMapping("sonagi-game")
+    public ResponseEntity<List<SignResponse>> getSonagiGameList(Authentication authentication){
+        try{
+        List<SignResponse> signResponses = gameService.getSonagiGameList(authentication);
+            return new ResponseEntity<>(signResponses, HttpStatus.OK);
+        }catch (Exception e){
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+    }
 }
