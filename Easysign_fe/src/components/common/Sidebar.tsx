@@ -79,7 +79,9 @@ function Sidebar() {
           <table>
             <tr>
               <td>
-                <BookmarksOutlined /> 　단 어 장　　
+                <StyledLink to={"/voca"}>
+                  <BookmarksOutlined /> 　단 어 장　　
+                </StyledLink>
               </td>
             </tr>
             <tr>

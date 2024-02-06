@@ -10,6 +10,7 @@ import StoreMain from "./components/store/StoreMain";
 import Mypage from "./components/mypage/Mypage";
 import Footer from "./components/common/Footer";
 import MainStore from "./components/store/MainStore";
+import VocaBox from "./components/voca/VocaBox";
 
 // react에 필요한 것들 import
 import { BrowserRouter, Routes, Route } from "react-router-dom";
@@ -49,6 +50,7 @@ function App() {
               <Route path="/store_test" element={<StoreMain />} />
               <Route path="/store" element={<MainStore />} />
               <Route path="/mypage" element={<Mypage />} />
+              <Route path="/voca" element={<VocaBox />} />
             </Routes>
           </div>
         </MainContent>
