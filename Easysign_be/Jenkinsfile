@@ -65,19 +65,19 @@ pipeline {
                 }
             }
         }
-        stage('Prune old images'){
-            steps{
-                script{
-                    sh "docker system prune --filter until=1h"
-                }
-            }
-        }
         stage('Pull') {
             steps {
                 script {
                     withCredentials([[$class: 'UsernamePasswordMultiBinding', credentialsId: 'Docker-hub', usernameVariable: 'DOCKER_USER_ID', passwordVariable: 'DOCKER_USER_PASSWORD']]) {
                         sh "docker pull ${DOCKER_USER_ID}/back"
                     }
+                }
+            }
+        }
+        stage('Prune old images'){
+            steps{
+                script{
+                    sh "docker system prune --filter until=1h"
                 }
             }
         }
