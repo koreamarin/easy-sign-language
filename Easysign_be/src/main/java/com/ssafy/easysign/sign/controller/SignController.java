@@ -1,8 +1,8 @@
 package com.ssafy.easysign.sign.controller;
 
 import com.ssafy.easysign.global.jpaEnum.Gubun;
+import com.ssafy.easysign.sign.dto.response.CategoryResponse;
 import com.ssafy.easysign.sign.dto.response.SignResponse2;
-import com.ssafy.easysign.sign.entity.SignCategory;
 import com.ssafy.easysign.sign.service.SignService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -24,10 +24,10 @@ public class SignController {
     private final SignService signService;
 
     @GetMapping("/category")
-    public ResponseEntity<List<SignCategory>> getCategoryResponseList() {
-        List<SignCategory> signCategories = signService.getCategoryList();
-        log.info("categoryResponses : " + signCategories);
-        return new ResponseEntity<>(signCategories, HttpStatus.OK);
+    public ResponseEntity<List<CategoryResponse>> getCategoryResponseList() {
+        List<CategoryResponse> CategoryResponse = signService.getCategoryList();
+        log.info("categoryResponses : " + CategoryResponse);
+        return new ResponseEntity<>(CategoryResponse, HttpStatus.OK);
     }
 
     @GetMapping("/jihwa")

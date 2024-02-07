@@ -1,12 +1,27 @@
 package com.ssafy.easysign.sign.dto.response;
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.ssafy.easysign.global.jpaEnum.Gubun;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import com.ssafy.easysign.sign.entity.SignCategory;
+import lombok.*;
 
-@Data
-@NoArgsConstructor
+@Builder
+@AllArgsConstructor
+@Setter
+@Getter
+@JsonSerialize
 public class CategoryResponse {
     private Long categoryId;
     private String categoryName;
+    private Gubun gubun;
+    private int addSticker;
+
+    public static CategoryResponse of(SignCategory signCategory){
+        return CategoryResponse.builder()
+            .categoryId(signCategory.getCategoryId())
+            .categoryName(signCategory.getCategoryName())
+            .gubun(signCategory.getGubun())
+            .addSticker(signCategory.getAddSticker())
+            .build();
+    }
 }

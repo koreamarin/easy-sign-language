@@ -2,7 +2,6 @@ package com.ssafy.easysign.sign.service;
 
 import com.ssafy.easysign.global.jpaEnum.Gubun;
 import com.ssafy.easysign.sign.dto.response.CategoryResponse;
-import com.ssafy.easysign.sign.dto.response.SignResponse;
 import com.ssafy.easysign.sign.dto.response.SignResponse2;
 import com.ssafy.easysign.sign.entity.SignCategory;
 import com.ssafy.easysign.sign.entity.SignInfo;
@@ -25,9 +24,14 @@ public class SignServiceImpl implements SignService {
 
 
     @Override
-    public List<SignCategory> getCategoryList() {
+    public List<CategoryResponse> getCategoryList() {
         List<SignCategory> signCategories = signCategoryRepository.findAll();
-        return signCategories;
+        log.info("signCategories : " + signCategories);
+        List<CategoryResponse> categoryResponses = signCategories.stream()
+                .map(CategoryResponse::of)
+                .toList();
+        log.info("categoryResponses : " + categoryResponses);
+        return categoryResponses;
     }
 
     @Override
@@ -45,20 +49,6 @@ public class SignServiceImpl implements SignService {
         return signResponses;
     }
 
-    public CategoryResponse mapToCategoryResponse(SignCategory signCategory) {
-        CategoryResponse categoryResponse = new CategoryResponse();
-        categoryResponse.setCategoryId(signCategory.getCategoryId());
-        categoryResponse.setCategoryName(signCategory.getCategoryName());
-        return categoryResponse;
-    }
-    public SignResponse mapToSignResponses(SignInfo signInfo) {
-        SignResponse signResponse = new SignResponse();
-        signResponse.setSignId(signInfo.getSignId());
-        signResponse.setContent(signInfo.getContent());
-        signResponse.setImagePath(signInfo.getImagePath());
-        signResponse.setVideoPath(signInfo.getVideoPath());
-        return signResponse;
-    }
     public SignResponse2 mapToSignResponses(SignInfo signInfo, Long categoryId, Gubun gubun) {
         SignResponse2 signResponse = new SignResponse2();
         signResponse.setSignId(signInfo.getSignId());
