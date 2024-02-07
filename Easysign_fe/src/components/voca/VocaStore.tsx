@@ -16,7 +16,6 @@ import { useInView } from "react-intersection-observer";
 function VocaStore() {
   // 프론트 - 백 통신 설정
   const [bookmark, setBookmark] = useState<any>([]);
-  // key는 추후 env 파일로 만들고 삭제 예정.
 
   // 토큰을 로컬 스토리지에 저장
   localStorage.setItem(
