@@ -41,11 +41,11 @@ public class GameServiceImpl implements GameService  {
 //        List<SignResponse> signResponses = signInfos.stream()
 //                .map(SignResponse::of)
 //                .toList();
-
-        // 랜덤하게 20개의 수화 선택
-        Collections.shuffle(signResponses);
-        int numberOfSignsToReturn = Math.min(signResponses.size(), 20);
-        return signResponses.subList(0, numberOfSignsToReturn);
+        // 랜덤하게 20개의 수화 선택, 불변 리스트이기 때문에 없애주기 위해서 리스트를 하나 더 선언해서 섞어준다.
+        List<SignResponse> mutableSignResponses = new ArrayList<>(signResponses);
+        Collections.shuffle(mutableSignResponses);
+        int numberOfSignsToReturn = Math.min(mutableSignResponses.size(), 20);
+        return mutableSignResponses.subList(0, numberOfSignsToReturn);
     }
 
     @Override
