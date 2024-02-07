@@ -5,7 +5,7 @@ interface CharacterImgProps {
   backgroundSrc?: string;
 }
 
-const CharacterImg = styled.img<CharacterImgProps>`
+export const CharacterImg = styled.img<CharacterImgProps>`
   width: 140px;
   height: 140px;
   border-radius: 50%;

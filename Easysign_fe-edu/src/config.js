@@ -1,5 +1,5 @@
-// const BASE_URL = "https://i10c202.p.ssafy.io/api/v1";
-const BASE_URL = "http://192.168.100.96:8080/api/v1";
+const BASE_URL = "https://easysign.shop/api/v1";
+// const BASE_URL = "http://192.168.100.96:8080/api/v1";
 
 const API = {
   CATEGORY: `${BASE_URL}/sign/category`,

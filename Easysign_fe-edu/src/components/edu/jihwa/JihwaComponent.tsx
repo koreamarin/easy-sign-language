@@ -7,6 +7,7 @@ import JihwaProgressBar from "./JihwaProgressBar";
 import { trainingDataType } from "../Lecture";
 import { useDispatch } from "react-redux";
 import { LearningProgressSet } from "../../../redux/modules/ProgressSlice";
+import EndModal from "../../common/EndModal";
 
 const JihwaComponent = () => {
   interface IFollowersContext {
@@ -178,7 +179,6 @@ const JihwaComponent = () => {
             currentNumModify={currentNumModify}
             trainingData={trainingData}
             ShownEndModal={ShownEndModal}
-            ShownEndModalStatus={ShownEndModalStatus}
           />
         </>
       ) : (
@@ -231,6 +231,11 @@ const JihwaComponent = () => {
           )}
         </div>
       )}
+      <EndModal
+        trainingData={trainingData}
+        ShownEndModalStatus={ShownEndModalStatus}
+        addSticker={addSticker}
+      />
     </div>
   );
 };

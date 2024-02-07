@@ -9,7 +9,6 @@ import API from "../../config";
 import Nav from "../nav/Nav";
 import { token } from "../../pages/Main";
 import SmallButton from "../Button/SmallButton";
-import EndModal from "../common/EndModal";
 
 export type trainingDataType = {
   signId: number;
@@ -41,7 +40,6 @@ const Lecture = () => {
   const [ShownEndModalStatus, setShownEndModalStatus] = useState<boolean>(false);
   const ShownEndModal = () => {
     setShownEndModalStatus(true);
-    alert("학습을 종료합니다.");
   };
 
   const getSignCategory = async () => {
@@ -132,7 +130,6 @@ const Lecture = () => {
         flexDirection: "row", // 추가
       }}
     >
-      <EndModal trainingData={trainingData} ShownEndModalStatus={ShownEndModalStatus} />
       <Nav Progress2Visibility={false} />
       <div
         style={{

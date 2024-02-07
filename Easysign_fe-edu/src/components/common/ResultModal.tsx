@@ -18,7 +18,6 @@ interface ResultModalProps {
   currentNumModify: (currentNum: number) => void;
   trainingData: trainingDataType[];
   ShownEndModal: () => void;
-  ShownEndModalStatus: boolean;
 }
 
 const ResultModal = ({
@@ -31,7 +30,6 @@ const ResultModal = ({
   currentNumModify,
   trainingData,
   ShownEndModal,
-  ShownEndModalStatus,
 }: ResultModalProps) => {
   console.log(trainingData);
 
