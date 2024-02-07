@@ -64,7 +64,12 @@ function VocaStore() {
         <div key={item.signId}>
           <p>Sign ID: {item.signId}</p>
           <p>Content: {item.content}</p>
-          <img src={item.imagePath} alt={item.content} />
+          <img
+            src={item.imagePath}
+            alt={item.content}
+            width="100px"
+            height="100px"
+          />
           {/* 비디오 등 추가적인 정보도 여기에 렌더링할 수 있음 */}
         </div>
       ))}
