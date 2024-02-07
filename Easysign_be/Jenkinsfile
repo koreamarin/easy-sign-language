@@ -41,6 +41,7 @@ pipeline {
                 script {
                     withCredentials([[$class: 'UsernamePasswordMultiBinding', credentialsId: 'Docker-hub', usernameVariable: 'DOCKER_USER_ID', passwordVariable: 'DOCKER_USER_PASSWORD']]) {
                         sh "docker build -t ${DOCKER_USER_ID}/back Easysign_be"
+                        sh "docker system prune --filter until=10h"
                     }
                 }
             }
@@ -77,7 +78,7 @@ pipeline {
         stage('Prune old images'){
             steps{
                 script{
-                    sh "docker system prune --filter until=1h"
+                    sh "docker system prune --filter until=10h"
                 }
             }
         }
