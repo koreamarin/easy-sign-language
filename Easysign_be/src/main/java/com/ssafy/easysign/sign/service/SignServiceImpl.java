@@ -41,16 +41,16 @@ public class SignServiceImpl implements SignService {
 
     @Override
     public List<SignResponse2> getSignResponseList(String categoryName, Gubun gubun) {
-        SignCategory signCategory = signCategoryRepository.findByCategoryName(categoryName);
+        SignCategory signCategory = signCategoryRepository.findByCategoryName(categoryName)
+                .orElseThrow();
         Long categoryId = signCategory.getCategoryId();
-        List<SignInfo> signInfos = signRepository.findByCategoryId(categoryId);
+        List<SignInfo> signInfos = signRepository.findAllByCategoryId(categoryId);
         log.info("signInfos : " + signInfos );
-        List<SignResponse2> signResponses = signInfos.stream()
-                .map(signMapper::toSignResponse2)
-                .toList();
-//        List<SignResponse2> signResponses = signInfos.stream()
+        //        List<SignResponse2> signResponses = signInfos.stream()
 //                .map(SignResponse2::of)
 //                .toList();
-        return signResponses;
+        return signInfos.stream()
+                .map(signMapper::toSignResponse2)
+                .toList();
     }
 }

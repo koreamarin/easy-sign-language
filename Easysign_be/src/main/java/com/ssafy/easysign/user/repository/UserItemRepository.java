@@ -10,8 +10,8 @@ import java.util.List;
 import java.util.Optional;
 
 public interface UserItemRepository extends JpaRepository<UserItem, Long> {
-    Optional<List<UserItem>> findByUser_UserId(Long userId);
-    Optional<List<UserItem>> findByUser_UserIdAndIsUse(Long userId, boolean isUse);
+    List<UserItem> findAllByUser_UserId(Long userId);
+    List<UserItem> findAllByUser_UserIdAndIsUse(Long userId, boolean isUse);
     Optional<UserItem> findByUser_UserIdAndItem_ItemId(Long userId, Long itemId);
     @Query("select i from UserItem i, Store s \n" +
             "where i.item.itemId = s.itemId \n" +

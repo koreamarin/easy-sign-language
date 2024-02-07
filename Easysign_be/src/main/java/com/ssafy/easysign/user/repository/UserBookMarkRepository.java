@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Optional;
 
 public interface UserBookMarkRepository extends JpaRepository<BookMark, Long> {
-    List<BookMark> findBookMarksByUser(User user);
+    List<BookMark> findAllByUser(User user);
     Optional<BookMark> findByUser_userIdAndSignInfo_signId(Long userId, Long signId);
     Optional<BookMark> deleteByUser_userIdAndSignInfo_signId(Long userId, Long signId);
 }

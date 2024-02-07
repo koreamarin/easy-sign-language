@@ -47,8 +47,8 @@ public class StoreServiceImpl implements StoreService {
         List<Long> except = new ArrayList<>();
         except.add(1L);
         except.add(2L);
-        Optional<List<Store>> stores = storeRepository.findAllByItemIdNotIn(except);
-        List<ItemResponse> itemResponses = stores.get().stream()
+        List<Store> stores = storeRepository.findAllByItemIdNotIn(except);
+        List<ItemResponse> itemResponses = stores.stream()
                 .map(storeMapper::toItemResponse)
                 .collect(Collectors.toList());
         log.info("Item Responses : {}", itemResponses);
@@ -56,14 +56,14 @@ public class StoreServiceImpl implements StoreService {
     }
 
     @Override
-    public Optional<ItemResponse> getItemDetails(Long itemId) {
-        Optional<Store> store = storeRepository.findByItemId(itemId);
-        ItemResponse itemResponse = storeMapper.toItemResponse(store.orElseThrow());
-        return Optional.of(itemResponse);
+    public ItemResponse getItemDetails(Long itemId) {
+        return storeRepository.findByItemId(itemId)
+                .map(storeMapper::toItemResponse)
+                .orElseThrow();
     }
 
     @Override
-    public Optional<Boolean> buyItem(Long itemId, Authentication authentication) {
+    public Boolean buyItem(Long itemId, Authentication authentication) {
         PrincipalDetails principalDetails = (PrincipalDetails) authentication.getPrincipal();
         User user = principalDetails.getUser();
         int userSticker = user.getSticker();
@@ -81,10 +81,10 @@ public class StoreServiceImpl implements StoreService {
                 userItemRepository.save(userItem);
                 userService.updateStickerCountAfter(user.getUserId(),-requiredSticker);
                 // 성공적으로 아이템을 구매했을 경우
-                return Optional.of(true);
+                return true;
             } else {
                 // 스티커 잔액이 부족한 경우
-                return Optional.of(false);
+                return false;
             }
         } else {
             // 해당 itemId에 해당하는 상점이 없는 경우

@@ -9,6 +9,6 @@ import java.util.Optional;
 public interface StoreRepository extends JpaRepository<Store, Long> {
     Optional<Store> findByItemId(Long itemId);
 
-    Optional<List<Store>> findAllByItemIdNotIn(List<Long> itemId);
+    List<Store> findAllByItemIdNotIn(List<Long> itemId);
 }
 

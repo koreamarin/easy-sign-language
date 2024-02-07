@@ -35,12 +35,9 @@ public class GameServiceImpl implements GameService  {
 
     @Override
     public List<SignResponse> getSpeedGameList(Gubun gubun) {
-        List<SignInfo> signInfos = signRepository.findByGubun(gubun);
-        // 결과 매핑
-        List<SignResponse> signResponses = new ArrayList<>();
-        for (SignInfo signInfo : signInfos) {
-            signResponses.add(signMapper.toSignResponse(signInfo));
-        }
+        List<SignResponse> signResponses = signRepository.findAllByGubun(gubun).stream()
+                .map(signMapper::toSignResponse)
+                .toList();
 //        List<SignResponse> signResponses = signInfos.stream()
 //                .map(SignResponse::of)
 //                .toList();
@@ -58,7 +55,7 @@ public class GameServiceImpl implements GameService  {
         Long userId = user.getUserId();
 
         // 사용자의 진행 정보 가져오기
-        List<UserProgress> userProgresses = userProgressRepository.findByUser_userId(userId);
+        List<UserProgress> userProgresses = userProgressRepository.findAllByUser_userId(userId);
         log.info("userProgresses : " + userProgresses);
 
         List<SignInfo> signInfos = new ArrayList<>();

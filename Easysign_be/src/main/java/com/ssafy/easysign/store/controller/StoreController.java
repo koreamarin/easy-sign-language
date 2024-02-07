@@ -10,7 +10,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/v1/store")
@@ -35,18 +34,19 @@ public class StoreController {
     }
     @GetMapping("/infoDetail")
     public ResponseEntity<ItemResponse> getItemDetails(@RequestParam Long itemId) {
-        Optional<ItemResponse> itemResponse = storeService.getItemDetails(itemId);
+        ItemResponse itemResponse = storeService.getItemDetails(itemId);
         // 성공적으로 값을 찾았을 경우 200 OK와 함께 값을 반환
         // 값이 없는 경우 400 Bad Request 반환
-        return itemResponse.map(response -> new ResponseEntity<>(response, HttpStatus.OK)).orElseGet(() -> new ResponseEntity<>(HttpStatus.BAD_REQUEST));
+        if(itemResponse == null)  return new ResponseEntity<>(itemResponse, HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(itemResponse, HttpStatus.OK);
     }
 
     @PutMapping("/buyItem")
     public ResponseEntity<Boolean> buyItem(@RequestParam Long itemId, Authentication authentication) {
         try {
-            Optional<Boolean> buyCheck = storeService.buyItem(itemId, authentication);
+            Boolean buyCheck = storeService.buyItem(itemId, authentication);
             // buyItem 메서드에서 예외 발생 시
-            return buyCheck.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(false));
+            return ResponseEntity.badRequest().body(true);
         } catch (Exception e) {
             // 기타 예외 상황에 대한 처리
             return ResponseEntity.badRequest().body(false);

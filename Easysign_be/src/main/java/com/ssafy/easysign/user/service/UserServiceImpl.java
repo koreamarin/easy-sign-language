@@ -57,11 +57,11 @@ public class UserServiceImpl implements UserService {
 
         if(user.isEmpty()) throw new NotFoundException("사용자를 찾을 수 없습니다.");
 
-        Optional<List<UserItem>> userProfile = userItemRepository.findByUser_UserIdAndIsUse(userId, true);
+        List<UserItem> userProfile = userItemRepository.findAllByUser_UserIdAndIsUse(userId, true);
         String backgroundPath = "";
         String characterPath = "";
 
-        for(UserItem item : userProfile.get()) {
+        for(UserItem item : userProfile) {
             Optional<Store> itemInfo = storeRepository.findByItemId(item.getItem().getItemId());
             if(itemInfo.isEmpty()) throw new NotFoundException("해당하는 아이템을 찾을 수 없습니다.");
             if(itemInfo.get().getCategoryName().toString().equals("background")) {
@@ -85,7 +85,7 @@ public class UserServiceImpl implements UserService {
         PrincipalDetails userDetails = (PrincipalDetails) authentication.getPrincipal();
         Long userId = userDetails.getUserId();
         User user = userRepository.findById(userId).orElseThrow(()->new NotFoundException("사용자가 없습니다."));
-        List<BookMark> bookMarkList = userBookMarkRepository.findBookMarksByUser(user);
+        List<BookMark> bookMarkList = userBookMarkRepository.findAllByUser(user);
         List<SignInfo> signInfos = bookMarkList.stream()
                 .map(BookMark::getSignInfo)
                 .toList();
@@ -103,7 +103,8 @@ public class UserServiceImpl implements UserService {
         Optional<User> user = userRepository.findById(userId);
         if(user.isEmpty()) throw new NotFoundException("사용자를 찾을 수 없습니다.");
 
-        SignInfo signInfo = signRepository.findBySignId(signId);
+        SignInfo signInfo = signRepository.findBySignId(signId)
+                .orElseThrow();
 
         UserProgress progress = userMapper.toUserProgress(user.get(), signInfo);
 
@@ -135,10 +136,10 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void updateProfile(Long userId, ProfileRequest profileRequest) {
-        Optional<List<UserItem>> userItems = userItemRepository.findByUser_UserIdAndIsUse(userId, true);
+        List<UserItem> userItems = userItemRepository.findAllByUser_UserIdAndIsUse(userId, true);
         if(userItems.isEmpty()) throw new NotFoundException("사용자를 찾을 수 없습니다.");
         // 아이템 적용 전체 해제
-        for(UserItem item : userItems.get()) {
+        for(UserItem item : userItems) {
             item.setUse(false);
             userItemRepository.save(item);
         }
@@ -269,10 +270,10 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<ItemResponse> getUserItems(Long userId) {
         // 유저 아이디로 인해서 UserItemList를 가져와야한다.
-        Optional<List<UserItem>> userItems = userItemRepository.findByUser_UserId(userId);
+        List<UserItem> userItems = userItemRepository.findAllByUser_UserId(userId);
         List<ItemResponse> userItemResponses = new ArrayList<>();
-        if(userItems.isPresent()){
-            for (UserItem userItem : userItems.get()) {
+        if(!userItems.isEmpty()){
+            for (UserItem userItem : userItems) {
                 Long itemId = userItem.getItem().getItemId();
                 Optional<Store> storeOptional = storeRepository.findByItemId(itemId);
                 storeOptional.ifPresent(store -> {
