@@ -7,14 +7,17 @@ import { useSelector } from "react-redux";
 import { rootState } from "../../redux/modules";
 import { useEffect, useState } from "react";
 import API from "../../config";
+import { token } from "../../pages/Main";
 
-const Nav = () => {
+interface NavProps {
+  Progress2Visibility: boolean;
+}
+
+const Nav = ({ Progress2Visibility }: NavProps) => {
   const navigate = useNavigate();
   const progress = useSelector((state: rootState) => state.progress);
   const [backgroundSrc, setbackgroundSrc] = useState<string | undefined>(undefined);
   const [CharacterSrc, setCharacterSrc] = useState<string | undefined>(undefined);
-
-  const token = localStorage.getItem("token") || "";
   const getUserinfo = async () => {
     const response = await fetch(`${API.USERINFO}`, {
       method: "GET",
@@ -72,6 +75,7 @@ const Nav = () => {
       <div
         style={{
           paddingTop: "30px",
+          visibility: Progress2Visibility ? "visible" : "hidden",
         }}
       >
         <Progress percentage={progress.IncorrectAnswerRate} wrong_answer={true} />

@@ -6,6 +6,10 @@ import { followStatusTrue, followStatusFalse } from "../../redux/modules/Lecture
 import { useEffect, useState } from "react";
 import { IncorrectAnswerRateSet, LearningProgressSet } from "../../redux/modules/ProgressSlice";
 import API from "../../config";
+import Nav from "../nav/Nav";
+import { token } from "../../pages/Main";
+import SmallButton from "../Button/SmallButton";
+import EndModal from "../common/EndModal";
 
 export type trainingDataType = {
   signId: number;
@@ -24,6 +28,8 @@ const Lecture = () => {
   const gubun = gubunPath[gubunPath.length - 1];
 
   const [addSticker, setAddSticker] = useState<number>(0);
+  const [success, setSuccess] = useState<boolean>(false);
+  const [modalShown, setModalShown] = useState<boolean>(false);
 
   type jsonType = {
     content: string;
@@ -32,7 +38,11 @@ const Lecture = () => {
     videoPath: string;
   };
 
-  const token = localStorage.getItem("token") || "";
+  const [ShownEndModalStatus, setShownEndModalStatus] = useState<boolean>(false);
+  const ShownEndModal = () => {
+    setShownEndModalStatus(true);
+    alert("학습을 종료합니다.");
+  };
 
   const getSignCategory = async () => {
     const response = await fetch(`${API.CATEGORY}`, {
@@ -104,52 +114,90 @@ const Lecture = () => {
     currentNum: currentNum,
     currentNumModify: currentNumModify,
     addSticker: addSticker,
+    success: success,
+    setSuccess: setSuccess,
+    modalShown: modalShown,
+    setModalShown: setModalShown,
+    ShownEndModal: ShownEndModal,
+    ShownEndModalStatus: ShownEndModalStatus,
   };
 
   return (
     <div
       style={{
-        backgroundColor: "#faf7f7",
-        width: "1140px",
+        border: "1px solid #b8b8b8",
+        width: "1300px",
         height: "900px",
-        display: "flex",
-        flexDirection: "column",
-        justifyContent: "center",
-        alignItems: "center",
+        display: "flex", // 추가
+        flexDirection: "row", // 추가
       }}
     >
+      <EndModal trainingData={trainingData} ShownEndModalStatus={ShownEndModalStatus} />
+      <Nav Progress2Visibility={false} />
       <div
         style={{
-          position: "relative",
-          top: "-20px",
-          width: "1080px",
-          height: "710px",
+          backgroundColor: "#faf7f7",
+          width: "1140px",
+          height: "900px",
           display: "flex",
-          flexDirection: "row",
+          flexDirection: "column",
           justifyContent: "center",
           alignItems: "center",
         }}
       >
-        <Outlet context={outletProps} />
-      </div>
-      <div
-        style={{
-          position: "relative",
-          top: "10px",
-          height: "123.98px",
-        }}
-      >
-        {followStatus ? (
-          ""
-        ) : (
-          <LargeButton
-            text={"따라해보기"}
-            color={"pink"}
-            onClick={() => {
-              dispatch(followStatusTrue());
-            }}
-          />
-        )}
+        <div
+          style={{
+            position: "relative",
+            top: "-20px",
+            width: "1080px",
+            height: "710px",
+            display: "flex",
+            flexDirection: "row",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
+          <Outlet context={outletProps} />
+        </div>
+        <div
+          style={{
+            position: "relative",
+            top: "10px",
+            height: "123.98px",
+          }}
+        >
+          {followStatus ? (
+            ""
+          ) : (
+            <div
+              style={{
+                position: "relative",
+                left: "80px",
+                display: "flex",
+              }}
+            >
+              <div>
+                <LargeButton
+                  text={"따라해보기"}
+                  color={"pink"}
+                  onClick={() => {
+                    dispatch(followStatusTrue());
+                  }}
+                />
+              </div>
+              <div
+                style={{
+                  visibility: currentNum === totalNum ? "visible" : "hidden",
+                  position: "relative",
+                  top: "40px",
+                  left: "100px",
+                }}
+              >
+                <SmallButton text={"학습종료"} color={"blue"} onClick={ShownEndModal} />
+              </div>
+            </div>
+          )}
+        </div>
       </div>
     </div>
   );

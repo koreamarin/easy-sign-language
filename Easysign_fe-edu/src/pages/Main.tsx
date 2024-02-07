@@ -7,18 +7,16 @@ import hand5 from "../assets/images/hand5.jpg";
 import EduButtons from "../components/main/EduButtons";
 import { useEffect, useState } from "react";
 import API from "../config";
-import { useDispatch } from "react-redux";
+
+localStorage.setItem(
+  "token",
+  "Bearer eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJFYXN5U2lnbiIsImV4cCI6MTcwNzM2MjE1MiwiaWQiOjYsImxvZ2luSWQiOiJzc2FmeSJ9.9fzJLIgW_GIvoXTMaoImYlhD1iw4glJgKkeHvU6fPrkkXiqcOiRKSYm4qShKvlIMPOdQ-442o6DIOMokoIfPiw"
+);
+
+export const token = localStorage.getItem("token") || "";
 
 const Main = () => {
   const [category, setCategory] = useState<any>([]);
-  // 토큰을 로컬 스토리지에 저장
-  localStorage.setItem(
-    "token",
-    "Bearer eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJFYXN5U2lnbiIsImV4cCI6MTcwNzI5MTMxOCwiaWQiOjYsImxvZ2luSWQiOiJzc2FmeSJ9.lMGoAJLXhsWvoOQhRkZloDNkqDyufGpwMzrX_IwyQCaBMjDx5wRvOB0nG-CV7YMvYFqMwsNE3JlXlb1SaMGwbA"
-  );
-
-  // 로컬 스토리지에서 토큰을 가져옴
-  const token = localStorage.getItem("token") || "";
 
   const getSignCategory = async () => {
     const response = await fetch(`${API.CATEGORY}`, {
@@ -34,6 +32,8 @@ const Main = () => {
   useEffect(() => {
     getSignCategory();
   }, []);
+
+  console.log(category);
 
   const JihwaSubtitle = category
     .filter((item: any) => item.gubun === "jihwa")

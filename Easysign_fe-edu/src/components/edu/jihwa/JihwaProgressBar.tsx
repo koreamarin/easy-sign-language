@@ -1,23 +1,24 @@
 import { styled } from "styled-components";
 import { trainingDataType } from "../Lecture";
 
-const Span = styled.span`
+interface SpanProps {
+  backgroundColor?: string;
+}
+
+const Span = styled.span<SpanProps>`
   width: 80px;
   height: 80px;
   display: flex;
   justify-content: center;
   align-items: center;
   margin: 0px -20px;
+  background-color: ${(props) => props.backgroundColor};
+  border-radius: 30%;
   cursor: pointer;
 `;
 
 interface JihwaProgressBarProps {
-  trainingData: {
-    signId: number;
-    content: string;
-    imagePath: string;
-    videoPath: string;
-  }[];
+  trainingData: trainingDataType[];
   currentNum: number;
   currentNumModify: (currentNum: number) => void;
 }
@@ -27,10 +28,10 @@ const JihwaProgressBar = ({
   currentNum,
   currentNumModify,
 }: JihwaProgressBarProps) => {
-  const trainingDataLength = trainingData.length;
+  const totalNum = trainingData.length;
   const onClick = (e: React.MouseEvent<HTMLInputElement>) => {
     const idNumber = parseInt((e.target as HTMLInputElement).id);
-    if (idNumber < trainingDataLength + 1 && idNumber > 0) currentNumModify(idNumber);
+    if (idNumber < totalNum + 1 && idNumber > 0) currentNumModify(idNumber);
   };
 
   return (
@@ -52,7 +53,7 @@ const JihwaProgressBar = ({
               fontWeight: "bold",
             }}
           >
-            /{trainingDataLength}
+            /{totalNum}
           </span>
         </span>
       </div>
@@ -73,7 +74,17 @@ const JihwaProgressBar = ({
           // 폰트 밝기 조절
         }}
       >
-        <Span id={(currentNum - 3).toString()} onClick={onClick}>
+        <Span
+          id={(currentNum - 3).toString()}
+          onClick={onClick}
+          backgroundColor={((currentNum: number): string => {
+            if (currentNum > 3) {
+              if (trainingData[currentNum - 4].success) return "#9ac9ff";
+              else return "#ff8686";
+            }
+            return "#FFEAEE";
+          })(currentNum)}
+        >
           {((currentNum: number) => {
             if (currentNum < 4) {
               return "";
@@ -81,7 +92,17 @@ const JihwaProgressBar = ({
             return trainingData[currentNum - 4].content;
           })(currentNum)}
         </Span>
-        <Span id={(currentNum - 2).toString()} onClick={onClick}>
+        <Span
+          id={(currentNum - 2).toString()}
+          onClick={onClick}
+          backgroundColor={((currentNum: number): string => {
+            if (currentNum > 2) {
+              if (trainingData[currentNum - 3].success) return "#9ac9ff";
+              else return "#ff8686";
+            }
+            return "#FFEAEE";
+          })(currentNum)}
+        >
           {((currentNum: number) => {
             if (currentNum < 3) {
               return "";
@@ -89,7 +110,17 @@ const JihwaProgressBar = ({
             return trainingData[currentNum - 3].content;
           })(currentNum)}
         </Span>
-        <Span id={(currentNum - 1).toString()} onClick={onClick}>
+        <Span
+          id={(currentNum - 1).toString()}
+          onClick={onClick}
+          backgroundColor={((currentNum: number): string => {
+            if (currentNum > 1) {
+              if (trainingData[currentNum - 2].success) return "#9ac9ff";
+              else return "#ff8686";
+            }
+            return "#FFEAEE";
+          })(currentNum)}
+        >
           {((currentNum: number) => {
             if (currentNum < 2) {
               return "";
@@ -120,25 +151,55 @@ const JihwaProgressBar = ({
             {trainingData[currentNum - 1].content}
           </span>
         </span>
-        <Span id={(currentNum + 1).toString()} onClick={onClick}>
+        <Span
+          id={(currentNum + 1).toString()}
+          onClick={onClick}
+          backgroundColor={((currentNum: number): string => {
+            if (currentNum < totalNum) {
+              if (trainingData[currentNum].success) return "#9ac9ff";
+              else return "#ff8686";
+            }
+            return "#FFEAEE";
+          })(currentNum)}
+        >
           {((currentNum: number) => {
-            if (currentNum > trainingDataLength - 1) {
+            if (currentNum > totalNum - 1) {
               return "";
             }
             return trainingData[currentNum].content;
           })(currentNum)}
         </Span>
-        <Span id={(currentNum + 2).toString()} onClick={onClick}>
+        <Span
+          id={(currentNum + 2).toString()}
+          onClick={onClick}
+          backgroundColor={((currentNum: number): string => {
+            if (currentNum < totalNum - 1) {
+              if (trainingData[currentNum + 1].success) return "#9ac9ff";
+              else return "#ff8686";
+            }
+            return "#FFEAEE";
+          })(currentNum)}
+        >
           {((currentNum: number) => {
-            if (currentNum > trainingDataLength - 2) {
+            if (currentNum > totalNum - 2) {
               return "";
             }
             return trainingData[currentNum + 1].content;
           })(currentNum)}
         </Span>
-        <Span id={(currentNum + 3).toString()} onClick={onClick}>
+        <Span
+          id={(currentNum + 3).toString()}
+          onClick={onClick}
+          backgroundColor={((currentNum: number): string => {
+            if (currentNum < totalNum - 2) {
+              if (trainingData[currentNum + 2].success) return "#9ac9ff";
+              else return "#ff8686";
+            }
+            return "#FFEAEE";
+          })(currentNum)}
+        >
           {((currentNum: number) => {
-            if (currentNum > trainingDataLength - 3) {
+            if (currentNum > totalNum - 3) {
               return "";
             }
             return trainingData[currentNum + 2].content;

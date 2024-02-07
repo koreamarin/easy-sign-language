@@ -3,28 +3,62 @@ import Spinner from "../../common/Spinner";
 import BracketButton from "../../Button/BracketButton";
 import Sticker from "../../../assets/images/sticker.png";
 import ResultModal from "../../common/ResultModal";
-import { useState } from "react";
 import JihwaProgressBar from "./JihwaProgressBar";
 import { trainingDataType } from "../Lecture";
+import { useDispatch } from "react-redux";
+import { LearningProgressSet } from "../../../redux/modules/ProgressSlice";
 
 const JihwaComponent = () => {
-  const [modalShown, setModalShown] = useState<boolean>(false);
-  const [success, setSuccess] = useState<boolean>(false);
   interface IFollowersContext {
     followStatus: Boolean;
     trainingData: trainingDataType[];
-    setTrainingData: (trainingData: trainingDataType) => void;
+    setTrainingData: (trainingData: trainingDataType[]) => void;
     currentNum: number;
     currentNumModify: (currentNum: number) => void;
     addSticker: number;
+    success: boolean;
+    setSuccess: (success: boolean) => void;
+    modalShown: boolean;
+    setModalShown: (modalShown: boolean) => void;
+    ShownEndModal: () => void;
+    ShownEndModalStatus: boolean;
   }
-  const { followStatus, trainingData, currentNum, currentNumModify, addSticker } =
-    useOutletContext<IFollowersContext>();
+  const {
+    followStatus,
+    trainingData,
+    setTrainingData,
+    currentNum,
+    currentNumModify,
+    addSticker,
+    success,
+    setSuccess,
+    modalShown,
+    setModalShown,
+    ShownEndModal,
+    ShownEndModalStatus,
+  } = useOutletContext<IFollowersContext>();
+
+  const disPatch = useDispatch();
+
+  const totalNum = trainingData.length;
+
+  // trainingData의 모든 리스트에서 success가 true인 것의 개수를 세어서 100으로 나눈 값을 반환
+  const LearningProgress = () => {
+    let successCount = 0;
+    trainingData.map((item) => {
+      if (item.success) successCount++;
+    });
+    return Math.floor((successCount / totalNum) * 100);
+  };
 
   const successModal = () => {
     setModalShown(!modalShown);
-    setSuccess(modalShown ? false : true);
+    trainingData[currentNum - 1].success = true;
+    setTrainingData(trainingData);
+    setSuccess(true);
+    disPatch(LearningProgressSet(LearningProgress()));
   };
+
   const failModal = () => {
     setModalShown(!modalShown);
     setSuccess(false);
@@ -136,15 +170,15 @@ const JihwaComponent = () => {
           </div>
           <ResultModal
             success={success}
-            setSuccess={setSuccess}
-            shown={modalShown}
+            modalShown={modalShown}
             setModalShown={setModalShown}
             BookmarkButton={true}
             stickerNum={addSticker}
             currentNum={currentNum}
             currentNumModify={currentNumModify}
-            totalNum={trainingData.length}
-            signId={trainingData[currentNum - 1].signId}
+            trainingData={trainingData}
+            ShownEndModal={ShownEndModal}
+            ShownEndModalStatus={ShownEndModalStatus}
           />
         </>
       ) : (

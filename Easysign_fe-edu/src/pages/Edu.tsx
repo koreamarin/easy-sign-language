@@ -11,18 +11,7 @@ const Edu = () => {
         alignItems: "center",
       }}
     >
-      <div
-        style={{
-          border: "1px solid #b8b8b8",
-          width: "1300px",
-          height: "900px",
-          display: "flex", // 추가
-          flexDirection: "row", // 추가
-        }}
-      >
-        <Nav />
-        <Outlet />
-      </div>
+      <Outlet />
     </div>
   );
 };

@@ -92,7 +92,7 @@ const AllComponentsContainer = () => {
         <Progress percentage={76} wrong_answer={true} />
         <Progress percentage={76} wrong_answer={false} />
         <Progress percentage={76} />
-        <Nav />
+        <Nav Progress2Visibility={true} />
       </div>
     </div>
   );
