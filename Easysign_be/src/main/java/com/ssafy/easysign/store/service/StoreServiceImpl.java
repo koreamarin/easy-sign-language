@@ -3,6 +3,7 @@ package com.ssafy.easysign.store.service;
 import com.ssafy.easysign.global.auth.PrincipalDetails;
 import com.ssafy.easysign.store.dto.response.ItemResponse;
 import com.ssafy.easysign.store.entity.Store;
+import com.ssafy.easysign.store.mapper.StoreMapper;
 import com.ssafy.easysign.store.repository.StoreRepository;
 import com.ssafy.easysign.user.entity.User;
 import com.ssafy.easysign.user.entity.UserItem;
@@ -37,6 +38,10 @@ public class StoreServiceImpl implements StoreService {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private StoreMapper storeMapper;
+
     @Override
     public List<ItemResponse> getItemResponseList() {
         List<Long> except = new ArrayList<>();
@@ -44,7 +49,7 @@ public class StoreServiceImpl implements StoreService {
         except.add(2L);
         Optional<List<Store>> stores = storeRepository.findAllByItemIdNotIn(except);
         List<ItemResponse> itemResponses = stores.get().stream()
-                .map(this::mapToItemResponses)
+                .map(storeMapper::toItemResponse)
                 .collect(Collectors.toList());
         log.info("Item Responses : {}", itemResponses);
         return itemResponses;
@@ -53,11 +58,7 @@ public class StoreServiceImpl implements StoreService {
     @Override
     public Optional<ItemResponse> getItemDetails(Long itemId) {
         Optional<Store> store = storeRepository.findByItemId(itemId);
-        ItemResponse itemResponse = new ItemResponse();
-        itemResponse.setItemName(store.get().getItemName());
-        itemResponse.setItemId(store.get().getItemId());
-        itemResponse.setImagePath(store.get().getImagePath());
-        itemResponse.setCategoryName(store.get().getCategoryName().toString());
+        ItemResponse itemResponse = storeMapper.toItemResponse(store.orElseThrow());
         return Optional.of(itemResponse);
     }
 
@@ -99,14 +100,5 @@ public class StoreServiceImpl implements StoreService {
         } else {
             throw new NotFoundException("사용자를 찾을 수 없습니다.");
         }
-    }
-
-    public ItemResponse mapToItemResponses(Store store){
-        ItemResponse itemResponse = new ItemResponse();
-        itemResponse.setItemId(store.getItemId());
-        itemResponse.setItemName(store.getItemName());
-        itemResponse.setCategoryName(store.getCategoryName().toString());
-        itemResponse.setImagePath(store.getImagePath());
-        return itemResponse;
     }
 }

@@ -3,14 +3,17 @@ package com.ssafy.easysign.user.service;
 import com.ssafy.easysign.global.auth.PrincipalDetails;
 import com.ssafy.easysign.sign.dto.response.SignResponse;
 import com.ssafy.easysign.sign.entity.SignInfo;
+import com.ssafy.easysign.sign.mapper.SignMapper;
 import com.ssafy.easysign.sign.repository.SignRepository;
 import com.ssafy.easysign.store.dto.response.ItemResponse;
 import com.ssafy.easysign.store.entity.Store;
+import com.ssafy.easysign.store.mapper.StoreMapper;
 import com.ssafy.easysign.store.repository.StoreRepository;
 import com.ssafy.easysign.user.dto.request.ProfileRequest;
 import com.ssafy.easysign.user.dto.response.UserInfoResponse;
 import com.ssafy.easysign.user.entity.*;
 import com.ssafy.easysign.user.exception.NotFoundException;
+import com.ssafy.easysign.user.mapper.UserMapper;
 import com.ssafy.easysign.user.repository.*;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
@@ -40,30 +43,34 @@ public class UserServiceImpl implements UserService {
     private final StickerLogRepository stickerLogRepository;
     private final UserBookMarkRepository userBookMarkRepository;
     private final UserProgressRepository userProgressRepository;
+    private final SignMapper signMapper;
+    private final StoreMapper storeMapper;
+    private final UserMapper userMapper;
 
     @PersistenceContext
     private EntityManager entityManager;
 
+
     @Override
     public UserInfoResponse getNavUserInfo(String loginId, Long userId) {
-        UserInfoResponse response = new UserInfoResponse();
         Optional<User> user = userRepository.findByLoginId(loginId);
 
         if(user.isEmpty()) throw new NotFoundException("사용자를 찾을 수 없습니다.");
-        response.setName(user.get().getName());
-        response.setSticker(user.get().getSticker());
 
         Optional<List<UserItem>> userProfile = userItemRepository.findByUser_UserIdAndIsUse(userId, true);
+        String backgroundPath = "";
+        String characterPath = "";
+
         for(UserItem item : userProfile.get()) {
             Optional<Store> itemInfo = storeRepository.findByItemId(item.getItem().getItemId());
             if(itemInfo.isEmpty()) throw new NotFoundException("해당하는 아이템을 찾을 수 없습니다.");
             if(itemInfo.get().getCategoryName().toString().equals("background")) {
-                response.setProfileBackgroundPath(itemInfo.get().getImagePath());
+                backgroundPath = itemInfo.get().getImagePath();
             } else {
-                response.setProfileCharacterPath(itemInfo.get().getImagePath());
+                characterPath = itemInfo.get().getImagePath();
             }
         }
-        return response;
+        return userMapper.toUserInfoResponse(user.get(), characterPath, backgroundPath);
     }
 
     @Override
@@ -79,28 +86,26 @@ public class UserServiceImpl implements UserService {
         Long userId = userDetails.getUserId();
         User user = userRepository.findById(userId).orElseThrow(()->new NotFoundException("사용자가 없습니다."));
         List<BookMark> bookMarkList = userBookMarkRepository.findBookMarksByUser(user);
-        List<SignInfo> signInfos =bookMarkList.stream()
+        List<SignInfo> signInfos = bookMarkList.stream()
                 .map(BookMark::getSignInfo)
                 .toList();
         log.info("signInfos : " + signInfos);
-        List<SignResponse> signResponses = signInfos.stream()
-                .map(SignResponse::of)
+        return signInfos.stream()
+                .map(signMapper::toSignResponse)
+//                .map(SignResponse::of)
                 .toList();
-        return signResponses;
     }
 
     @Override
     public void saveUserProgress(Long signId, Authentication authentication) {
         PrincipalDetails userDetails = (PrincipalDetails) authentication.getPrincipal();
         Long userId = userDetails.getUserId();
-        UserProgress progress = new UserProgress();
         Optional<User> user = userRepository.findById(userId);
         if(user.isEmpty()) throw new NotFoundException("사용자를 찾을 수 없습니다.");
 
         SignInfo signInfo = signRepository.findBySignId(signId);
 
-        progress.setUser(user.get());
-        progress.setSignInfo(signInfo);
+        UserProgress progress = userMapper.toUserProgress(user.get(), signInfo);
 
         userProgressRepository.save(progress);
     }
@@ -108,13 +113,10 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void registProfile(Long userId, Long itemId) {
-        UserItem userItem = new UserItem();
         Optional<User> user = userRepository.findById(userId);
         Optional<Store> item = storeRepository.findByItemId(itemId);
 
-        userItem.setUser(user.get());
-        userItem.setItem(item.get());
-        userItem.setUse(true);
+        UserItem userItem = userMapper.toUserItem(user.orElseThrow(), item.orElseThrow(), true);
         userItemRepository.save(userItem);
     }
 
@@ -126,10 +128,7 @@ public class UserServiceImpl implements UserService {
         SignInfo signInfo = new SignInfo();
         signInfo.setSignId(signId);
 
-        BookMark bookMark = new BookMark();
-        bookMark.setUser(user);
-        bookMark.setSignInfo(signInfo);
-
+        BookMark bookMark = userMapper.toBookMark(user, signInfo);
         userBookMarkRepository.save(bookMark);
     }
 
@@ -144,21 +143,17 @@ public class UserServiceImpl implements UserService {
             userItemRepository.save(item);
         }
 
-        // 새 아이템 적용
-        UserItem userItem = new UserItem();
         User user = new User();
         user.setUserId(userId);
 
-        // 배경 적용
         Store item = new Store();
-        item.setItemId(profileRequest.getBackgroundId());
-        userItem.setUser(user);
-        userItem.setItem(item);
-        userItem.setUse(true);
+        item.setItemId(profileRequest.backgroundId());
+
+        UserItem userItem = userMapper.toUserItem(user, item, true);
         userItemRepository.save(userItem);
 
         // 캐릭터 적용
-        item.setItemId(profileRequest.getCharacterId());
+        item.setItemId(profileRequest.characterId());
         userItem.setItem(item);
         userItemRepository.save(userItem);
     }
@@ -231,12 +226,6 @@ public class UserServiceImpl implements UserService {
 
         // 즐겨찾기가 존재할 경우 삭제 수행
         if (bookMark.isPresent()) {
-            // 주어진 signId로 SignInfo를 찾음
-            Optional<SignInfo> signInfo = signRepository.findById(signId);
-
-            // 주어진 userId로 User를 찾음
-            Optional<User> user = userRepository.findById(userId);
-
             // 즐겨찾기 삭제
             userBookMarkRepository.deleteByUser_userIdAndSignInfo_signId(userId, signId);
             return true; // 삭제 성공
@@ -263,11 +252,12 @@ public class UserServiceImpl implements UserService {
             log.info("stickerCountAfter : " + stickerCountAfter);
 
             // StickerLog에 저장
-            StickerLog stickerLog = new StickerLog();
-            stickerLog.setUserId(getUser(userId));
-            stickerLog.setStickerCountBefore(stickerCountBefore);
-            stickerLog.setStickerCountAfter(stickerCountAfter);
-            stickerLog.setOccurDate(new Timestamp(System.currentTimeMillis()));
+            StickerLog stickerLog = StickerLog.builder()
+                    .user(getUser(userId))
+                    .stickerCountBefore(stickerCountBefore)
+                    .stickerCountAfter(stickerCountAfter)
+                    .occurDate(new Timestamp(System.currentTimeMillis()))
+                    .build();
             stickerLogRepository.save(stickerLog);
         } catch (Exception e) {
             // 예외 처리
@@ -287,11 +277,7 @@ public class UserServiceImpl implements UserService {
                 Optional<Store> storeOptional = storeRepository.findByItemId(itemId);
                 storeOptional.ifPresent(store -> {
                     // Store에서 필요한 정보를 이용하여 ItemResponse를 생성
-                    ItemResponse itemResponse = new ItemResponse();
-                    itemResponse.setItemId(store.getItemId());
-                    itemResponse.setItemName(store.getItemName());
-                    itemResponse.setCategoryName(store.getCategoryName().toString());
-                    itemResponse.setImagePath(store.getImagePath());
+                    ItemResponse itemResponse = storeMapper.toItemResponse(storeOptional.orElseThrow());
                     // 생성된 ItemResponse를 리스트에 추가
                     userItemResponses.add(itemResponse);
                 });

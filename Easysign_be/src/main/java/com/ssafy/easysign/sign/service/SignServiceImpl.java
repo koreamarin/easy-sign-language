@@ -5,11 +5,14 @@ import com.ssafy.easysign.sign.dto.response.CategoryResponse;
 import com.ssafy.easysign.sign.dto.response.SignResponse2;
 import com.ssafy.easysign.sign.entity.SignCategory;
 import com.ssafy.easysign.sign.entity.SignInfo;
+import com.ssafy.easysign.sign.mapper.SignCategoryMapper;
+import com.ssafy.easysign.sign.mapper.SignMapper;
 import com.ssafy.easysign.sign.repository.SignCategoryRepository;
 import com.ssafy.easysign.sign.repository.SignRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+
 import java.util.List;
 
 @Service
@@ -19,14 +22,18 @@ public class SignServiceImpl implements SignService {
 
     private final SignRepository signRepository;
     private final SignCategoryRepository signCategoryRepository;
-
+    private final SignMapper signMapper;
+    private final SignCategoryMapper signCategoryMapper;
 
     @Override
     public List<CategoryResponse> getCategoryList() {
         List<SignCategory> signCategories = signCategoryRepository.findAll();
         log.info("signCategories : " + signCategories);
+//        List<CategoryResponse> categoryResponses = signCategories.stream()
+//                .map(CategoryResponse::of)
+//                .toList();
         List<CategoryResponse> categoryResponses = signCategories.stream()
-                .map(CategoryResponse::of)
+                .map(signCategoryMapper::toCategoryResponse)
                 .toList();
         log.info("categoryResponses : " + categoryResponses);
         return categoryResponses;
@@ -37,9 +44,13 @@ public class SignServiceImpl implements SignService {
         SignCategory signCategory = signCategoryRepository.findByCategoryName(categoryName);
         Long categoryId = signCategory.getCategoryId();
         List<SignInfo> signInfos = signRepository.findByCategoryId(categoryId);
+        log.info("signInfos : " + signInfos );
         List<SignResponse2> signResponses = signInfos.stream()
-                .map(SignResponse2::of)
+                .map(signMapper::toSignResponse2)
                 .toList();
+//        List<SignResponse2> signResponses = signInfos.stream()
+//                .map(SignResponse2::of)
+//                .toList();
         return signResponses;
     }
 }

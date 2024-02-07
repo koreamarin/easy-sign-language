@@ -2,7 +2,6 @@ package com.ssafy.easysign.user.entity;
 
 import jakarta.persistence.*;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.SQLDelete;
@@ -12,7 +11,6 @@ import java.sql.Timestamp;
 
 @Entity
 @Data
-@NoArgsConstructor
 @SQLDelete(sql="UPDATE user set deleted_at = NOW(), is_deleted = true where user_id = ?")
 @SQLRestriction("is_deleted = false")
 public class User {

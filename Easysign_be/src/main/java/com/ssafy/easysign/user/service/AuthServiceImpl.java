@@ -2,6 +2,7 @@ package com.ssafy.easysign.user.service;
 
 import com.ssafy.easysign.user.dto.request.RegistRequest;
 import com.ssafy.easysign.user.entity.User;
+import com.ssafy.easysign.user.mapper.UserMapper;
 import com.ssafy.easysign.user.repository.AuthRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -17,6 +18,7 @@ public class AuthServiceImpl implements AuthService {
 
     private final AuthRepository authRepository;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
+    private final UserMapper userMapper;
 
     @Override
     public void registerUser(RegistRequest registRequest) {
@@ -25,12 +27,8 @@ public class AuthServiceImpl implements AuthService {
             throw new IllegalArgumentException("중복된 필드가 존재합니다.");
         }
 
-        User user = new User();
-        user.setLoginId(registRequest.getLoginId());
-        user.setName(registRequest.getName());
-        user.setEmail(registRequest.getEmail());
-        user.setPassword(bCryptPasswordEncoder.encode(registRequest.getPassword()));
-        user.setName(registRequest.getName());
+        User user = userMapper.toUser(registRequest);
+        user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
 
         authRepository.save(user);  // JPA를 사용하여 사용자 등록 로직
     }
@@ -61,12 +59,12 @@ public class AuthServiceImpl implements AuthService {
     }
 
     private boolean invalidInput(RegistRequest registRequest) {
-        if(!idCheck(registRequest.getLoginId())) {
+        if(!idCheck(registRequest.loginId())) {
             log.error("already exist id");
             return true;
         }
 
-        if(!nameCheck(registRequest.getName())) {
+        if(!nameCheck(registRequest.name())) {
             log.error("already exist name");
             return true;
         }

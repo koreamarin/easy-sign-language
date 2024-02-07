@@ -1,11 +1,15 @@
 package com.ssafy.easysign.user.entity;
 
 import jakarta.persistence.*;
-import lombok.Data;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.sql.Timestamp;
 
-@Data
+@Getter
+@Setter
+@Builder
 @Entity
 public class StickerLog {
     @Id
@@ -15,7 +19,7 @@ public class StickerLog {
 
     @ManyToOne
     @JoinColumn(name = "user_id")
-    private User userId;
+    private User user;
 
     @Column(nullable = false)
     private int stickerCountBefore;

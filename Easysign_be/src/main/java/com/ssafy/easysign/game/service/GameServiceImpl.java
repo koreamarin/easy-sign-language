@@ -4,6 +4,7 @@ import com.ssafy.easysign.global.auth.PrincipalDetails;
 import com.ssafy.easysign.global.jpaEnum.Gubun;
 import com.ssafy.easysign.sign.dto.response.SignResponse;
 import com.ssafy.easysign.sign.entity.SignInfo;
+import com.ssafy.easysign.sign.mapper.SignMapper;
 import com.ssafy.easysign.sign.repository.SignRepository;
 import com.ssafy.easysign.user.entity.User;
 import com.ssafy.easysign.user.entity.UserProgress;
@@ -28,13 +29,22 @@ public class GameServiceImpl implements GameService  {
 
     @Autowired
     private UserProgressRepository userProgressRepository;
+
+    @Autowired
+    private SignMapper signMapper;
+
     @Override
     public List<SignResponse> getSpeedGameList(Gubun gubun) {
         List<SignInfo> signInfos = signRepository.findByGubun(gubun);
         // 결과 매핑
-        List<SignResponse> signResponses = signInfos.stream()
-                .map(SignResponse::of)
-                .toList();
+        List<SignResponse> signResponses = new ArrayList<>();
+        for (SignInfo signInfo : signInfos) {
+            signResponses.add(signMapper.toSignResponse(signInfo));
+        }
+//        List<SignResponse> signResponses = signInfos.stream()
+//                .map(SignResponse::of)
+//                .toList();
+
         // 랜덤하게 20개의 수화 선택
         Collections.shuffle(signResponses);
         int numberOfSignsToReturn = Math.min(signResponses.size(), 20);
@@ -64,7 +74,8 @@ public class GameServiceImpl implements GameService  {
         log.info("signInfos : " + signInfos);
 
         List<SignResponse> signResponses = new ArrayList<>(signInfos.stream()
-                .map(SignResponse::of)
+//                .map(SignResponse::of)
+                .map(signMapper::toSignResponse)
                 .toList());
 
         log.info("signResponses :" + signResponses);

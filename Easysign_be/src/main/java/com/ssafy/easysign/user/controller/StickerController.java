@@ -30,7 +30,7 @@ public class StickerController {
             log.info("/user " + authentication.getName() + "의 스티커 개수 조회요청");
             PrincipalDetails userDetails = (PrincipalDetails) authentication.getPrincipal();
             UserInfoResponse user = userService.getNavUserInfo(userDetails.getUser().getLoginId(), userDetails.getUserId());
-            return new ResponseEntity<>(user.getSticker(), HttpStatus.OK);
+            return new ResponseEntity<>(user.sticker(), HttpStatus.OK);
         } catch (NotFoundException e) {
             return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
         } catch (Exception e) {

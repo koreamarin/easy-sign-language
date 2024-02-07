@@ -31,7 +31,7 @@ public class AuthController {
             // 사용자 등록 서비스 호출
             authService.registerUser(registRequest);
 
-            User user = userService.getUser(registRequest.getLoginId());
+            User user = userService.getUser(registRequest.loginId());
             //기본 이미지, 배경 등록
             userService.registProfile(user.getUserId(), (long)1);
             userService.registProfile(user.getUserId(), (long)2);
