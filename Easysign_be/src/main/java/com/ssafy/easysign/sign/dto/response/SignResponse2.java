@@ -5,10 +5,8 @@ import com.ssafy.easysign.sign.entity.SignInfo;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 @Data
-@NoArgsConstructor
 @Builder
 @AllArgsConstructor
 
@@ -19,7 +17,7 @@ public class SignResponse2 {
     private String videoPath;
     private Long categoryId;
     private Gubun gubun;
-    public static SignResponse2 fromSignInfo (SignInfo signInfo){
+    public static SignResponse2 of (SignInfo signInfo){
         return  SignResponse2.builder()
         .signId(signInfo.getSignId())
         .content(signInfo.getContent())

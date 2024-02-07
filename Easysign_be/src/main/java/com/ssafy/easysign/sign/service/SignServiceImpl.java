@@ -10,8 +10,6 @@ import com.ssafy.easysign.sign.repository.SignRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -37,26 +35,11 @@ public class SignServiceImpl implements SignService {
     @Override
     public List<SignResponse2> getSignResponseList(String categoryName, Gubun gubun) {
         SignCategory signCategory = signCategoryRepository.findByCategoryName(categoryName);
-        log.info("signCategory : "+signCategory);
         Long categoryId = signCategory.getCategoryId();
-        log.info("categoryId : " + categoryId);
         List<SignInfo> signInfos = signRepository.findByCategoryId(categoryId);
-        log.info("signInfos : " + signInfos );
-        List<SignResponse2> signResponses = new ArrayList<>();
-        for(SignInfo signInfo : signInfos){
-            signResponses.add(mapToSignResponses(signInfo,categoryId,gubun));
-        }
+        List<SignResponse2> signResponses = signInfos.stream()
+                .map(SignResponse2::of)
+                .toList();
         return signResponses;
-    }
-
-    public SignResponse2 mapToSignResponses(SignInfo signInfo, Long categoryId, Gubun gubun) {
-        SignResponse2 signResponse = new SignResponse2();
-        signResponse.setSignId(signInfo.getSignId());
-        signResponse.setContent(signInfo.getContent());
-        signResponse.setImagePath(signInfo.getImagePath());
-        signResponse.setVideoPath(signInfo.getVideoPath());
-        signResponse.setCategoryId(categoryId);
-        signResponse.setGubun(gubun);
-        return signResponse;
     }
 }
