@@ -49,7 +49,7 @@ const AvatarCanvas = ({ width, height, url, avatar_name }: AvatarCanvasProps) =>
   }, [url, avatar_name]);
 
   return (
-    <div className="absolute" style={{ width: width, height: height, position: "absolute", top: 0}}>
+    <div className="absolute" style={{ width: width, height: height}}>
       <Canvas camera={{ fov: 30, position: [0.0, 0.5, 200] }}>
         <ambientLight />
         <directionalLight />

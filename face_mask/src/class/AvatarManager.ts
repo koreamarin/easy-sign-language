@@ -131,8 +131,6 @@ class AvatarManager {
       (translation.z) * trans_rate_z
     );
 
-    console.log(translation);
-    console.log(root?.position);
   };
 }
 
