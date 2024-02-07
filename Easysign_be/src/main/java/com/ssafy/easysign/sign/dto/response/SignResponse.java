@@ -1,14 +1,12 @@
 package com.ssafy.easysign.sign.dto.response;
 
 import com.ssafy.easysign.sign.entity.SignInfo;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Data
 @NoArgsConstructor
 @Builder
+@Getter
 @AllArgsConstructor
 
 public class SignResponse {
@@ -17,7 +15,7 @@ public class SignResponse {
     private String imagePath;
     private String videoPath;
 
-    public static SignResponse fromSignInfo (SignInfo signInfo){
+    public static SignResponse of (SignInfo signInfo){
         return  SignResponse.builder()
         .signId(signInfo.getSignId())
         .content(signInfo.getContent())
@@ -25,5 +23,4 @@ public class SignResponse {
         .videoPath(signInfo.getVideoPath())
         .build();
     }
-
 }

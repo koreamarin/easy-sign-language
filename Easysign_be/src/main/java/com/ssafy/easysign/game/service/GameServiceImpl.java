@@ -8,8 +8,6 @@ import com.ssafy.easysign.sign.repository.SignRepository;
 import com.ssafy.easysign.user.entity.User;
 import com.ssafy.easysign.user.entity.UserProgress;
 import com.ssafy.easysign.user.repository.UserProgressRepository;
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.PersistenceContext;
 import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,9 +23,6 @@ import java.util.List;
 @Transactional
 public class GameServiceImpl implements GameService  {
 
-    @PersistenceContext
-    private EntityManager entityManager;
-
     @Autowired
     private SignRepository signRepository;
 
@@ -35,29 +30,15 @@ public class GameServiceImpl implements GameService  {
     private UserProgressRepository userProgressRepository;
     @Override
     public List<SignResponse> getSpeedGameList(Gubun gubun) {
-        // 쿼리 문자열 초기화
-        String queryString = "SELECT * FROM sign_info";
-
-        // gubun이 null이 아닌 경우 WHERE 절 추가
-        if (gubun != null) {
-            queryString += " WHERE gubun = :gubun";
-        }
-
-        // 쿼리 마지막에 RAND() 함수와 리미트 추가
-        queryString += " ORDER BY RAND() LIMIT :limit";
-
-        // 네이티브 쿼리 실행
-        List<SignInfo> signInfos = entityManager.createNativeQuery(queryString, SignInfo.class)
-                .setParameter("limit", 20) // 리미트 설정
-                .setParameter("gubun", gubun != null ? gubun.toString() : null) // gubun이 null이 아닐 때 문자열로 변환하여 전달
-                .getResultList();
-
+        List<SignInfo> signInfos = signRepository.findByGubun(gubun);
         // 결과 매핑
-        List<SignResponse> signResponses = new ArrayList<>();
-        for (SignInfo signInfo : signInfos) {
-            signResponses.add(mapToSignResponses(signInfo));
-        }
-        return signResponses;
+        List<SignResponse> signResponses = signInfos.stream()
+                .map(SignResponse::of)
+                .toList();
+        // 랜덤하게 20개의 수화 선택
+        Collections.shuffle(signResponses);
+        int numberOfSignsToReturn = Math.min(signResponses.size(), 20);
+        return signResponses.subList(0, numberOfSignsToReturn);
     }
 
     @Override
@@ -68,40 +49,29 @@ public class GameServiceImpl implements GameService  {
 
         // 사용자의 진행 정보 가져오기
         List<UserProgress> userProgresses = userProgressRepository.findByUser_userId(userId);
+        log.info("userProgresses : " + userProgresses);
 
-        List<SignResponse> signResponses = new ArrayList<>();
-        // 진행 정보를 기반으로 해당 기호들을 가져옴
+        List<SignInfo> signInfos = new ArrayList<>();
+
+        // 진행 정보를 기반으로 해당 수화들을 가져옴
         for (UserProgress userProgress : userProgresses) {
-            SignInfo signInfo = userProgress.getSignInfo(); // 진행 정보에서 기호 가져오기
+            SignInfo signInfo = userProgress.getSignInfo(); // 진행 정보에서 수화 가져오기
             if (signInfo != null) {
-                SignResponse signResponse = mapToSignResponse(signInfo);
-                signResponses.add(signResponse);
+                signInfos.add(signInfo);
             }
         }
-        // 랜덤하게 10개의 기호 선택
+
+        log.info("signInfos : " + signInfos);
+
+        List<SignResponse> signResponses = new ArrayList<>(signInfos.stream()
+                .map(SignResponse::of)
+                .toList());
+
+        log.info("signResponses :" + signResponses);
+
+        // 랜덤하게 10개의 수화 선택
         Collections.shuffle(signResponses);
         int numberOfSignsToReturn = Math.min(signResponses.size(), 10);
         return signResponses.subList(0, numberOfSignsToReturn);
     }
-
-
-    private SignResponse mapToSignResponse(SignInfo signInfo) {
-        SignResponse signResponse = new SignResponse();
-        signResponse.setSignId(signInfo.getSignId());
-        signResponse.setContent(signInfo.getContent());
-        signResponse.setImagePath(signInfo.getImagePath());
-        signResponse.setVideoPath(signInfo.getVideoPath());
-        return signResponse;
-    }
-
-
-    public SignResponse mapToSignResponses(SignInfo signInfo) {
-        SignResponse signResponse = new SignResponse();
-        signResponse.setSignId(signInfo.getSignId());
-        signResponse.setContent(signInfo.getContent());
-        signResponse.setImagePath(signInfo.getImagePath());
-        signResponse.setVideoPath(signInfo.getVideoPath());
-        return signResponse;
-    }
-
 }

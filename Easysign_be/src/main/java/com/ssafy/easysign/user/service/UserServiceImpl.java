@@ -84,7 +84,7 @@ public class UserServiceImpl implements UserService {
                 .toList();
         log.info("signInfos : " + signInfos);
         List<SignResponse> signResponses = signInfos.stream()
-                .map(SignResponse::fromSignInfo)
+                .map(SignResponse::of)
                 .toList();
         return signResponses;
     }

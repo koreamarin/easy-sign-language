@@ -36,11 +36,14 @@ public class GameController {
 
     @GetMapping("sonagi-game")
     public ResponseEntity<List<SignResponse>> getSonagiGameList(Authentication authentication){
-        try{
-        List<SignResponse> signResponses = gameService.getSonagiGameList(authentication);
+        try {
+            List<SignResponse> signResponses = gameService.getSonagiGameList(authentication);
+            log.info("11111");
             return new ResponseEntity<>(signResponses, HttpStatus.OK);
-        }catch (Exception e){
+        } catch (Exception e) {
+            log.error("Error while fetching Sonagi game list", e); // 예외 메시지 로그에 출력
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }
+
 }
