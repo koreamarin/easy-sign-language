@@ -38,4 +38,6 @@ public interface UserService {
     void updateStickerCountAfter(Long userId, int count);
 
     List<ItemResponse> getUserItems(Long userId);
+
+    boolean getUserProgressCount(Long userId);
 }

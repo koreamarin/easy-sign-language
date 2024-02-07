@@ -287,6 +287,12 @@ public class UserServiceImpl implements UserService {
         return userItemResponses;
     }
 
+    @Override
+    public boolean getUserProgressCount(Long userId) {
+        List<UserProgress> progress = userProgressRepository.findAllByUser_userId(userId);
+        return progress.size() >= 10 ? true: false;
+    }
+
     private User getUser(Long userId) {
         Optional<User> user = userRepository.findById(userId);
         if (user.isPresent()) {
