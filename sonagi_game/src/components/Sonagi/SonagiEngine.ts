@@ -128,6 +128,7 @@ class SonagiEngine {
 		}
 	}
 
+
 	//격자 board 생성 / 렌더링
 	private generateGrid() {
 		const cellWidth = this.boardWidth / this.numOfCols;
@@ -139,23 +140,41 @@ class SonagiEngine {
 					this.context.fillStyle = "white";
 				}
 				else{
-					if(cell instanceof SonagiWord)
-					this.context.fillStyle = "black";
-					this.context.font ="30px 고딕";
-					this.context.fillText(cell.word, colIndex*cellWidth, (rowIndex+1)*cellHeight);
+					if(cell instanceof SonagiWord){
+						this.context.beginPath();
+						this.context.strokeStyle = "#F8FFA9";
+						this.context.fillStyle = "#F8FFA9";
+						
+						this.context.lineJoin = "round";
+						this.context.lineWidth = 35;
+
+						this.context.strokeRect(
+							colIndex * cellWidth + 20,
+							rowIndex * cellHeight + 20,
+							cellWidth - 30,
+							cellHeight - 30,
+						)
+						this.context.closePath();
+
+
+
+						this.context.beginPath();
+						this.context.fillStyle = "black";
+						this.context.font ="30px 고딕 bold";
+
+						this.context.textAlign= "center";
+						this.context.fillText(cell.word, 
+							(colIndex*cellWidth)+ cellWidth/2 + 3, 
+							(rowIndex)*cellHeight + cellHeight/2 + 15 + 3);
+						this.context.fill();
+						this.context.closePath();
+						
+						
+					}
+					
+					
 				}
-				// this.context.fillRect(
-				//     colIndex * cellWidth,
-				//     rowIndex * cellHeight,
-				//     cellWidth,
-				//     cellHeight,
-				// );
-				this.context.strokeRect(
-					colIndex * cellWidth,
-					rowIndex * cellHeight,
-					cellWidth,
-					cellHeight,
-				)
+
 			});
 		});
 	}
@@ -241,7 +260,11 @@ class SonagiEngine {
 
 			if((this.wordsCnt === this.SonagiWords.length) && (this.fallingWords.length === 0)) {
 				this.setIsGameOver(true);
-				this.setIsClear(true);
+				if(this.life === 0)
+					this.setIsClear(false);
+				else
+					this.setIsClear(true);
+				
 				console.log("exe");
 				console.log(this.wordsCnt);
 				return;

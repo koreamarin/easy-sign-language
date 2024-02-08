@@ -2,45 +2,71 @@ import GoodSteamp from "../../assets/images/GoodStamp.png";
 import Sticker from "../../assets/images/sticker.png";
 import MediumButton from "../Button/MediumButton";
 import CryingEmoji from "../../assets/images/CryingEmoji.png";
-import SonagiEngine from "../Sonagi/SonagiEngine";
-import { SonagiLevelUp } from "../Sonagi/SonagiConfig";
+import { useDispatch } from "react-redux";
 
-interface GameResultModalProps {
+import { followStatusFalse } from "../../redux/modules/LectureSlice";
+import API from "../../config";
+import { useEffect, useState } from "react";
+import check from "../../assets/images/check.png";
+
+interface ResultModalProps {
   success: boolean;
   setSuccess: (success: boolean) => void;
   BookmarkButton: boolean;
   shown: boolean;
   setModalShown: (shown: boolean) => void;
   stickerNum: number;
+  currentNum: number;
+  currentNumModify: (currentNum: number) => void;
+  totalNum: number;
   signId: number;
-
-  Sonagi: SonagiEngine;
-  setWords : (words: string[]) => void;
 }
 
-const GameResultModal = ({
+const ResultModal = ({
   success,
   setSuccess,
   shown,
   setModalShown,
   BookmarkButton,
   stickerNum,
+  currentNum,
+  currentNumModify,
   signId,
-  Sonagi,
-  setWords,
-}: GameResultModalProps) => {
+}: ResultModalProps) => {
   const next = () => {
     setSuccess(false);
     setModalShown(false);
-		SonagiLevelUp();
-		setWords(["ㄱ","ㅂ","ㄴ","ㅇ","ㅈ","ㅁ","ㅋ", "ㅎ"]);
-		
+    currentNumModify(currentNum + 1);
   };
   const replay = () => {
     setModalShown(false);
-    // setWords(["쥐","소","호랑이","토끼","용","뱀","말","양","원숭이","닭","개","돼지"]);
-    setWords(["ㄱ","ㅂ","ㄴ","ㅇ","ㅈ","ㅁ","ㅋ", "ㅎ"]);
   };
+
+  const token = localStorage.getItem("token") || "";
+
+  const [showMessage, setShowMessage] = useState(false);
+
+  const addBookmark = async () => {
+    console.log(signId + "번 수화를 북마크에 추가합니다.");
+    setShowMessage(true);
+    const response = await fetch(`${API.ADDBOOKMARK}${signId}`, {
+      method: "POST",
+      headers: {
+        Authorization: token,
+      },
+    });
+    console.log(response);
+  };
+
+  useEffect(() => {
+    if (showMessage) {
+      const timer = setTimeout(() => {
+        setShowMessage(false);
+      }, 3000);
+
+      return () => clearTimeout(timer);
+    }
+  }, [showMessage]);
 
   return (
     <div
@@ -130,12 +156,40 @@ const GameResultModal = ({
               justifyContent: "space-around",
             }}
           >
-            {
+            {BookmarkButton ? (
               <>
-                {/* <MediumButton text={"다시해보기"} color="skyblue" onClick={replay} /> */}
-                <MediumButton text={"다음단계로"} color="pink" onClick={next} />
+                <MediumButton text={"다시해보기"} color="skyblue" onClick={replay} />
+                {showMessage && (
+                  <div
+                    style={{
+                      position: "absolute",
+                      top: "-50px",
+                      backgroundColor: "white",
+                      fontSize: "25px",
+                      color: "black",
+                      fontWeight: "bold",
+                      border: "1px solid #b8b8b8",
+                      textAlign: "right",
+                      display: "flex",
+                      flexDirection: "row",
+                      justifyContent: "space-between",
+                      width: "150px",
+                      borderRadius: "5px",
+                    }}
+                  >
+                    <img src={check} alt="check" width="30px" />
+                    <div>추가 성공</div>
+                  </div>
+                )}
+                <MediumButton text={"단어장추가"} color="lightgreen" onClick={addBookmark} />
+                <MediumButton text={"다음단어로"} color="pink" onClick={next} />
               </>
-            }
+            ) : (
+              <>
+                <MediumButton text={"다시해보기"} color="skyblue" onClick={replay} />
+                <MediumButton text={"다음단어로"} color="pink" onClick={next} />
+              </>
+            )}
           </div>
         </div>
       ) : (
@@ -164,7 +218,7 @@ const GameResultModal = ({
                 lineHeight: "1.5",
               }}
             >
-              <div>소나기를 모두 막아내지 못했어요!</div>
+              <div>아쉽게 틀렸어요!</div>
               <div>다시 해 볼까요?</div>
             </div>
             <div
@@ -177,7 +231,7 @@ const GameResultModal = ({
                 justifyContent: "space-around",
               }}
             >
-              {
+              {BookmarkButton ? (
                 <>
                   <div
                     style={{
@@ -202,8 +256,59 @@ const GameResultModal = ({
                     </div>
                     <MediumButton text={"다시해보기"} color="skyblue" onClick={replay} />
                   </div>
+                  {showMessage && (
+                    <div
+                      style={{
+                        position: "absolute",
+                        top: "-50px",
+                        backgroundColor: "white",
+                        fontSize: "25px",
+                        color: "black",
+                        fontWeight: "bold",
+                        border: "1px solid #b8b8b8",
+                        textAlign: "right",
+                        display: "flex",
+                        flexDirection: "row",
+                        justifyContent: "space-between",
+                        width: "150px",
+                        borderRadius: "5px",
+                      }}
+                    >
+                      <img src={check} alt="check" width="30px" />
+                      <div>추가 성공</div>
+                    </div>
+                  )}
+                  <MediumButton text={"단어장추가"} color="lightgreen" onClick={addBookmark} />
+                  <MediumButton text={"다음단어로"} color="pink" onClick={next} />
                 </>
-              }
+              ) : (
+                <>
+                  <div
+                    style={{
+                      position: "relative",
+                      top: "-71px",
+                    }}
+                  >
+                    <div
+                      style={{
+                        display: "flex",
+                        flexDirection: "column",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        fontWeight: "bold",
+                        fontSize: "18px",
+                        position: "relative",
+                        top: "-10px",
+                      }}
+                    >
+                      <img src={Sticker} alt="sticker" width={"50px"} />
+                      <div>성공 시 스티커 {stickerNum}개 획득!!</div>
+                    </div>
+                    <MediumButton text={"다시해보기"} color="skyblue" onClick={replay} />
+                  </div>
+                  <MediumButton text={"다음단어로"} color="pink" onClick={next} />
+                </>
+              )}
             </div>
           </div>
         </>
@@ -212,4 +317,4 @@ const GameResultModal = ({
   );
 };
 
-export default GameResultModal;
+export default ResultModal;

@@ -18,16 +18,22 @@ interface LandmarkerCanvasProps {
 }
 
 const LandmarkerCanvas = ({setSubmitWord}:LandmarkerCanvasProps) => {
-  // avatar 모델 가져오기
+  // mediapipe 얼굴 매쉬 인식을 위한 클래스 
+  const [faceLandmarkManager, setFaceLandmarkManager] = useState(FaceLandmarkManager.getInstance());
+  
+  // 얼굴에 씌울 아바타 이름
+  // Bear, Cat, Chicken, Deer, Dog, Elephant, Pig, Rabbit
+  const [avatar, setAvatar] = useState("Chicken");
+
+  // avatar 모델 파일 불러오기
   const [modelUrl, setModelUrl] = useState(
     "../assets/mask/animal_face_pack.gltf"
   );
-  const [avatar, setAvatar] = useState("Chicken");
-  const [faceLandmarkManager, setFaceLandmarkManager] = useState(FaceLandmarkManager.getInstance());
-
 
   // element에서 비디오 값을 가져와 저장
   const videoRef = useRef<HTMLVideoElement>(null);
+
+  const videoResizeVal = 0.2;
 
   // 골격 숨기기
   const [ ishidden, sethidden ] = useState<boolean>(false)
@@ -83,7 +89,7 @@ const LandmarkerCanvas = ({setSubmitWord}:LandmarkerCanvasProps) => {
     ) {
 
       //얼굴 mask용 얼굴 감지
-      faceLandmarkManager.detectLandmarks(videoRef.current, Date.now());
+      faceLandmarkManager.detectLandmarks(videoRef.current, performance.now());
 
       videoRef.current.muted = !ishidden
       // 마지막 비디오 시간을 현재 비디오 시간으로 업데이트 후
@@ -231,7 +237,9 @@ const LandmarkerCanvas = ({setSubmitWord}:LandmarkerCanvasProps) => {
         // 내부 인자는 video / audio 존재
         const stream = await navigator.mediaDevices.getUserMedia({
           video: {
-            frameRate: {ideal:30, max:30}
+            frameRate: {ideal:30, max:30},
+            width: 200,
+            height : 180,
           },
         })
 
@@ -275,8 +283,23 @@ const LandmarkerCanvas = ({setSubmitWord}:LandmarkerCanvasProps) => {
 
   return (
     <div>
-      <div style={{display: "flex", position: "relative"}}>
+      <div style={{
+         display: "flex",
+         position: "relative",
+         justifyContent: "center",
+         alignItems : "center",
+         marginTop : "10px",
+        }}>
         {/* 비디오 */}
+        <div style={{
+          width: "200px",
+					height: "180px",
+					backgroundColor: "#ffffff",
+          position: "absolute",
+          top: 0
+        }}>
+
+        </div>
         <video
             ref={videoRef}
             loop={true}
@@ -300,7 +323,7 @@ const LandmarkerCanvas = ({setSubmitWord}:LandmarkerCanvasProps) => {
           )}
 
           {/* 캔버스 */}
-          {/* {videoSize && (
+          {videoSize && (
             <>
               {videoView && ishidden && (
                 <PoseLandmarkerCanvas
@@ -319,24 +342,25 @@ const LandmarkerCanvas = ({setSubmitWord}:LandmarkerCanvasProps) => {
                 />
               )}
             </>
-          )} */}
-          {/* {videoSize && (
-            <>
-              {
-                <AvatarCanvas
-                  width={videoSize.width}
-                  height={videoSize.height}
-                  url={modelUrl}
-                  avatar_name={avatar}
-                />
-              }
-              
-            </>
-          )} */}
+          )}
+
+          {/* 추가 버튼 및 input 칸 */}
+          <div style={{
+            position: "absolute",
+            right: "-30px"
+          }}>
+            <button onClick={clickButton}
+              style={{
+                width: "70px",
+                height: "70px",
+                borderRadius: "50%",
+              }}>{ishidden ? '숨기기' : '보기'}
+             </button>
+             
+          </div>
           
+        </div>
           
-        </div>  
-        <button onClick={clickButton}>{ishidden ? '숨기기' : '보기'}</button>
     </div>
   )
 }

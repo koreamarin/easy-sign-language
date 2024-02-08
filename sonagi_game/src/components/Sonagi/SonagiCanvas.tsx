@@ -3,9 +3,8 @@ import SonagiEngine from "./SonagiEngine";
 import GameResultModal from "../common/GameResultModal";
 import SonagiCamera from "./SonagiCamera";
 import { LifeCount } from "./SonagiConfig";
-import backgroundImg from "../../assets/images/boy_on_the_ocean_skateboard.png";
-import background_green from "../../assets/images/background_green.png";
 import LandmarkerCanvas from "./Result";
+import SSmallButton from "../Button/SSmallButton";
 
 
 
@@ -43,8 +42,8 @@ function SonagiCanvas(
 	// let submitWord :string = "";
 	
 
-	const canvasWidth = 640;
-	const canvasHeight = 360;
+	const canvasWidth = 1140;
+	const canvasHeight = 600;
 
 	useEffect(() => {
 		//단어 Api 호출 및 단어 세팅.
@@ -54,8 +53,8 @@ function SonagiCanvas(
 		//setWords([temp_words])
 		
 		//그런데 useState는 비동기라서 바로 반영 안됨. 체크 들어올때를 체크해야함.
-		// setWords(["쥐","소","호랑이","토끼","용","뱀","말","양","원숭이","닭","개","돼지"]);
-		setWords(["ㄱ","ㅂ","ㄴ","ㅇ","ㅈ","ㅁ","ㅋ", "ㅎ", "ㅊ", "ㅍ"]);
+		setWords(["쥐","소","호랑이","토끼","용","뱀","말","양","원숭이","닭","개","돼지"]);
+		// setWords(["ㄱ","ㅂ","ㄴ","ㅇ","ㅈ","ㅁ","ㅋ", "ㅎ", "ㅊ", "ㅍ"]);
 	},[])
 
 	useEffect(() => {
@@ -127,18 +126,76 @@ function SonagiCanvas(
 		}
 		
 	}
+
+	const quitGame = () => {
+
+	}
 	
 
     return(
-			<div style={{backgroundImage : `url(${backgroundImg})`, backgroundSize : "cover"}}>
+			<div style={{
+				marginTop: "70px",
+				display: "flex",
+				flexDirection: "column",
+				justifyContent: "center",
+				alignItems: "center",
+				}}>
+
 				<canvas id="game-canvas" ref={canvasRef}></canvas>
-				<div >
-					<input type="text" value={inputWord} onChange={saveInputWord} onKeyDown={enterEvent}></input>
+				
+				<div style={{
+					marginTop: "10px",
+					width: "300px",
+					height: "200px",
+					borderRadius: "40px",
+					padding: "0px 40px",
+					backgroundColor: "#D9D9D9",
+					
+					fontSize: "50px",
+					fontWeight: "bold",
+					color: "#636363",
+					position: "relative",
+					// 폰트 밝기 조절
+					}}>
+
+					{/* 카메라 부분 */}
+					<LandmarkerCanvas
+						setSubmitWord={setSubmitWord}
+					/>
+
+					{/* input 칸 */}
+					<div style={{
+						display : "flex",
+						position: "absolute",
+						top : "20%",
+						left : "500px",
+						flexDirection: "column",
+						alignItems: "center",
+					}}>
+						<input type="text" value={inputWord} onChange={saveInputWord} onKeyDown={enterEvent}
+						style={{
+							width: "200px",
+							height: "100px",
+							marginBottom: "10px",
+							fontSize: "30px",
+							fontFamily: "Inter",
+							fontWeight: "500",
+							textAlign: "center",
+							backgroundColor: "#8CCFFF",
+							color: "#006EBD",
+							boxShadow: "1px 1px 1px 1px gray",
+							border: "none",
+							borderRadius: "40px",
+							
+
+						}}></input>
+						<SSmallButton text={"게임종료"} onClick={quitGame} />
+					</div>
+
+					
+
 				</div>
-				{/* <SonagiCamera></SonagiCamera> */}
-				<LandmarkerCanvas
-					setSubmitWord={setSubmitWord}
-				/>
+				
 
 				<GameResultModal
 					success={isClear}
