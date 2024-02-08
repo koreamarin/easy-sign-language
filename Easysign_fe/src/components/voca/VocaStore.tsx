@@ -20,22 +20,30 @@ function VocaStore() {
   // 토큰을 로컬 스토리지에 저장
   localStorage.setItem(
     "token",
-    "Bearer eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJFYXN5U2lnbiIsImV4cCI6MTcwNzI5NDUwMiwiaWQiOjYsImxvZ2luSWQiOiJzc2FmeSJ9.hhi2vy9Kx0Uo2J617VLjV-3e10OVxhtAgIecFxrX1o2cfBCH1ZUd5MShJ2yk8WFfwcsy7FFoN0wsZ5hft5E5hg"
+    "Bearer eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJFYXN5U2lnbiIsImV4cCI6MTcwNzQ1MjU4NCwiaWQiOjYsImxvZ2luSWQiOiJzc2FmeSJ9.k5k0vPxArExe-Q548uwiKkk86KtIzQPaRkCKz4Zp45vB2FtENXt4uFzlix6s6EFX9WvQj32IrPvcOGggfFlVug"
   );
 
   // 로컬 스토리지에서 토큰을 가져옴
   const token = localStorage.getItem("token") || "";
 
   const getBookmark = async () => {
-    const response = await fetch(`${API.BOOKMARK}`, {
-      method: "GET",
-      headers: {
-        Authorization: token,
-      },
-    });
-    const json = await response.json();
-    setBookmark(json);
-    console.log(response);
+    try {
+      const response = await fetch(`${API.BOOKMARK}`, {
+        method: "GET",
+        headers: {
+          Authorization: token,
+        },
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to fetch bookmarks");
+      }
+
+      const data = await response.json(); // JSON 변환
+      setBookmark(data); // 변환된 데이터 설정
+    } catch (error) {
+      console.error("Error fetching bookmarks:", error);
+    }
   };
 
   useEffect(() => {

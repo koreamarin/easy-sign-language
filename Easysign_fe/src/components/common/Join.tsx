@@ -3,14 +3,53 @@ import { Link } from "react-router-dom";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 
+// 백-프론트 연결 관련 import
+import API from "../../config";
+
 function Join() {
+  // 프론트, 백 통신 설정
+  const [account, setAccount] = useState<any>([]);
+
+  // 토큰을 로컬 스토리지에 저장
+  localStorage.setItem(
+    "token",
+    "Bearer eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJFYXN5U2lnbiIsImV4cCI6MTcwNzQ1MjU4NCwiaWQiOjYsImxvZ2luSWQiOiJzc2FmeSJ9.k5k0vPxArExe-Q548uwiKkk86KtIzQPaRkCKz4Zp45vB2FtENXt4uFzlix6s6EFX9WvQj32IrPvcOGggfFlVug"
+  );
+
+  // 로컬 스토리지에서 토큰을 가져옴
+  const token = localStorage.getItem("token") || "";
+
+  const getAccount = async () => {
+    const response = await fetch(`${API.JOIN}`, {
+      method: "POST",
+      // mode: "cors",
+      headers: {
+        Authorization: token,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        loginId: user.id,
+        email: user.email,
+        password: user.password,
+        name: user.name,
+      }),
+    });
+
+    setAccount(response);
+    console.log(response);
+  };
+
+  useEffect(() => {
+    getAccount();
+  }, []);
+
   // 회원 정보를 저장할 상태
   const [user, setUser] = useState({
     id: "",
     email: "",
     password: "",
     confirmPassword: "",
-    nickname: "",
+    name: "",
   });
 
   // 아이디, 패스워드 유효성 검사 state
@@ -18,7 +57,7 @@ function Join() {
   const [emailValid, setEmailValid] = useState(false);
   const [passwordValid, setPasswordValid] = useState(false);
   const [confirmPasswordValid, setConfirmPasswordValid] = useState(false);
-  const [nicknameValid, setNicknameValid] = useState(false);
+  const [nameValid, setNameValid] = useState(false);
   const [notAllow, setNotAllow] = useState(true);
 
   // 아이디 유효성 검사
@@ -87,12 +126,12 @@ function Join() {
     const value = e.target.value;
     setUser((prevState) => ({
       ...prevState,
-      nickname: value,
+      name: value,
     }));
     if (value.trim() !== "") {
-      setNicknameValid(true);
+      setNameValid(true);
     } else {
-      setNicknameValid(false);
+      setNameValid(false);
     }
   };
 
@@ -103,13 +142,13 @@ function Join() {
       emailValid &&
       passwordValid &&
       confirmPasswordValid &&
-      nicknameValid
+      nameValid
     ) {
       setNotAllow(false);
     } else {
       setNotAllow(true);
     }
-  }, [idValid, emailValid, passwordValid, confirmPasswordValid, nicknameValid]);
+  }, [idValid, emailValid, passwordValid, confirmPasswordValid, nameValid]);
 
   // 회원가입 버튼 클릭 시 실행될 함수
   const onClickSignUpButton = () => {
@@ -178,14 +217,14 @@ function Join() {
           </div>
           <TextField
             id="standard-basic"
-            value={user.nickname}
+            value={user.name}
             type="text"
             label="닉네임"
             variant="standard"
             onChange={handleNickname}
           />
           <div className="errorMessageWrap">
-            {!nicknameValid && user.nickname.length > 0 && (
+            {!nameValid && user.name.length > 0 && (
               <div>닉네임을 입력해주세요.</div>
             )}
           </div>
@@ -202,6 +241,8 @@ function Join() {
         >
           회원가입
         </Button>
+
+        <p>{account.id}님 환영합니다.</p>
       </div>
     </div>
   );
