@@ -4,5 +4,6 @@ public record ItemResponse (
     Long itemId,
     String categoryName,
     String itemName,
-    String imagePath
+    String imagePath,
+    boolean  isLike
 )  {}

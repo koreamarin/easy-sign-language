@@ -7,9 +7,7 @@ import com.ssafy.easysign.store.mapper.StoreMapper;
 import com.ssafy.easysign.store.repository.StoreRepository;
 import com.ssafy.easysign.user.entity.User;
 import com.ssafy.easysign.user.entity.UserItem;
-import com.ssafy.easysign.user.exception.NotFoundException;
 import com.ssafy.easysign.user.repository.UserItemRepository;
-import com.ssafy.easysign.user.repository.UserRepository;
 import com.ssafy.easysign.user.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -31,9 +29,6 @@ public class StoreServiceImpl implements StoreService {
     private StoreRepository storeRepository;
 
     @Autowired
-    private  UserRepository userRepository;
-
-    @Autowired
     private  UserItemRepository userItemRepository;
 
     @Autowired
@@ -43,11 +38,11 @@ public class StoreServiceImpl implements StoreService {
     private StoreMapper storeMapper;
 
     @Override
-    public List<ItemResponse> getItemResponseList() {
+    public List<ItemResponse> getItemResponseList(Long userId) {
         List<Long> except = new ArrayList<>();
         except.add(1L);
         except.add(2L);
-        List<Store> stores = storeRepository.findAllByItemIdNotIn(except);
+        List<Store> stores = storeRepository.findStoreItem(except, userId);
         List<ItemResponse> itemResponses = stores.stream()
                 .map(storeMapper::toItemResponse)
                 .collect(Collectors.toList());
@@ -89,16 +84,6 @@ public class StoreServiceImpl implements StoreService {
         } else {
             // 해당 itemId에 해당하는 상점이 없는 경우
             throw new RuntimeException("Store not found for itemId: " + itemId);
-        }
-    }
-
-
-    private User getUser(Long userId) {
-        Optional<User> user = userRepository.findById(userId);
-        if (user.isPresent()) {
-            return user.get();
-        } else {
-            throw new NotFoundException("사용자를 찾을 수 없습니다.");
         }
     }
 }

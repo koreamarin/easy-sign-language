@@ -1,5 +1,6 @@
 package com.ssafy.easysign.store.controller;
 
+import com.ssafy.easysign.global.auth.PrincipalDetails;
 import com.ssafy.easysign.store.dto.response.ItemResponse;
 import com.ssafy.easysign.store.service.StoreService;
 import lombok.RequiredArgsConstructor;
@@ -20,8 +21,9 @@ public class StoreController {
     private final StoreService storeService;
 
     @GetMapping("/info")
-    public ResponseEntity<List<ItemResponse>> getItemResponseList() {
-        List<ItemResponse> itemResponses = storeService.getItemResponseList();
+    public ResponseEntity<List<ItemResponse>> getItemResponseList(Authentication authentication) {
+        PrincipalDetails user = (PrincipalDetails) authentication.getPrincipal();
+        List<ItemResponse> itemResponses = storeService.getItemResponseList(user.getUserId());
         log.info("itemResponses : " + itemResponses);
         if(itemResponses != null){
             return new ResponseEntity<>(itemResponses, HttpStatus.OK);

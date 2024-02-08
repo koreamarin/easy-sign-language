@@ -204,10 +204,9 @@ public class UserServiceImpl implements UserService {
         if(user.isEmpty()) throw new NotFoundException("사용자를 찾을 수 없습니다.");
 
         //유저 보유 아이템 삭제
-        userItemRepository.deleteByUserId(userId);
-
-        //TODO 학습된 단어 삭제
-        //TODO 즐겨찾기 삭제
+        userItemRepository.deleteById(userId);
+        userProgressRepository.deleteById(userId);
+        userBookMarkRepository.deleteById(userId);
         //TODO 아이템 찜하기 삭제
 
         userRepository.delete(user.get());
@@ -290,7 +289,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public boolean getUserProgressCount(Long userId) {
         List<UserProgress> progress = userProgressRepository.findAllByUser_userId(userId);
-        return progress.size() >= 10 ? true: false;
+        return progress.size() >= 10;
     }
 
     private User getUser(Long userId) {
