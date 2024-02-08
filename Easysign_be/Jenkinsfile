@@ -70,7 +70,8 @@ pipeline {
             steps {
                 script {
                     withCredentials([[$class: 'UsernamePasswordMultiBinding', credentialsId: 'Docker-hub', usernameVariable: 'DOCKER_USER_ID', passwordVariable: 'DOCKER_USER_PASSWORD']]) {
-                        sh "docker pull ${DOCKER_USER_ID}/back"
+                        sh "docker rmi doribari/back"     //images 날리기
+//                         sh "docker pull ${DOCKER_USER_ID}/back"
                     }
                 }
             }

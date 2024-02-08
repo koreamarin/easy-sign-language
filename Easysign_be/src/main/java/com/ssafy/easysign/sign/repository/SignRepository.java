@@ -3,6 +3,8 @@ package com.ssafy.easysign.sign.repository;
 import com.ssafy.easysign.global.jpaEnum.Gubun;
 import com.ssafy.easysign.sign.entity.SignInfo;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 import java.util.Optional;
