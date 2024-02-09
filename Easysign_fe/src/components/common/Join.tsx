@@ -5,6 +5,7 @@ import Button from "@mui/material/Button";
 
 // 백-프론트 연결 관련 import
 import API from "../../config";
+import axios from "axios";
 
 function Join() {
   // 프론트, 백 통신 설정
@@ -13,7 +14,7 @@ function Join() {
   // 토큰을 로컬 스토리지에 저장
   localStorage.setItem(
     "token",
-    "Bearer eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJFYXN5U2lnbiIsImV4cCI6MTcwNzQ1MjU4NCwiaWQiOjYsImxvZ2luSWQiOiJzc2FmeSJ9.k5k0vPxArExe-Q548uwiKkk86KtIzQPaRkCKz4Zp45vB2FtENXt4uFzlix6s6EFX9WvQj32IrPvcOGggfFlVug"
+    "Bearer eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJFYXN5U2lnbiIsImV4cCI6MTcwNzQwNTI5NiwiaWQiOjYsImxvZ2luSWQiOiJzc2FmeSJ9.zJvPLpH3NqXRtxTn71lZ0CczkOgXtgWPpIK4k5V-yscGryHxg-Se-lt_TXXp9ddPJ-wdyjDyDJT6WFuLBcsG2w"
   );
 
   // 로컬 스토리지에서 토큰을 가져옴
