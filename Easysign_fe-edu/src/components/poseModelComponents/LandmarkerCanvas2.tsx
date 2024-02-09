@@ -1,23 +1,17 @@
 import { useEffect, useRef, useState } from "react";
 import PoseLandmarkerCanvas from "./Pose";
-import PoseLandmarkerManager from "../../poseModelLogic//PoseLandmarkManager";
+import PoseLandmarkerManager from "../../poseModelLogic/PoseLandmarkManager";
 import HandLandmarkerCanvas from "./Hand";
-import HandLandmarkerManager from "../../poseModelLogic//HandLandmarkManager";
-import CalculateTensor from "../../poseModelLogic//CalculateVector";
-import AiResult from "../../poseModelLogic//AiModel";
+import HandLandmarkerManager from "../../poseModelLogic/HandLandmarkManager";
+import CalculateTensor from "../../poseModelLogic/CalculateVector";
+import AiResult from "../../poseModelLogic/AiModel";
 
-const LandmarkerCanvas = ({
-  finResult,
-  setSecond,
-  ishidden,
-  stopComp,
-  currentWord,
-  successModal,
-  failModal,
-  sethidden,
-}) => {
+const LandmarkerCanvas2 = () => {
   // element에서 비디오 값을 가져와 저장
   const videoRef = useRef<HTMLVideoElement>(null);
+
+  // 골격 숨기기
+  const [ishidden, sethidden] = useState<boolean>(false);
 
   // const seq = useRef<object[]>([]);
   const seq: number[][] = [];
@@ -33,6 +27,11 @@ const LandmarkerCanvas = ({
     width: number;
     height: number;
   }>();
+
+  // 버튼 클릭시 ishidden 변경
+  const clickButton = () => {
+    sethidden(!ishidden);
+  };
 
   // ================================상위 컴포넌트와 연동할 부분==========================
 
@@ -68,21 +67,29 @@ const LandmarkerCanvas = ({
     "ㅎ",
   ];
 
-  console.log(currentWord, "currentWord");
-
   // 판단부분 => stopComp가 true가 되면 판단 완료
   // 이후 해당 정보 상위 컴포넌트로 올리기
   // finResult => false : 틀림
   // finResult => true : 맞음
 
+  const finResult = useRef<boolean>(false);
+
+  // const [stopComp, setStopComp] = useState<boolean>(false);
+  // let stopComp = false;
+  const stopComp = useRef<boolean>(false);
+
   const finResultList: string[] = [];
 
   let hookForTimer: boolean = false;
 
+  const [second, setSecond] = useState<number>(10);
+
   // porps로 받아오기
-  const compareWord: string = currentWord;
+  const compareWord: string = "ㄱ";
 
   let startTime: number;
+
+  console.log("렌더링");
 
   //
   const animate = () => {
@@ -90,11 +97,6 @@ const LandmarkerCanvas = ({
     if (stopComp.current) {
       setSecond(0);
       console.log("finResult: ", finResult);
-      if (finResult.current === true) {
-        successModal();
-      } else {
-        failModal();
-      }
       return;
     }
 
@@ -258,56 +260,45 @@ const LandmarkerCanvas = ({
   }, []);
 
   return (
-    <div
-      style={{
-        width: "533px",
-        height: "510px",
-        borderRadius: "40px",
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-        flexDirection: "column",
-        fontSize: "40px",
-        fontWeight: "bold",
-        border: "1px solid black",
-      }}
-    >
-      {/* 비디오 */}
+    <div>
+      <div style={{ display: "flex" }}>
+        {/* 비디오 */}
 
-      <video
-        ref={videoRef}
-        loop={true}
-        muted={true}
-        autoPlay={true}
-        playsInline={true}
-        style={{
-          transform: "rotateY(180deg)",
-          width: "533px",
-          height: "510px",
-          borderRadius: "40px",
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          fontSize: "40px",
-          fontWeight: "bold",
-        }}
-      ></video>
+        <video
+          ref={videoRef}
+          loop={true}
+          muted={true}
+          autoPlay={true}
+          playsInline={true}
+          style={{ transform: "rotateY(180deg)" }}
+        ></video>
 
-      {/* 캔버스 */}
-      {videoSize && (
-        <>
-          {videoView && ishidden && (
-            <PoseLandmarkerCanvas width={videoSize.width} height={videoSize.height} />
-          )}
-        </>
-      )}
-      {videoSize && ishidden && (
-        <>
-          {videoView && <HandLandmarkerCanvas width={videoSize.width} height={videoSize.height} />}
-        </>
-      )}
+        {/* 캔버스 */}
+        {videoSize && (
+          <>
+            {videoView && ishidden && (
+              <PoseLandmarkerCanvas width={videoSize.width} height={videoSize.height} />
+            )}
+          </>
+        )}
+        {videoSize && ishidden && (
+          <>
+            {videoView && (
+              <HandLandmarkerCanvas width={videoSize.width} height={videoSize.height} />
+            )}
+          </>
+        )}
+      </div>
+      <button onClick={clickButton}>{ishidden ? "숨기기" : "보기"}</button>
+      <div>
+        <div>
+          성공여부 :
+          {stopComp.current ? <>{finResult.current ? "성공" : "실패"}</> : <>"결정 안됨"</>}
+        </div>
+        <div> 남은 시간 : {second}</div>
+      </div>
     </div>
   );
 };
 
-export default LandmarkerCanvas;
+export default LandmarkerCanvas2;

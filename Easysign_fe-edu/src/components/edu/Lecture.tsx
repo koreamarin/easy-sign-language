@@ -98,19 +98,12 @@ const Lecture = () => {
   const [currentNum, setCurrentNum] = useState<number>(1);
   const totalNum: number = trainingData.length;
 
-  const currentNumModify = (currentNum: number) => {
-    if (currentNum > 0 && currentNum < totalNum + 1) {
-      setCurrentNum(currentNum);
-      dispatch(followStatusFalse());
-    }
-  };
-
   const outletProps = {
     followStatus: followStatus,
     trainingData: trainingData,
     setTrainingData: setTrainingData,
     currentNum: currentNum,
-    currentNumModify: currentNumModify,
+    setCurrentNum: setCurrentNum,
     addSticker: addSticker,
     success: success,
     setSuccess: setSuccess,

@@ -18,6 +18,7 @@ interface ResultModalProps {
   currentNumModify: (currentNum: number) => void;
   trainingData: trainingDataType[];
   ShownEndModal: () => void;
+  replay: () => void;
 }
 
 const ResultModal = ({
@@ -30,17 +31,14 @@ const ResultModal = ({
   currentNumModify,
   trainingData,
   ShownEndModal,
+  replay,
 }: ResultModalProps) => {
   console.log(trainingData);
 
   const signId = trainingData[currentNum - 1].signId;
 
   const next = () => {
-    setModalShown(false);
     currentNumModify(currentNum + 1);
-  };
-  const replay = () => {
-    setModalShown(false);
   };
 
   const [showMessage, setShowMessage] = useState(false);

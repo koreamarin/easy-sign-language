@@ -1,5 +1,4 @@
 import { useOutletContext } from "react-router-dom";
-import Spinner from "../../common/Spinner";
 import BracketButton from "../../Button/BracketButton";
 import Sticker from "../../../assets/images/sticker.png";
 import ResultModal from "../../common/ResultModal";
@@ -8,6 +7,9 @@ import { trainingDataType } from "../Lecture";
 import { useDispatch } from "react-redux";
 import { LearningProgressSet } from "../../../redux/modules/ProgressSlice";
 import EndModal from "../../common/EndModal";
+import LandmarkerCanvas from "../../poseModelComponents/LandmarkerCanvas";
+import { useRef, useState } from "react";
+import { followStatusFalse } from "../../../redux/modules/LectureSlice";
 
 const JihwaComponent = () => {
   interface IFollowersContext {
@@ -15,7 +17,7 @@ const JihwaComponent = () => {
     trainingData: trainingDataType[];
     setTrainingData: (trainingData: trainingDataType[]) => void;
     currentNum: number;
-    currentNumModify: (currentNum: number) => void;
+    setCurrentNum: (currentNum: number) => void;
     addSticker: number;
     success: boolean;
     setSuccess: (success: boolean) => void;
@@ -29,7 +31,7 @@ const JihwaComponent = () => {
     trainingData,
     setTrainingData,
     currentNum,
-    currentNumModify,
+    setCurrentNum,
     addSticker,
     success,
     setSuccess,
@@ -63,6 +65,36 @@ const JihwaComponent = () => {
   const failModal = () => {
     setModalShown(!modalShown);
     setSuccess(false);
+  };
+
+  const replay = () => {
+    setModalShown(false);
+    midiapipeReset();
+    disPatch(followStatusFalse());
+  };
+
+  const currentNumModify = (currentNum: number) => {
+    if (currentNum > 0 && currentNum < totalNum + 1) {
+      setModalShown(false);
+      setCurrentNum(currentNum);
+      disPatch(followStatusFalse());
+      midiapipeReset();
+    }
+  };
+
+  // 모델 관련 변수
+
+  const finResult = useRef<boolean>(false);
+
+  const [second, setSecond] = useState<number>(10);
+  // 골격 숨기기
+  const [ishidden, sethidden] = useState<boolean>(false);
+  const stopComp = useRef<boolean>(false);
+
+  const midiapipeReset = () => {
+    setSecond(10);
+    stopComp.current = false;
+    finResult.current = false;
   };
 
   return (
@@ -116,7 +148,16 @@ const JihwaComponent = () => {
                 border: "1px solid black",
               }}
             >
-              지화 모델
+              <LandmarkerCanvas
+                finResult={finResult}
+                setSecond={setSecond}
+                ishidden={ishidden}
+                stopComp={stopComp}
+                currentWord={trainingData[currentNum - 1].content}
+                successModal={successModal}
+                failModal={failModal}
+                sethidden={sethidden}
+              />
             </div>
             <img
               style={{
@@ -132,6 +173,26 @@ const JihwaComponent = () => {
             style={{
               height: "0px",
               position: "relative",
+              top: "30px",
+              left: "0px",
+              display: "flex",
+              flexDirection: "row",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
+            <button
+              onClick={() => {
+                sethidden(!ishidden);
+              }}
+            >
+              {ishidden ? "숨기기" : "보기"}
+            </button>
+          </div>
+          <div
+            style={{
+              height: "0px",
+              position: "relative",
               top: "90px",
               left: "70px",
               display: "flex",
@@ -140,7 +201,10 @@ const JihwaComponent = () => {
               alignItems: "center",
             }}
           >
-            <Spinner />
+            <div>
+              <div style={{ fontSize: "50px" }}> 남은 시간 : {second}</div>
+            </div>
+
             <span
               style={{
                 position: "relative",
@@ -161,12 +225,12 @@ const JihwaComponent = () => {
               >
                 X {addSticker}
               </span>
-              <div>
+              {/* <div>
                 <div>
                   <button onClick={successModal}>성공 모달 테스트</button>
                 </div>
                 <button onClick={failModal}>실패 모달 테스트</button>
-              </div>
+              </div> */}
             </span>
           </div>
           <ResultModal
@@ -179,6 +243,7 @@ const JihwaComponent = () => {
             currentNumModify={currentNumModify}
             trainingData={trainingData}
             ShownEndModal={ShownEndModal}
+            replay={replay}
           />
         </>
       ) : (

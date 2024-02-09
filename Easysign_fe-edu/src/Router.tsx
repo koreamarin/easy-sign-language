@@ -5,8 +5,13 @@ import Edu from "./pages/Edu";
 import { Outlet } from "react-router-dom";
 import Lecture from "./components/edu/Lecture";
 import JihwaComponent from "./components/edu/jihwa/JihwaComponent";
+import LandmarkerCanvas2 from "./components/poseModelComponents/LandmarkerCanvas2";
 
 const router = createBrowserRouter([
+  {
+    path: "/ai",
+    element: <LandmarkerCanvas2 />,
+  },
   {
     path: "/edu-all",
     element: <AllComponentsContainer />,
