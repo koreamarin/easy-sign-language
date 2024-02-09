@@ -2,6 +2,7 @@ package com.ssafy.easysign.store.service;
 
 import com.ssafy.easysign.global.auth.PrincipalDetails;
 import com.ssafy.easysign.store.dto.response.ItemResponse;
+import com.ssafy.easysign.store.dto.response.ItemResponseInterface;
 import com.ssafy.easysign.store.entity.Store;
 import com.ssafy.easysign.store.mapper.StoreMapper;
 import com.ssafy.easysign.store.repository.StoreRepository;
@@ -42,7 +43,7 @@ public class StoreServiceImpl implements StoreService {
         List<Long> except = new ArrayList<>();
         except.add(1L);
         except.add(2L);
-        List<Store> stores = storeRepository.findStoreItem(except, userId);
+        List<ItemResponseInterface> stores = storeRepository.findStoreItem(except, userId);
         List<ItemResponse> itemResponses = stores.stream()
                 .map(storeMapper::toItemResponse)
                 .collect(Collectors.toList());
@@ -51,8 +52,8 @@ public class StoreServiceImpl implements StoreService {
     }
 
     @Override
-    public ItemResponse getItemDetails(Long itemId) {
-        return storeRepository.findByItemId(itemId)
+    public ItemResponse getItemDetails(Long itemId, Long userId) {
+        return storeRepository.findItemDetail(itemId, userId)
                 .map(storeMapper::toItemResponse)
                 .orElseThrow();
     }

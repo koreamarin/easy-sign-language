@@ -8,7 +8,7 @@ import java.util.List;
 
 public interface StoreService {
     List<ItemResponse> getItemResponseList(Long userId);
-    ItemResponse getItemDetails(Long itemId);
+    ItemResponse getItemDetails(Long itemId, Long userId);
     Boolean buyItem(Long itemId, Authentication authentication);
 
 }

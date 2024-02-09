@@ -35,8 +35,9 @@ public class StoreController {
         }
     }
     @GetMapping("/infoDetail")
-    public ResponseEntity<ItemResponse> getItemDetails(@RequestParam Long itemId) {
-        ItemResponse itemResponse = storeService.getItemDetails(itemId);
+    public ResponseEntity<ItemResponse> getItemDetails(@RequestParam Long itemId, Authentication authentication) {
+        PrincipalDetails user = (PrincipalDetails) authentication.getPrincipal();
+        ItemResponse itemResponse = storeService.getItemDetails(itemId, user.getUserId());
         // 성공적으로 값을 찾았을 경우 200 OK와 함께 값을 반환
         // 값이 없는 경우 400 Bad Request 반환
         if(itemResponse == null)  return new ResponseEntity<>(itemResponse, HttpStatus.BAD_REQUEST);

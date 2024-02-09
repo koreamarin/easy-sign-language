@@ -24,7 +24,4 @@ public class Store {
 
     @Column(nullable = false)
     private String imagePath;
-
-    @Transient
-    private boolean isLike;
 }
