@@ -1,7 +1,6 @@
 package com.ssafy.easysign.store.entity.id;
 
 import com.ssafy.easysign.store.entity.Store;
-import com.ssafy.easysign.store.entity.StoreLike;
 import com.ssafy.easysign.user.entity.User;
 import lombok.Data;
 

@@ -3,8 +3,6 @@ package com.ssafy.easysign.store.entity;
 import com.ssafy.easysign.global.jpaEnum.StoreCategory;
 import jakarta.persistence.*;
 import lombok.Data;
-import org.hibernate.annotations.SQLDelete;
-import org.hibernate.annotations.SQLRestriction;
 
 @Entity
 @Data

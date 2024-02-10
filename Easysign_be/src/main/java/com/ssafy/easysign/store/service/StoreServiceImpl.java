@@ -2,6 +2,7 @@ package com.ssafy.easysign.store.service;
 
 import com.ssafy.easysign.global.auth.PrincipalDetails;
 import com.ssafy.easysign.store.dto.response.ItemResponse;
+import com.ssafy.easysign.store.dto.response.ItemResponseInterface;
 import com.ssafy.easysign.store.entity.Store;
 import com.ssafy.easysign.store.entity.StoreLike;
 import com.ssafy.easysign.store.mapper.StoreMapper;
@@ -36,10 +37,10 @@ public class StoreServiceImpl implements StoreService {
     private StoreLikeRepository storeLikeRepository;
 
     @Autowired
-    private  UserRepository userRepository;
+    private  UserItemRepository userItemRepository;
 
     @Autowired
-    private  UserItemRepository userItemRepository;
+    private UserRepository userRepository;
 
     @Autowired
     private UserService userService;
@@ -48,11 +49,11 @@ public class StoreServiceImpl implements StoreService {
     private StoreMapper storeMapper;
 
     @Override
-    public List<ItemResponse> getItemResponseList() {
+    public List<ItemResponse> getItemResponseList(Long userId) {
         List<Long> except = new ArrayList<>();
         except.add(1L);
         except.add(2L);
-        List<Store> stores = storeRepository.findAllByItemIdNotIn(except);
+        List<ItemResponseInterface> stores = storeRepository.findStoreItem(except, userId);
         List<ItemResponse> itemResponses = stores.stream()
                 .map(storeMapper::toItemResponse)
                 .collect(Collectors.toList());
@@ -61,8 +62,8 @@ public class StoreServiceImpl implements StoreService {
     }
 
     @Override
-    public ItemResponse getItemDetails(Long itemId) {
-        return storeRepository.findByItemId(itemId)
+    public ItemResponse getItemDetails(Long itemId, Long userId) {
+        return storeRepository.findItemDetail(itemId, userId)
                 .map(storeMapper::toItemResponse)
                 .orElseThrow();
     }
@@ -109,7 +110,6 @@ public class StoreServiceImpl implements StoreService {
 
             // StoreLike 인스턴스를 생성하고 속성을 설정합니다.
             StoreLike storeLike = new StoreLike();
-
             // 데이터베이스에서 user 엔티티를 다시 가져와서 관리되는 상태로 만듭니다.
             User managedUser = userRepository.findById(user.getUserId()).orElseThrow(() ->
                     new EntityNotFoundException("User not found with id: " + user.getUserId()));

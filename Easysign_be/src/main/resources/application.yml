@@ -4,5 +4,4 @@ spring:
   jpa:
     hibernate:
       ddl-auto: update
-      show_sql: true
-      dialect: org.hibernate.dialect.MySQLDialect
+#    show-sql: true 쿼리문 보이게 하기

@@ -1,8 +1,12 @@
 package com.ssafy.easysign.user.entity.Id;
 
-import java.io.Serializable;
+import com.ssafy.easysign.store.entity.Store;
+import com.ssafy.easysign.user.entity.User;
+import lombok.Data;
 
+import java.io.Serializable;
+@Data
 public class UserItemId implements Serializable {
-    private Long user;
-    private Long item;
+    private User user;
+    private Store item;
 }
