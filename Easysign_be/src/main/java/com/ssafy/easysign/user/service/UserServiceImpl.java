@@ -8,6 +8,7 @@ import com.ssafy.easysign.sign.repository.SignRepository;
 import com.ssafy.easysign.store.dto.response.ItemResponse;
 import com.ssafy.easysign.store.entity.Store;
 import com.ssafy.easysign.store.mapper.StoreMapper;
+import com.ssafy.easysign.store.repository.StoreLikeRepository;
 import com.ssafy.easysign.store.repository.StoreRepository;
 import com.ssafy.easysign.user.dto.request.ProfileRequest;
 import com.ssafy.easysign.user.dto.response.UserInfoResponse;
@@ -43,6 +44,7 @@ public class UserServiceImpl implements UserService {
     private final StickerLogRepository stickerLogRepository;
     private final UserBookMarkRepository userBookMarkRepository;
     private final UserProgressRepository userProgressRepository;
+    private final StoreLikeRepository storeLikeRepository;
     private final SignMapper signMapper;
     private final StoreMapper storeMapper;
     private final UserMapper userMapper;
@@ -208,7 +210,7 @@ public class UserServiceImpl implements UserService {
         userProgressRepository.deleteById(userId);
         userBookMarkRepository.deleteById(userId);
         //TODO 아이템 찜하기 삭제
-
+        storeLikeRepository.deleteById(userId);
         userRepository.delete(user.get());
     }
 

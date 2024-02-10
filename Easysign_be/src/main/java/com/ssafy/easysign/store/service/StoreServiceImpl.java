@@ -107,7 +107,6 @@ public class StoreServiceImpl implements StoreService {
         Optional<Store> optionalStore = storeRepository.findById(itemId);
         if (optionalStore.isPresent()) {
             Store store = optionalStore.get();
-
             // StoreLike 인스턴스를 생성하고 속성을 설정합니다.
             StoreLike storeLike = new StoreLike();
             // 데이터베이스에서 user 엔티티를 다시 가져와서 관리되는 상태로 만듭니다.
