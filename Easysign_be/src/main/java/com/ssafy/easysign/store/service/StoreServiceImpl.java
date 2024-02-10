@@ -3,7 +3,9 @@ package com.ssafy.easysign.store.service;
 import com.ssafy.easysign.global.auth.PrincipalDetails;
 import com.ssafy.easysign.store.dto.response.ItemResponse;
 import com.ssafy.easysign.store.entity.Store;
+import com.ssafy.easysign.store.entity.StoreLike;
 import com.ssafy.easysign.store.mapper.StoreMapper;
+import com.ssafy.easysign.store.repository.StoreLikeRepository;
 import com.ssafy.easysign.store.repository.StoreRepository;
 import com.ssafy.easysign.user.entity.User;
 import com.ssafy.easysign.user.entity.UserItem;
@@ -11,6 +13,7 @@ import com.ssafy.easysign.user.exception.NotFoundException;
 import com.ssafy.easysign.user.repository.UserItemRepository;
 import com.ssafy.easysign.user.repository.UserRepository;
 import com.ssafy.easysign.user.service.UserService;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,6 +32,8 @@ public class StoreServiceImpl implements StoreService {
 
     @Autowired
     private StoreRepository storeRepository;
+    @Autowired
+    private StoreLikeRepository storeLikeRepository;
 
     @Autowired
     private  UserRepository userRepository;
@@ -92,7 +97,55 @@ public class StoreServiceImpl implements StoreService {
         }
     }
 
+    @Override
+    public void postLikeItem(Long itemId, Authentication authentication) {
+        PrincipalDetails principalDetails = (PrincipalDetails) authentication.getPrincipal();
+        User user = principalDetails.getUser();
 
+        // 데이터베이스에서 Store 엔티티를 검색합니다.
+        Optional<Store> optionalStore = storeRepository.findById(itemId);
+        if (optionalStore.isPresent()) {
+            Store store = optionalStore.get();
+
+            // StoreLike 인스턴스를 생성하고 속성을 설정합니다.
+            StoreLike storeLike = new StoreLike();
+
+            // 데이터베이스에서 user 엔티티를 다시 가져와서 관리되는 상태로 만듭니다.
+            User managedUser = userRepository.findById(user.getUserId()).orElseThrow(() ->
+                    new EntityNotFoundException("User not found with id: " + user.getUserId()));
+            storeLike.setUser(managedUser);
+            storeLike.setStore(store);
+
+            // StoreLike 엔티티를 저장합니다.
+            storeLikeRepository.save(storeLike);
+        } else {
+            log.error("Store with itemId " + itemId + " not found");
+            // 해당 itemId에 대한 Store가 없는 경우에 대한 처리를 추가하세요.
+        }
+    }
+
+    @Override
+    public void deleteLikeItem(Long itemId, Authentication authentication) {
+        PrincipalDetails principalDetails = (PrincipalDetails) authentication.getPrincipal();
+        User user = principalDetails.getUser();
+
+        // 데이터베이스에서 Store 엔티티를 검색합니다.
+        Optional<Store> optionalStore = storeRepository.findById(itemId);
+        if (optionalStore.isPresent()) {
+            Store store = optionalStore.get();
+
+            // StoreLike 인스턴스를 생성하고 속성을 설정합니다.
+            StoreLike storeLike = storeLikeRepository.findByUserAndStore(user, store);
+            if (storeLike != null) {
+                // StoreLike 엔티티를 삭제합니다.
+                storeLikeRepository.delete(storeLike);
+            } else {
+                log.error("StoreLike not found for user with id " + user.getUserId() + " and itemId " + itemId);
+            }
+        } else {
+            log.error("Store with itemId " + itemId + " not found");
+        }
+    }
     private User getUser(Long userId) {
         Optional<User> user = userRepository.findById(userId);
         if (user.isPresent()) {

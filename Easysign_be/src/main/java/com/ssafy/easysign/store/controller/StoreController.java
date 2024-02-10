@@ -1,6 +1,7 @@
 package com.ssafy.easysign.store.controller;
 
 import com.ssafy.easysign.store.dto.response.ItemResponse;
+import com.ssafy.easysign.store.entity.StoreLike;
 import com.ssafy.easysign.store.service.StoreService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -52,4 +53,24 @@ public class StoreController {
             return ResponseEntity.badRequest().body(false);
         }
     }
+
+    @PostMapping("likeItem")
+    public ResponseEntity<Void> postLikeItem(@RequestParam Long itemId, Authentication authentication) {
+        try {
+            storeService.postLikeItem(itemId, authentication);
+            return ResponseEntity.ok().build(); // 성공 시 200 반환
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build(); // 예외 발생 시 403 반환
+        }
+    }
+    @DeleteMapping("likeItem")
+    public ResponseEntity<Void> deleteLikeItem(@RequestParam Long itemId, Authentication authentication) {
+        try {
+            storeService.deleteLikeItem(itemId, authentication);
+            return ResponseEntity.ok().build(); // 성공 시 200 반환
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build(); // 예외 발생 시 403 반환
+        }
+    }
+
 }
