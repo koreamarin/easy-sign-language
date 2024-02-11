@@ -3,6 +3,13 @@ import { Link } from "react-router-dom";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 
+// sidebar 대신 사용할 SpeedDial 관련 import
+import SpeedDial from "@mui/material/SpeedDial";
+import SpeedDialIcon from "@mui/material/SpeedDialIcon";
+import SpeedDialAction from "@mui/material/SpeedDialAction";
+
+// mui icon import
+
 // css적용
 import styled from "styled-components";
 
