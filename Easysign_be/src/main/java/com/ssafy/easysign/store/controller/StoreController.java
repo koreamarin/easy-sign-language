@@ -50,7 +50,7 @@ public class StoreController {
         try {
             Boolean buyCheck = storeService.buyItem(itemId, authentication);
             // buyItem 메서드에서 예외 발생 시
-            return ResponseEntity.badRequest().body(true);
+            return ResponseEntity.ok().body(true);
         } catch (Exception e) {
             // 기타 예외 상황에 대한 처리
             return ResponseEntity.badRequest().body(false);
