@@ -23,9 +23,9 @@ pipeline {
                         sh "ls -al"
                         sh "ls secure-settings -al"
                         sh "chmod +x ./gradlew"
-                        sh "cp ./secure-settings/application.yml"
+//                         sh "cp ./secure-settings/application.yml"
 //                         sh "cp ./secure-settings/application.yml ./src/main/resources"
-                        sh "cp ./secure-settings/application-dev.yml"
+//                         sh "cp ./secure-settings/application-dev.yml"
 //                         sh "cp ./secure-settings/application-dev.yml ./src/main/resources"
                         sh "ls ./src/main/resources -al"
 
