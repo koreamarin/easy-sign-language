@@ -5,13 +5,29 @@ import styled from "styled-components";
 import API from "../../config";
 import { useState, useEffect } from "react";
 
-// mui import
-// 이용하려는 것: https://mui.com/material-ui/react-card/#media
-
 // 무한 스크롤 구현 라이브러리
 // https://www.npmjs.com/package/react-intersection-observer
 import React from "react";
 import { useInView } from "react-intersection-observer";
+
+// css 관련
+const ItemContainer = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  width: 297px;
+  height: 357px;
+  gap: 20px; /* 각 항목 간의 간격을 조절 */
+  width: 100%; /* 너비를 100%로 설정 */
+  max-width: 900px; /* 최대 너비를 설정하여 반응형 디자인을 위한 제한을 둠 */
+`;
+
+// 개별 단어 박스 css
+// const VocaContainer = styled.div`
+//   position: absolute;
+//   width: 297px;
+//   height: 357px;
+// `;
 
 function VocaStore() {
   // 프론트 - 백 통신 설정
@@ -52,35 +68,34 @@ function VocaStore() {
 
   // css 관련
 
-  const Container = styled.div`
-    min-height: 120vh;
-    width: 70vw;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background-color: skyblue;
-  `;
-
-  //   const { ref, inView, entry } = useInView(options);
+  const { ref, inView, entry } = useInView({ threshold: 0 });
 
   return (
-    <Container>
+    <div>
       {/* 임시로 넣어놓은 모달 테스트 링크 */}
       <Link to={"/store_test"}>모달 테스트</Link>;<br></br>
-      {bookmark.map((item: any) => (
-        <div key={item.signId}>
-          <p>Sign ID: {item.signId}</p>
-          <p>Content: {item.content}</p>
-          <img
-            src={item.imagePath}
-            alt={item.content}
-            width="100px"
-            height="100px"
-          />
-          {/* 비디오 등 추가적인 정보도 여기에 렌더링할 수 있음 */}
-        </div>
-      ))}
-    </Container>
+      <div ref={ref}>
+        <ItemContainer>
+          {/* <VocaContainer> */}
+          {bookmark.map((item: any) => (
+            <div
+              key={item.signId}
+              style={{ flex: "0 0 30%", marginBottom: "20px" }}
+            >
+              <p>Sign ID: {item.signId}</p>
+              <p>Content: {item.content}</p>
+              <img
+                src={item.imagePath}
+                alt={item.content}
+                width="200px"
+                height="200px"
+              />
+            </div>
+          ))}
+          {/* </VocaContainer> */}
+        </ItemContainer>
+      </div>
+    </div>
   );
 }
 export default VocaStore;
