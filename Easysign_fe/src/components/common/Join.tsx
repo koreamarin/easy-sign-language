@@ -3,6 +3,9 @@ import { Link } from "react-router-dom";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 
+// css적용
+import styled from "styled-components";
+
 // 백-프론트 연결 관련 import
 import API from "../../config";
 import axios from "axios";
@@ -160,10 +163,141 @@ function Join() {
     console.log("회원가입 정보:", user);
   };
 
+  // css 적용
+  // footer가 로그인 화면을 침범하는 문제 발생해서 해결하기 위해 최소 높이 설정
+  const ContentBox = styled.div`
+    min-height: 130vh;
+  `;
+
+  // 회원가입 박스
+  const R29 = styled.div`
+    box-sizing: border-box;
+
+    position: absolute;
+    width: 476px;
+    height: 680px;
+    left: 482px;
+    top: 172px;
+
+    background: #ffffff;
+    border: 1px solid #cfcfcf;
+    box-shadow: 30px 30px 4px rgba(0, 0, 0, 0.25);
+    border-radius: 10px;
+  `;
+
+  // 회원가입을 시작합니다.
+  const StartSignUp = styled.div`
+    /* Link → Create account */
+
+    position: absolute;
+    width: 270px;
+    height: 55px;
+    left: 531px;
+    top: 214px;
+
+    font-family: "Noto Sans KR";
+    font-style: normal;
+    font-weight: 500;
+    font-size: 25px;
+    line-height: 84%;
+    display: flex;
+    align-items: center;
+    letter-spacing: 0.122px;
+
+    color: rgba(0, 0, 0, 0.87);
+  `;
+
+  // 회원정보를 입력하세요.
+  const AddInfo = styled.div`
+    position: absolute;
+    width: 253px;
+    height: 55px;
+    left: 531px;
+    top: 262px;
+
+    font-family: "Noto Sans KR";
+    font-style: normal;
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 21px;
+    /* or 132% */
+    display: flex;
+    align-items: center;
+    letter-spacing: 0.122px;
+
+    color: rgba(114, 114, 114, 0.87);
+  `;
+
+  // 아이디 form
+  const IDForm = styled.div`
+    box-sizing: border-box;
+
+    position: absolute;
+    height: 24px;
+    left: 531px;
+    right: 531px;
+    bottom: 400px;
+  `;
+
+  // 이메일 form
+  const EmailForm = styled.div`
+    box-sizing: border-box;
+
+    position: absolute;
+    height: 24px;
+    left: 531px;
+    right: 531px;
+    bottom: 330px;
+  `;
+
+  // 비밀번호 form
+  const PasswordForm = styled.div`
+    box-sizing: border-box;
+
+    position: absolute;
+    height: 24px;
+    left: 531px;
+    right: 531px;
+    bottom: 260px;
+  `;
+
+  // 비밀번호 확인 form
+  const ConfirmPasswordForm = styled.div`
+    box-sizing: border-box;
+
+    position: absolute;
+    height: 24px;
+    left: 531px;
+    right: 531px;
+    bottom: 190px;
+  `;
+
+  // 닉네임 form
+  const NameForm = styled.div`
+    box-sizing: border-box;
+
+    position: absolute;
+    height: 24px;
+    left: 531px;
+    right: 531px;
+    bottom: 120px;
+  `;
+
+  // 회원가입완료 버튼
+  const ConfirmButton = styled.div`
+    position: absolute;
+    width: 378px;
+    right: 531px;
+    top: 733px;
+    bottom: 247px;
+  `;
   return (
     <div>
-      <div className="joinForm">
-        <div className="inputWrap">
+      <ContentBox>
+        <R29></R29>
+        <StartSignUp>회원가입을 시작합니다.</StartSignUp>
+        <AddInfo>회원정보를 입력하세요.</AddInfo>
+        <IDForm>
           <TextField
             id="standard-basic"
             type="text"
@@ -172,13 +306,15 @@ function Join() {
             placeholder="easysign"
             variant="standard"
             onChange={handleID}
+            sx={{ width: "378px" }}
           />
-          <br></br>
-          <div className="errorMessageWrap">
+          {/* <div className="errorMessageWrap">
             {!idValid && user.id.length > 0 && (
               <div>영문, 숫자 조합으로 5~10자로 입력해주세요.</div>
             )}
-          </div>
+          </div> */}
+        </IDForm>
+        <EmailForm>
           <TextField
             id="standard-basic"
             value={user.email}
@@ -186,13 +322,15 @@ function Join() {
             label="이메일"
             variant="standard"
             onChange={handleEmail}
+            sx={{ width: "378px" }}
           />
-          <div className="errorMessageWrap">
+          {/* <div className="errorMessageWrap">
             {!emailValid && user.email.length > 0 && (
               <div>이메일 형식에 맞지 않습니다.</div>
             )}
-          </div>
-
+          </div> */}
+        </EmailForm>
+        <PasswordForm>
           <TextField
             id="standard-basic"
             value={user.password}
@@ -200,12 +338,15 @@ function Join() {
             label="비밀번호"
             variant="standard"
             onChange={handlePassword}
+            sx={{ width: "378px" }}
           />
-          <div className="errorMessageWrap">
+          {/* <div className="errorMessageWrap">
             {!passwordValid && user.password.length > 0 && (
               <div>영문, 숫자, 특수문자 포함 8자 이상 입력해주세요.</div>
             )}
-          </div>
+          </div> */}
+        </PasswordForm>
+        <ConfirmPasswordForm>
           <TextField
             id="standard-basic"
             // value={user.confirmPassword}
@@ -213,10 +354,13 @@ function Join() {
             label="비밀번호 확인"
             variant="standard"
             onChange={handleConfirmPassword}
+            sx={{ width: "378px" }}
           />
-          <div className="errorMessageWrap">
+          {/* <div className="errorMessageWrap">
             {!passwordsMatch && <div>비밀번호가 일치하지 않습니다.</div>}
-          </div>
+          </div> */}
+        </ConfirmPasswordForm>
+        <NameForm>
           <TextField
             id="standard-basic"
             value={user.name}
@@ -224,28 +368,23 @@ function Join() {
             label="닉네임"
             variant="standard"
             onChange={handleNickname}
+            sx={{ width: "378px" }}
           />
           <div className="errorMessageWrap">
             {!nameValid && user.name.length > 0 && (
               <div>닉네임을 입력해주세요.</div>
             )}
           </div>
-        </div>
-
-        <br></br>
-        <br></br>
-
-        <br></br>
-        <Button
-          onClick={onClickSignUpButton}
-          disabled={notAllow}
-          variant="contained"
-        >
-          회원가입
-        </Button>
-
-        <p>{account.id}님 환영합니다.</p>
-      </div>
+        </NameForm>
+        <ConfirmButton>
+          <Button
+            variant="contained"
+            sx={{ width: "378px", backgroundColor: "#000000" }}
+          >
+            가입완료
+          </Button>
+        </ConfirmButton>
+      </ContentBox>
     </div>
   );
 }
