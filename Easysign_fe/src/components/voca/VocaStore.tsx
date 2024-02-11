@@ -20,7 +20,7 @@ function VocaStore() {
   // 토큰을 로컬 스토리지에 저장
   localStorage.setItem(
     "token",
-    "Bearer eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJFYXN5U2lnbiIsImV4cCI6MTcwNzQwNTI5NiwiaWQiOjYsImxvZ2luSWQiOiJzc2FmeSJ9.zJvPLpH3NqXRtxTn71lZ0CczkOgXtgWPpIK4k5V-yscGryHxg-Se-lt_TXXp9ddPJ-wdyjDyDJT6WFuLBcsG2w"
+    "Bearer eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJFYXN5U2lnbiIsImV4cCI6MTcwNzY2MzMzMSwiaWQiOjYsImxvZ2luSWQiOiJzc2FmeSJ9.xkcoHpJEv-kr86OWYkyKKnHGiIihx2H0uNWY-_Wv6f01-BAWpXTiANxh9t7OzdKV9-HPkS56u47d1YBqHpbo6w"
   );
 
   // 로컬 스토리지에서 토큰을 가져옴

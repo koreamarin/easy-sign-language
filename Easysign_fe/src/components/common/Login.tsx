@@ -2,35 +2,9 @@ import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
+import { styled } from "styled-components";
 
 function Login() {
-  // 카카오 로그인 구현
-  // 보안상 노출되면 안되는 데이터는 .env에 작성하여 호출한다.
-  const kakao_client_id = process.env.REACT_APP_KAKAO_CLIENT_ID;
-  const kakao_redirect_uri = process.env.REACT_APP_KAKAO_REDIRECT_URI;
-
-  const kakao_url = `https://kauth.kakao.com/oauth/authorize?scope=account_email&client_id=${kakao_client_id}&redirect_uri=${kakao_redirect_uri}&response_type=code&prompt=login`;
-
-  //cors 이슈로 인해 href 방식으로 호출
-  const loginKaKao = () => {
-    window.location.href = kakao_url;
-  };
-
-  // 네이버 소셜 로그인
-  // .env 작성
-  const naver_client_id = process.env.REACT_APP_NAVER_CLIENT_ID;
-  const naver_redirect_uri = process.env.REACT_APP_NAVER_REDIRECT_URI;
-  const naver_state = process.env.REACT_APP_NAVER_STATE;
-
-  const naver_url = `https://nid.naver.com/oauth2.0/authorize?response_type=code&client_id=${naver_client_id}&state=${naver_state}&redirect_uri=${naver_redirect_uri}`;
-
-  //cors 이슈로 인해 href 방식으로 호출
-  const loginNaver = () => {
-    window.location.href = naver_url;
-  };
-
-  // 구글 소셜 로그인 구현
-
   // 일반 로그인 구현
 
   // User를 기존 db에서 받아올 수 있게 코드 수정해야 함.
@@ -49,24 +23,12 @@ function Login() {
 
   const handleID = (e: React.ChangeEvent<HTMLInputElement>) => {
     setID(e.target.value);
-    // 영문, 숫자 조합으로 5~10자
-    const regex = /^[a-zA-Z][0-9a-zA-Z]{4,9}$/;
-    if (regex.test(e.target.value)) {
-      setIDValid(true);
-    } else {
-      setIDValid(false);
-    }
+    setIDValid(true);
   };
 
   const handlePassword = (e: React.ChangeEvent<HTMLInputElement>) => {
     setPassword(e.target.value);
-    const regex =
-      /^(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[$`~!@$!%*#^?&\\(\\)\-_=+]).{8,20}$/;
-    if (regex.test(e.target.value)) {
-      setPasswordValid(true);
-    } else {
-      setPasswordValid(false);
-    }
+    setPasswordValid(true);
   };
 
   useEffect(() => {
@@ -85,79 +47,210 @@ function Login() {
     }
   };
 
+  // css 구현
+  // footer가 로그인 화면을 침범하는 문제 발생해서 해결하기 위해 설정
+  const ContentBox = styled.div`
+    min-height: 130vh;
+  `;
+
+  // 로그인 화면 구성하는 박스
+  const R29 = styled.div`
+    box-sizing: border-box;
+
+    position: absolute;
+    width: 476px;
+    height: 680px;
+    left: 482px;
+    top: 145px;
+
+    background: #ffffff;
+    border: 1px solid #cfcfcf;
+    box-shadow: 30px 30px 4px rgba(0, 0, 0, 0.25);
+    border-radius: 10px;
+  `;
+
+  // 수어쉬워 로고
+  const I62 = styled.div`
+    position: absolute;
+    width: 318px;
+    height: 112px;
+    left: 562px;
+    top: 209px;
+  `;
+
+  // 신규 사용자이신가요?
+  const NewUser = styled.div`
+    position: absolute;
+    width: 130px;
+    height: 19px;
+    left: 531px;
+    top: 371.42px;
+
+    font-family: "Noto Sans KR";
+    font-style: normal;
+    font-weight: 500;
+    font-size: 13px;
+    line-height: 21px;
+    /* or 162% */
+    display: flex;
+    align-items: center;
+    letter-spacing: 0.122px;
+
+    color: rgba(0, 0, 0, 0.6);
+  `;
+
+  // 계정 만들기 글씨
+  const CreateAccount = styled.div`
+    position: absolute;
+    width: 94.48px;
+    height: 19px;
+    left: 659.31px;
+    top: 371.42px;
+
+    font-family: "Noto Sans KR";
+    font-style: normal;
+    font-weight: 500;
+    font-size: 13px;
+    line-height: 21px;
+    /* or 162% */
+    display: flex;
+    align-items: center;
+    letter-spacing: 0.122px;
+
+    color: rgba(0, 0, 0, 0.87);
+  `;
+
+  // 입력창1 - 아이디
+  const Form1 = styled.div`
+    box-sizing: border-box;
+
+    position: absolute;
+    height: 24px;
+    left: 531px;
+    right: 531px;
+    bottom: 300px;
+  `;
+
+  // 입력창2 - 비밀번호
+  const Form2 = styled.div`
+    box-sizing: border-box;
+
+    position: absolute;
+    height: 24px;
+    left: 531px;
+    right: 531px;
+    bottom: 240px;
+  `;
+
+  // 로그인 버튼
+  const LoginButton = styled.div`
+    position: absolute;
+    width: 378px;
+    left: 531px;
+    right: 531px;
+    top: 570px;
+    // bottom: 421.06px;
+
+    // background: #141414;
+    border-radius: 4px;
+  `;
+
+  // 아이디 찾기 / 비밀번호 찾기 놓을 자리
+  const Form3 = styled.div`
+    position: absolute;
+    height: 40px;
+    left: 531px;
+    right: 531px;
+    top: 640.94px;
+  `;
+
+  // 아이디 찾기
+  const FindAccount = styled.div`
+    position: absolute;
+    width: 79.93px;
+    height: 19px;
+    left: 0px;
+    top: 10.47px;
+
+    font-family: "Noto Sans KR";
+    font-style: normal;
+    font-weight: 350;
+    font-size: 13px;
+    line-height: 21px;
+    /* or 162% */
+    display: flex;
+    align-items: center;
+    letter-spacing: 0.122px;
+
+    color: #141414;
+  `;
+
+  // 비밀번호 찾기
+  const FindPassword = styled.div`
+    position: absolute;
+    width: 112.14px;
+    height: 19px;
+    left: 95.61px;
+    top: 10.47px;
+
+    font-family: "Noto Sans KR";
+    font-style: normal;
+    font-weight: 350;
+    font-size: 13px;
+    line-height: 21px;
+    /* or 162% */
+    display: flex;
+    align-items: center;
+    letter-spacing: 0.122px;
+
+    color: #141414;
+  `;
+
   return (
     <div>
-      <span>신규 사용자이신가요?</span>
-      <Link className="navbarMenu" to={"/join"}>
-        계정 만들기
-      </Link>
-
-      <br></br>
-      <br></br>
-      <div className="normalLogin">
-        <div className="inputWrap">
+      <ContentBox>
+        <R29></R29>
+        <I62>
+          <img src="../logo_skyblue.png"></img>
+        </I62>
+        <NewUser>신규 사용자이신가요?</NewUser>
+        <CreateAccount>　계정 만들기</CreateAccount>
+        <Form1>
           <TextField
             id="standard-basic"
             type="text"
-            label="아이디"
+            // label="아이디"
             value={id}
             placeholder="easysign"
             variant="standard"
             onChange={handleID}
+            sx={{ width: "378px" }}
           />
-          <br></br>
-          <div className="errorMessageWrap">
-            {!idValid && id.length > 0 && (
-              <div>영문, 숫자 조합으로 5~10자로 입력해주세요.</div>
-            )}
-          </div>
+        </Form1>
+        <Form2>
           <TextField
             id="standard-basic"
             value={password}
             type="password"
-            label="비밀번호"
+            // label="비밀번호"
             variant="standard"
             onChange={handlePassword}
+            sx={{ width: "378px" }}
           />
-          <div className="errorMessageWrap">
-            {!passwordValid && password.length > 0 && (
-              <div>영문, 숫자, 특수문자 포함 8자 이상 입력해주세요.</div>
-            )}
-          </div>
-        </div>
-
-        <br></br>
-        <br></br>
-
-        <br></br>
-        <Button
-          onClick={onClickConfirmButton}
-          disabled={notAllow}
-          variant="contained"
-        >
-          로그인
-        </Button>
-      </div>
-
-      <br></br>
-      <br></br>
-      <div>소셜 계정으로 로그인</div>
-      <br></br>
-      <br></br>
-      <Link className="navbarMenu" to={"kakaologin"}>
-        <img
-          src="../social_login/image/kakaotalk_sharing_btn_small.png"
-          onClick={loginKaKao}
-          alt="카카오톡 소셜 로그인"
-        />
-      </Link>
-      <Link className="navbarMenu" to={"naverlogin"}>
-        <img
-          src="../social_login/image/kakaotalk_sharing_btn_small.png"
-          onClick={loginNaver}
-          alt="네이버 소셜 로그인"
-        />
-      </Link>
+        </Form2>
+        <LoginButton>
+          <Button
+            variant="contained"
+            sx={{ width: "378px", backgroundColor: "#000000" }}
+          >
+            로그인
+          </Button>
+        </LoginButton>
+        <Form3>
+          <FindAccount>아이디 찾기</FindAccount>
+          <FindPassword>비밀번호 찾기</FindPassword>
+        </Form3>
+      </ContentBox>
     </div>
   );
 }

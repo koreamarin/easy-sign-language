@@ -14,7 +14,7 @@ function Join() {
   // 토큰을 로컬 스토리지에 저장
   localStorage.setItem(
     "token",
-    "Bearer eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJFYXN5U2lnbiIsImV4cCI6MTcwNzQwNTI5NiwiaWQiOjYsImxvZ2luSWQiOiJzc2FmeSJ9.zJvPLpH3NqXRtxTn71lZ0CczkOgXtgWPpIK4k5V-yscGryHxg-Se-lt_TXXp9ddPJ-wdyjDyDJT6WFuLBcsG2w"
+    "Bearer eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJFYXN5U2lnbiIsImV4cCI6MTcwNzY2MzMzMSwiaWQiOjYsImxvZ2luSWQiOiJzc2FmeSJ9.xkcoHpJEv-kr86OWYkyKKnHGiIihx2H0uNWY-_Wv6f01-BAWpXTiANxh9t7OzdKV9-HPkS56u47d1YBqHpbo6w"
   );
 
   // 로컬 스토리지에서 토큰을 가져옴
@@ -23,10 +23,9 @@ function Join() {
   const getAccount = async () => {
     const response = await fetch(`${API.JOIN}`, {
       method: "POST",
-      // mode: "cors",
+      mode: "cors",
       headers: {
         Authorization: token,
-        "Content-Type": "application/json",
       },
       body: JSON.stringify({
         loginId: user.id,
@@ -49,9 +48,11 @@ function Join() {
     id: "",
     email: "",
     password: "",
-    confirmPassword: "",
     name: "",
   });
+
+  // 비밀번호 일치 여부 상태
+  const [passwordsMatch, setPasswordsMatch] = useState(false);
 
   // 아이디, 패스워드 유효성 검사 state
   const [idValid, setIDValid] = useState(false);
@@ -111,14 +112,16 @@ function Join() {
   // 비밀번호 확인 유효성 검사
   const handleConfirmPassword = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
-    setUser((prevState) => ({
-      ...prevState,
-      confirmPassword: value,
-    }));
+    // setUser((prevState) => ({
+    //   ...prevState,
+    //   confirmPassword: value,
+    // }));
     if (value === user.password) {
-      setConfirmPasswordValid(true);
+      setPasswordsMatch(true);
+      setConfirmPasswordValid(true); // 일치할 때만 유효성 검사 통과로 설정
     } else {
-      setConfirmPasswordValid(false);
+      setPasswordsMatch(false);
+      setConfirmPasswordValid(false); // 일치하지 않을 때는 유효성 검사 통과하지 않도록 설정
     }
   };
 
@@ -205,16 +208,14 @@ function Join() {
           </div>
           <TextField
             id="standard-basic"
-            value={user.confirmPassword}
+            // value={user.confirmPassword}
             type="password"
             label="비밀번호 확인"
             variant="standard"
             onChange={handleConfirmPassword}
           />
           <div className="errorMessageWrap">
-            {!confirmPasswordValid && user.confirmPassword.length > 0 && (
-              <div>비밀번호가 일치하지 않습니다.</div>
-            )}
+            {!passwordsMatch && <div>비밀번호가 일치하지 않습니다.</div>}
           </div>
           <TextField
             id="standard-basic"
