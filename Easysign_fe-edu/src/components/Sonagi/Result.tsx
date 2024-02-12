@@ -1,10 +1,10 @@
 import { useEffect, useRef, useState } from "react";
 import PoseLandmarkerCanvas from "./Pose";
-import PoseLandmarkerManager from "./class/PoseLandmarkManager";
+import PoseLandmarkerManager from "../../poseModelLogic/PoseLandmarkManager";
 import HandLandmarkerCanvas from "./Hand";
-import HandLandmarkerManager from "./class/HandLandmarkManager";
-import CalculateTensor from "./class/CalculateVector";
-import AiResult from "./class/AiModel";
+import HandLandmarkerManager from "../../poseModelLogic/HandLandmarkManager";
+import CalculateTensor from "../../poseModelLogic/CalculateVector";
+import AiResult from "../../poseModelLogic/AiModel";
 import AvatarCanvas from "./AvatarCanvas";
 import FaceLandmarkManager from "../common/FaceLandmarkManager";
 import * as tf from "@tensorflow/tfjs";
@@ -22,7 +22,7 @@ const LandmarkerCanvas = ({ setSubmitWord }: LandmarkerCanvasProps) => {
   // mediapipe 얼굴 매쉬 인식을 위한 클래스
   const [faceLandmarkManager, setFaceLandmarkManager] = useState(FaceLandmarkManager.getInstance());
 
-  const model = tf.loadLayersModel(process.env.PUBLIC_URL + "/model/model.json");
+  const model = tf.loadLayersModel(process.env.PUBLIC_URL + "/model/jihwa/자음/model.json");
 
   // 얼굴에 씌울 아바타 이름
   // Bear, Cat, Chicken, Deer, Dog, Elephant, Pig, Rabbit
