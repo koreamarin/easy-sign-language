@@ -58,7 +58,7 @@ pipeline {
                             echo "도커허브 아이디: ${DOCKER_USER_ID}"
                             echo "도커허브 비밀번호: ${DOCKER_USER_PASSWORD}"
 //                             sh "docker build -t ${DOCKER_USER_ID}/back Easysign_be"
-                            sh "docker build --no-cache -t ${DOCKER_USER_ID}/back Easysign_be ."
+                            sh "docker build --no-cache -t ${DOCKER_USER_ID}/back Easysign_be"
                         }
                     }
                 }
