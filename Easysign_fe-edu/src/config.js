@@ -8,6 +8,7 @@ const API = {
   ADDBOOKMARK: `${BASE_URL}/user/bookmark`,
   ADDSTICKER: `${BASE_URL}/user/sticker`,
   ADDLEARNEDWORD: `${BASE_URL}/user/progress`,
+  SONAGIWORD: `${BASE_URL}/game/sonagi-game`,
 };
 
 export default API;

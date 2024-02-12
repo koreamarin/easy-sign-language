@@ -25,6 +25,8 @@ const JihwaComponent = () => {
     setModalShown: (modalShown: boolean) => void;
     ShownEndModal: () => void;
     ShownEndModalStatus: boolean;
+    category: string;
+    gubun: string;
   }
   const {
     followStatus,
@@ -39,6 +41,8 @@ const JihwaComponent = () => {
     setModalShown,
     ShownEndModal,
     ShownEndModalStatus,
+    category,
+    gubun,
   } = useOutletContext<IFollowersContext>();
 
   const disPatch = useDispatch();
@@ -157,6 +161,8 @@ const JihwaComponent = () => {
                 successModal={successModal}
                 failModal={failModal}
                 sethidden={sethidden}
+                category={category}
+                gubun={gubun}
               />
             </div>
             <img

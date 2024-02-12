@@ -111,6 +111,8 @@ const Lecture = () => {
     setModalShown: setModalShown,
     ShownEndModal: ShownEndModal,
     ShownEndModalStatus: ShownEndModalStatus,
+    category: category,
+    gubun: gubun,
   };
 
   return (

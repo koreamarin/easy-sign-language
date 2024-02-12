@@ -1,5 +1,4 @@
 import { createBrowserRouter } from "react-router-dom";
-import AllComponentsContainer from "./pages/AllComponentsContainer";
 import Main from "./pages/Main";
 import Edu from "./pages/Edu";
 import { Outlet } from "react-router-dom";
@@ -13,10 +12,6 @@ const router = createBrowserRouter([
   {
     path: "/ai",
     element: <LandmarkerCanvas2 />,
-  },
-  {
-    path: "/edu-all",
-    element: <AllComponentsContainer />,
   },
   {
     path: "/",
