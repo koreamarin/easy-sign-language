@@ -6,6 +6,8 @@ import { Outlet } from "react-router-dom";
 import Lecture from "./components/edu/Lecture";
 import JihwaComponent from "./components/edu/jihwa/JihwaComponent";
 import LandmarkerCanvas2 from "./components/poseModelComponents/LandmarkerCanvas2";
+import Result from "./components/Sonagi/Result";
+import Game from "./components/game/Game";
 
 const router = createBrowserRouter([
   {
@@ -128,8 +130,7 @@ const router = createBrowserRouter([
         path: "game",
         element: (
           <div>
-            게임
-            <Outlet />
+            <Game />
           </div>
         ),
         children: [
@@ -143,7 +144,7 @@ const router = createBrowserRouter([
           },
           {
             path: "shower",
-            element: <div>소나기(미구현)</div>,
+            element: <></>,
           },
           {
             path: "wordchain",

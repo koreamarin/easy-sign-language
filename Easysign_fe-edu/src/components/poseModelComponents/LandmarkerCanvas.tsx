@@ -5,6 +5,9 @@ import HandLandmarkerCanvas from "./Hand";
 import HandLandmarkerManager from "../../poseModelLogic//HandLandmarkManager";
 import CalculateTensor from "../../poseModelLogic//CalculateVector";
 import AiResult from "../../poseModelLogic//AiModel";
+import AvatarCanvas from "../Sonagi/AvatarCanvas";
+import FaceLandmarkManager from "../common/FaceLandmarkManager";
+import * as tf from "@tensorflow/tfjs";
 
 const LandmarkerCanvas = ({
   finResult,
@@ -16,6 +19,20 @@ const LandmarkerCanvas = ({
   failModal,
   sethidden,
 }) => {
+  // mediapipe 얼굴 매쉬 인식을 위한 클래스
+  const [faceLandmarkManager, setFaceLandmarkManager] = useState(FaceLandmarkManager.getInstance());
+
+  const model = tf.loadLayersModel(process.env.PUBLIC_URL + "/model/model.json");
+
+  // 얼굴에 씌울 아바타 이름
+  // Bear, Cat, Chicken, Deer, Dog, Elephant, Pig, Rabbit
+  const [avatar, setAvatar] = useState("Dog");
+
+  // avatar 모델 파일 불러오기
+  const [modelUrl, setModelUrl] = useState(
+    process.env.PUBLIC_URL + "/assets/mask/animal_face_pack.gltf"
+  );
+
   // element에서 비디오 값을 가져와 저장
   const videoRef = useRef<HTMLVideoElement>(null);
 
@@ -105,6 +122,9 @@ const LandmarkerCanvas = ({
       videoRef.current.currentTime !== lastVideoTimeRef.current &&
       !stopComp.current
     ) {
+      //얼굴 mask용 얼굴 감지
+      faceLandmarkManager.detectLandmarks(videoRef.current, performance.now());
+
       videoRef.current.muted = !ishidden;
       // 마지막 비디오 시간을 현재 비디오 시간으로 업데이트 후
       lastVideoTimeRef.current = videoRef.current.currentTime;
@@ -160,7 +180,7 @@ const LandmarkerCanvas = ({
         seq.push(angles);
         if (seq.length > 10) {
           seq.shift();
-          aimodel.aiCalculate(seq);
+          aimodel.aiCalculate(seq, model);
         }
 
         const aiResult = aimodel.getResults();
@@ -270,6 +290,7 @@ const LandmarkerCanvas = ({
         fontSize: "40px",
         fontWeight: "bold",
         border: "1px solid black",
+        position: "relative",
       }}
     >
       {/* 비디오 */}
@@ -292,6 +313,19 @@ const LandmarkerCanvas = ({
           fontWeight: "bold",
         }}
       ></video>
+
+      {videoSize && (
+        <>
+          {
+            <AvatarCanvas
+              width={videoSize.width}
+              height={videoSize.height}
+              url={modelUrl}
+              avatar_name={avatar}
+            />
+          }
+        </>
+      )}
 
       {/* 캔버스 */}
       {videoSize && (

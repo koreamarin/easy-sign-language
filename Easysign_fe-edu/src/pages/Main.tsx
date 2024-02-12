@@ -10,7 +10,7 @@ import API from "../config";
 
 localStorage.setItem(
   "token",
-  "Bearer eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJFYXN5U2lnbiIsImV4cCI6MTcwNzU0OTQxNywiaWQiOjYsImxvZ2luSWQiOiJzc2FmeSJ9.6A1rY1vNWqF91Y-sjYdD0aVjqp5TjVEbp7iFNyd3mhv_YBHCum9zc-MDB0W7hEulRfS7xfT7w9y8B5BDWcx3yw"
+  "Bearer eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJFYXN5U2lnbiIsImV4cCI6MTcwNzcyMTk5NSwiaWQiOjYsImxvZ2luSWQiOiJzc2FmeSJ9.sQlRyCa88Rodb8eze4hBrKuQM_hl4z3n8oHxhIznI3ugq3_ZkAIWQvJhcppbggFUEeWnQiHD9qr8yg0oj6-Fsw"
 );
 
 export const token = localStorage.getItem("token") || "";

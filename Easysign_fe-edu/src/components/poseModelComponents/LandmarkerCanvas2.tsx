@@ -5,8 +5,10 @@ import HandLandmarkerCanvas from "./Hand";
 import HandLandmarkerManager from "../../poseModelLogic/HandLandmarkManager";
 import CalculateTensor from "../../poseModelLogic/CalculateVector";
 import AiResult from "../../poseModelLogic/AiModel";
+import * as tf from "@tensorflow/tfjs";
 
 const LandmarkerCanvas2 = () => {
+  const model = tf.loadLayersModel(process.env.PUBLIC_URL + "/model/model.json");
   // element에서 비디오 값을 가져와 저장
   const videoRef = useRef<HTMLVideoElement>(null);
 
@@ -162,7 +164,7 @@ const LandmarkerCanvas2 = () => {
         seq.push(angles);
         if (seq.length > 10) {
           seq.shift();
-          aimodel.aiCalculate(seq);
+          aimodel.aiCalculate(seq, model);
         }
 
         const aiResult = aimodel.getResults();
