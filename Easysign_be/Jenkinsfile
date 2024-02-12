@@ -11,23 +11,30 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                checkout scmGit(
-                        branches: [[name: 'be']],
-//                         extensions: [submodule(parentCredentials: true, trackingSubmodules: true)],
-                        userRemoteConfigs: [[credentialsId: 'GitLab-Project-access-Token', url: 'https://lab.ssafy.com/s10-webmobile1-sub2/S10P12C202.git']]
-                )
+                    checkout scm
+//                 checkout scmGit(
+//                         branches: [[name: 'be']],
+// //                         extensions: [submodule(parentCredentials: true, trackingSubmodules: true)],
+//                         userRemoteConfigs: [[credentialsId: 'GitLab-Project-access-Token', url: 'https://lab.ssafy.com/s10-webmobile1-sub2/S10P12C202.git']]
+//                 )
             }
         }
         stage('Setup Environment') {
             steps {
                 dir("${env.WORKSPACE}/Easysign_be"){
                     script {
-                        sh "ls -al"
-                        sh "ls secure-settings -al"
-                        sh "chmod +x ./gradlew"
+//                         sh "ls -al"
+//                         sh "ls secure-settings -al"
+//                         sh "chmod +x ./gradlew"
 //                         sh "cp ./secure-settings/application.yml ./src/main/resources"
 //                         sh "cp ./secure-settings/application-dev.yml ./src/main/resources"
-                        sh "ls ./src/main/resources -al"
+//                         sh "ls ./src/main/resources -al"
+                        sh "ls -al"
+                        sh "echo 'SUBMODULE CHECK'"
+                        sh "ls secure-settings -al"
+                        sh "ls ./src/main/resources"
+                        sh "chmod +x ./gradlew"
+                        sh "cat ./src/main/resources/application.yml"
                     }
                 }
             }
