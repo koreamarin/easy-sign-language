@@ -5,7 +5,6 @@ import MainPage from "./components/common/MainPage";
 import Login from "./components/common/Login";
 import Join from "./components/common/Join";
 import Navbar from "./components/common/Navbar";
-import Sidebar from "./components/common/Sidebar";
 import StoreMain from "./components/store/StoreMain";
 import Mypage from "./components/mypage/Mypage";
 import Footer from "./components/common/Footer";

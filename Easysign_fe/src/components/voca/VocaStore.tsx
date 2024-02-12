@@ -118,6 +118,9 @@ function VocaStore() {
       navigate("/");
     }
   };
+
+  // 백-프론트 연결 통신(GET)
+
   const [bookmark, setBookmark] = useState([]);
 
   localStorage.setItem(
