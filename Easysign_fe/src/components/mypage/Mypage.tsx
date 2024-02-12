@@ -1,89 +1,233 @@
 import React from "react";
-
 import styled from "styled-components";
+import { useNavigate } from "react-router-dom";
 
-// 이미지 pagination 적용을 위한 react library import
-import ImageGallery from "react-image-gallery";
-import "react-image-gallery/styles/css/image-gallery.css";
+// Speed Dial 관련 import
+import SpeedDial from "@mui/material/SpeedDial";
+import SpeedDialIcon from "@mui/material/SpeedDialIcon";
+import SpeedDialAction from "@mui/material/SpeedDialAction";
+
+// mui icon import
+import {
+  AccessAlarm,
+  BookmarksOutlined,
+  Settings,
+  Logout,
+} from "@mui/icons-material";
+
+// swiper 이용
+// https://swiperjs.com/
+// Import Swiper React components
+import { Swiper, SwiperSlide } from "swiper/react";
+
+// Import Swiper styles
+import "swiper/css";
+import "swiper/css/pagination";
+
+import "./styles.css";
+
+// import required modules
+import { Pagination } from "swiper/modules";
 
 function Mypage() {
-  const ContentContainer = styled.div`
-    flex-direction: column;
-    justify-content: center; // 수정된 부분
-    display: flex;
-  `;
+  const navigate = useNavigate(); // useNavigate 훅을 이용해 navigate 함수를 가져옴
 
-  const Characters = styled.div`
-    padding: 5px;
-    max-height: 35vh;
-    width: 60vw;
-    background-color: pink;
-    flex-grow: 1; /* 컨테이너의 높이를 채우기 위해 flex-grow 설정 */
-  `;
+  const handleActionClick = (name: string) => {
+    if (name === "상점 모달 테스트") {
+      navigate("/store_test"); // 클릭한 액션에 따라 특정 링크로 이동
+    } else if (name === "단어장") {
+      navigate("/voca");
+    } else if (name === "환경설정") {
+      navigate("/mypage");
+    } else if (name === "logout") {
+      navigate("/");
+    }
+  };
 
-  const Backgrounds = styled.div`
-    padding: 5px;
-    max-height: 35vh;
-    width: 60vw;
-    background-color: skyblue;
-    flex-grow: 1; /* 컨테이너의 높이를 채우기 위해 flex-grow 설정 */
-  `;
-
-  // 이미지 저장하는 배열
-  // 이후 작업 시에는 배경/캐릭터를 분리해서 배열 이용
-  // https://www.npmjs.com/package/react-image-gallery 이 라이브러리 이용
-  const images = [
-    {
-      original:
-        "https://i.namu.wiki/i/IKkr4iBZuvQf-KLHmMqhQdYE97y5h2jJJeXctEFajXlfgeMjsCLeVHNYWg2S3XfKH1e-ate3Y0pPiuSe_amahOE1bkSyogpX9noegqyY2Z2g1s2zXM_bdqDM2AMBqKOZ7p_d9KJdETJZSc9chgHhIw.webp",
-      originalHeight: 150,
-      originalWidth: 150,
-    },
-    {
-      original:
-        "https://i.namu.wiki/i/ZcsfHiQg8vdZ_kbdsVcbX6iwKi1Wu4J2qFCfI5JbAfOtlLuSMdbz4qQSf9wLGRuBxKu82AWVgCK_64C_Zw3mIsPYpenGWHLmr4Q5RcRGbXtXrcRHroMgOIvSF3PD5rFoDCAORiSjarRX3FE20mMLWA.webp",
-      originalHeight: 150,
-      originalWidth: 150,
-    },
-    {
-      original:
-        "https://i.namu.wiki/i/VFVuUVsqNGZIw83SK2OXkvrQptxchVI-i7IbtwRY1GB6H45nqlxmQ5Bf0oYUQUwdkMLt0pwYIRpVsSx48MFA08wVxNNuYUJdI1uDK_LvgRJUGCAKKDwSX2Hu_8useYEAg-VyJqAsgN5REB0bFkEUVQ.webp",
-      originalHeight: 150,
-      originalWidth: 150,
-    },
-    {
-      original:
-        "https://i.namu.wiki/i/b7PJPdpYzBF4FxSmckxbpweDiuDa2_JARCh5GxsmQ0Ll4rQB6zmRggi59ujbKnC1D6Qnt-T2YvLhbngcaj3PzNfK8Xh4QiGPDUpqi4_AXCzCx2r3c3wJsney8kqnOWv9mPXWka_cOzt8tff5zqLYpA.webp",
-      originalHeight: 150,
-      originalWidth: 150,
-    },
+  // Speed dial 관련 데이터(action)
+  const actions = [
+    { icon: <AccessAlarm />, name: "상점 모달 테스트" },
+    { icon: <BookmarksOutlined />, name: "단어장" },
+    { icon: <Settings />, name: "환경설정" },
+    { icon: <Logout />, name: "로그아웃" },
   ];
 
+  // style 관련
+
+  const BigView = styled.div`
+    min-height: 150vh;
+    // 배경색이 적용되지 않는 문제 발생
+    background: #f6faf4;
+  `;
+
+  const R56 = styled.div`
+    box-sizing: border-box;
+
+    position: absolute;
+    width: 1100px;
+    height: 700px;
+    top: 200px;
+    left: 170px;
+
+    background: #ffffff;
+    border: 1px solid #c4c4c4;
+    box-shadow: 15px 25px 4px rgba(0, 0, 0, 0.25);
+    border-radius: 30px;
+  `;
+
+  // 캐릭터 모음 글자
+  const Text1 = styled.div`
+    position: absolute;
+    top: 30px;
+    left: 30px;
+
+    font-family: "Inter";
+    font-style: normal;
+    font-weight: 700;
+    font-size: 32px;
+    color: #833f00;
+  `;
+
+  // 캐릭터 모음 담는 박스
+  const SmallBox1 = styled.div`
+    position: absolute;
+    top: 90px;
+    left: 20px;
+    height: 210px;
+    width: 1060px;
+  `;
+
+  // 각각의 캐릭터나 배경 담는 박스
+  const ContainerBox = styled.div`
+    width: 200px;
+    height: 200px;
+    border-radius: 20px;
+    background: #fff6f6;
+  `;
+
+  // 배경 모음 글자
+  const Text2 = styled.div`
+    position: absolute;
+    top: 400px;
+    left: 30px;
+
+    font-family: "Inter";
+    font-style: normal;
+    font-weight: 700;
+    font-size: 32px;
+    color: #833f00;
+  `;
+
+  // 배경 모음 담는 박스
+  const SmallBox2 = styled.div`
+    position: absolute;
+    top: 450px;
+    left: 20px;
+    height: 210px;
+    width: 1060px;
+  `;
   return (
-    <ContentContainer>
-      {/* <Container> */}
-      <Characters>
-        <div>캐릭터 모음</div>
-        <ImageGallery
-          items={images}
-          showBullets={true}
-          showFullscreenButton={false}
-          showPlayButton={false}
-        />
-      </Characters>
-      <br></br>
-      <Backgrounds>
-        <div>배경 모음</div>
-        {/* 추후 onClick: Function, callback(event) 이용해서 설정이 바뀔 수 있게 해줘야 한다.  */}
-        <ImageGallery
-          items={images}
-          showBullets={true}
-          showFullscreenButton={false}
-          showPlayButton={false}
-        />
-      </Backgrounds>
-      {/* </Container> */}
-    </ContentContainer>
+    <div>
+      <BigView>
+        <R56>
+          <Text1>캐릭터 모음</Text1>
+          <SmallBox1>
+            <Swiper
+              slidesPerView={4}
+              spaceBetween={30}
+              pagination={{
+                clickable: true,
+              }}
+              modules={[Pagination]}
+              className="mySwiper"
+            >
+              <SwiperSlide>
+                <ContainerBox>slide 1</ContainerBox>
+              </SwiperSlide>
+              <SwiperSlide>
+                <ContainerBox>slide 2</ContainerBox>
+              </SwiperSlide>
+              <SwiperSlide>
+                <ContainerBox>slide 3</ContainerBox>
+              </SwiperSlide>
+              <SwiperSlide>
+                <ContainerBox>slide 4</ContainerBox>
+              </SwiperSlide>
+              <SwiperSlide>
+                <ContainerBox>slide 5</ContainerBox>
+              </SwiperSlide>
+              <SwiperSlide>
+                <ContainerBox>slide 6</ContainerBox>
+              </SwiperSlide>
+              <SwiperSlide>
+                <ContainerBox>slide 7</ContainerBox>
+              </SwiperSlide>
+              <SwiperSlide>
+                <ContainerBox>slide 8</ContainerBox>
+              </SwiperSlide>
+              <SwiperSlide>
+                <ContainerBox>slide 9</ContainerBox>
+              </SwiperSlide>
+            </Swiper>
+          </SmallBox1>
+          <Text2>배경 모음</Text2>
+          <SmallBox2>
+            <Swiper
+              slidesPerView={4}
+              spaceBetween={30}
+              pagination={{
+                clickable: true,
+              }}
+              modules={[Pagination]}
+              className="mySwiper"
+            >
+              <SwiperSlide>
+                <ContainerBox>slide 1</ContainerBox>
+              </SwiperSlide>
+              <SwiperSlide>
+                <ContainerBox>slide 2</ContainerBox>
+              </SwiperSlide>
+              <SwiperSlide>
+                <ContainerBox>slide 3</ContainerBox>
+              </SwiperSlide>
+              <SwiperSlide>
+                <ContainerBox>slide 4</ContainerBox>
+              </SwiperSlide>
+              <SwiperSlide>
+                <ContainerBox>slide 5</ContainerBox>
+              </SwiperSlide>
+              <SwiperSlide>
+                <ContainerBox>slide 6</ContainerBox>
+              </SwiperSlide>
+              <SwiperSlide>
+                <ContainerBox>slide 7</ContainerBox>
+              </SwiperSlide>
+              <SwiperSlide>
+                <ContainerBox>slide 8</ContainerBox>
+              </SwiperSlide>
+              <SwiperSlide>
+                <ContainerBox>slide 9</ContainerBox>
+              </SwiperSlide>
+            </Swiper>
+          </SmallBox2>
+        </R56>
+      </BigView>
+      {/* mui speed dial 적용 */}
+      <SpeedDial
+        ariaLabel="SpeedDial basic example"
+        sx={{ position: "fixed", bottom: 50, right: 50 }}
+        icon={<SpeedDialIcon />}
+      >
+        {actions.map((action) => (
+          <SpeedDialAction
+            key={action.name}
+            icon={action.icon}
+            tooltipTitle={action.name}
+            onClick={() => handleActionClick(action.name)}
+          />
+        ))}
+      </SpeedDial>
+    </div>
   );
 }
 
