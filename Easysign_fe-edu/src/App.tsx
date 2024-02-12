@@ -1,14 +1,9 @@
 import React from "react";
-import CounterContainer from "./containers/CounterContainer";
-import TodosContainer from "./containers/TodosContainer";
+import { RouterProvider } from "react-router-dom";
+import router from "./Router";
+import "../src/styles/main.css";
 
 function App() {
-  return (
-    <div>
-      <CounterContainer />
-      -----------------
-      <TodosContainer />
-    </div>
-  );
+  return <RouterProvider router={router} />;
 }
 export default App;
