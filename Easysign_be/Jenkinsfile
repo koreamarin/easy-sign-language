@@ -31,9 +31,10 @@ pipeline {
 //                         sh "ls ./src/main/resources -al"
 
 //                         sh "ls -al"
-//                         sh "echo 'SUBMODULE CHECK'"
+                        sh "echo 'SUBMODULE CHECK'"
 //                         sh "ls secure-settings -al"
 //                         sh "ls ./src/main/resources"
+                        sh "ls ./src/main/resources"
                         sh "chmod +x ./gradlew"
                         sh "cat ./src/main/resources/application.yml"
                     }
