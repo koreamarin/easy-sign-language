@@ -5,3 +5,11 @@ spring:
     hibernate:
       ddl-auto: update
 #    show-sql: true 쿼리문 보이게 하기
+  config:
+    activate:
+      on-profile: dev
+  datasource:
+    url: ${DB_URL}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    username: ${DB_USER}
+    password: ${DB_PASSWORD}

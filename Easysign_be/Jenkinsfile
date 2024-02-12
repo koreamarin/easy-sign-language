@@ -46,31 +46,33 @@ pipeline {
 //				sh "./gradlew test"
 //			}
 //		}
-            stage("Build") {
-                    steps {
-                        script {
-                            sh "ls -al"
-                            withCredentials([[$class: 'UsernamePasswordMultiBinding', credentialsId: 'Docker-hub', usernameVariable: 'DOCKER_USER_ID', passwordVariable: 'DOCKER_USER_PASSWORD']]) {
-                            //  sh "docker stop back || true"  // Ignore error ifgit  container doesn't exist
-                            //  sh "docker rm back || true"    // Ignore error if container doesn't exist
-                            //  sh "docker rmi xogns5/back"     //images 날리기
-                                sh "docker build --no-cache -t ${DOCKER_USER_ID}/back Easysign_be"
 
-                            }
-                        }
-                    }
-            }
-            stage("Login") {
-                steps {
-                    withCredentials([[$class: 'UsernamePasswordMultiBinding', credentialsId: 'Docker-hub', usernameVariable: 'DOCKER_USER_ID', passwordVariable: 'DOCKER_USER_PASSWORD']]) {
-                        sh """
-                            set +x
-                            echo $DOCKER_USER_PASSWORD | docker login -u $DOCKER_USER_ID --password-stdin
-                            set -x
-                        """
-                    }
+        stage("Login") {
+            steps {
+                withCredentials([[$class: 'UsernamePasswordMultiBinding', credentialsId: 'Docker-hub', usernameVariable: 'DOCKER_USER_ID', passwordVariable: 'DOCKER_USER_PASSWORD']]) {
+                    sh """
+                        set +x
+                        echo $DOCKER_USER_PASSWORD | docker login -u $DOCKER_USER_ID --password-stdin
+                        set -x
+                    """
                 }
             }
+        }
+
+        stage("Build") {
+                steps {
+                    script {
+                        sh "ls -al"
+                        withCredentials([[$class: 'UsernamePasswordMultiBinding', credentialsId: 'Docker-hub', usernameVariable: 'DOCKER_USER_ID', passwordVariable: 'DOCKER_USER_PASSWORD']]) {
+                        //  sh "docker stop back || true"  // Ignore error ifgit  container doesn't exist
+                        //  sh "docker rm back || true"    // Ignore error if container doesn't exist
+                        //  sh "docker rmi xogns5/back"     //images 날리기
+                            sh "docker build -t ${DOCKER_USER_ID}/back Easysign_be"
+
+                        }
+                    }
+                }
+        }
         stage("Tag and Push") {
             steps {
                 script {
