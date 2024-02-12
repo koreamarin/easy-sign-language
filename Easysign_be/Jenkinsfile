@@ -5,6 +5,8 @@ pipeline {
         DB_URL = "${env.DB_URL}"
         DB_USER = "${env.DB_USER}"
         DB_PASSWORD = "${env.DB_PASSWORD}"
+        DOCKER_USER_PASSWORD = "${DOCKER_USER_PASSWORD}"
+        DOCKER_USER_ID = "${DOCKER_USER_ID}"
     }
     stages {
         stage('Checkout') {
@@ -23,9 +25,7 @@ pipeline {
                         sh "ls -al"
                         sh "ls secure-settings -al"
                         sh "chmod +x ./gradlew"
-//                         sh "cp ./secure-settings/application.yml"
 //                         sh "cp ./secure-settings/application.yml ./src/main/resources"
-//                         sh "cp ./secure-settings/application-dev.yml"
 //                         sh "cp ./secure-settings/application-dev.yml ./src/main/resources"
                         sh "ls ./src/main/resources -al"
 
@@ -48,17 +48,17 @@ pipeline {
 //                 }
 //             }
 //         }
-        stage("Login") {
-            steps {
-                withCredentials([[$class: 'UsernamePasswordMultiBinding', credentialsId: 'Docker-hub', usernameVariable: 'DOCKER_USER_ID', passwordVariable: 'DOCKER_USER_PASSWORD']]) {
-                    sh """
-                        set +x
-                        echo $DOCKER_USER_PASSWORD | docker login -u $DOCKER_USER_ID --password-stdin
-                        set -x
-                    """
+            stage("Login") {
+                steps {
+                    withCredentials([[$class: 'UsernamePasswordMultiBinding', credentialsId: 'Docker-hub', usernameVariable: 'DOCKER_USER_ID', passwordVariable: 'DOCKER_USER_PASSWORD']]) {
+                        sh """
+                            set +x
+                            echo $DOCKER_USER_PASSWORD | docker login -u $DOCKER_USER_ID --password-stdin
+                            set -x
+                        """
+                    }
                 }
             }
-        }
         stage("Tag and Push") {
             steps {
                 script {
