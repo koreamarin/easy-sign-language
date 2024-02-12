@@ -5,6 +5,9 @@ import SonagiCamera from "./SonagiCamera";
 import { LifeCount } from "./SonagiConfig";
 import LandmarkerCanvas from "./Result";
 import SSmallButton from "../Button/SSmallButton";
+import API from "../../config";
+import { token } from "../../pages/Main";
+import { useLocation, useNavigate } from "react-router-dom";
 
 interface SonagiCanvasProps {
   life: number;
@@ -34,10 +37,24 @@ function SonagiCanvas({
   const [inputWord, setInputWord] = useState<string>("");
   const [submitWord, setSubmitWord] = useState<string>("");
 
+  const navigate = useNavigate();
+
   // let submitWord :string = "";
 
   const canvasWidth = 1140;
   const canvasHeight = 600;
+
+  const getSonagiWord = async () => {
+    const response = await fetch(`${API.SONAGIWORD}`, {
+      method: "GET",
+      headers: {
+        Authorization: token,
+      },
+    });
+    const json = await response.json();
+    const SonagiWord = json.map((item: any) => item.content);
+    setWords(SonagiWord);
+  };
 
   useEffect(() => {
     //단어 Api 호출 및 단어 세팅.
@@ -47,7 +64,7 @@ function SonagiCanvas({
     //setWords([temp_words])
 
     //그런데 useState는 비동기라서 바로 반영 안됨. 체크 들어올때를 체크해야함.
-    setWords(["쥐", "소", "호랑이", "토끼", "용", "뱀", "말", "양", "원숭이", "닭", "개", "돼지"]);
+    getSonagiWord();
     // setWords(["ㄱ","ㅂ","ㄴ","ㅇ","ㅈ","ㅁ","ㅋ", "ㅎ", "ㅊ", "ㅍ"]);
   }, []);
 
@@ -117,7 +134,9 @@ function SonagiCanvas({
     }
   };
 
-  const quitGame = () => {};
+  const quitGame = () => {
+    navigate(-1);
+  };
 
   return (
     <div
@@ -190,10 +209,8 @@ function SonagiCanvas({
         setSuccess={setIsClear}
         shown={isGameOver}
         setModalShown={setIsGameOver}
-        BookmarkButton={false}
         stickerNum={100}
-        signId={10}
-        Sonagi={Sonagi.current!}
+        words={words}
         setWords={setWords}
       />
     </div>

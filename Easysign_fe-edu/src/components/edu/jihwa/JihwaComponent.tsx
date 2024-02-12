@@ -214,7 +214,7 @@ const JihwaComponent = () => {
             <span
               style={{
                 position: "relative",
-                left: "350px",
+                left: "250px",
                 display: "flex",
                 flexDirection: "row",
                 justifyContent: "center",
@@ -231,12 +231,6 @@ const JihwaComponent = () => {
               >
                 X {addSticker}
               </span>
-              {/* <div>
-                <div>
-                  <button onClick={successModal}>성공 모달 테스트</button>
-                </div>
-                <button onClick={failModal}>실패 모달 테스트</button>
-              </div> */}
             </span>
           </div>
           <ResultModal

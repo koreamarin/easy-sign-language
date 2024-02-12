@@ -7,12 +7,9 @@ import JihwaComponent from "./components/edu/jihwa/JihwaComponent";
 import LandmarkerCanvas2 from "./components/poseModelComponents/LandmarkerCanvas2";
 import Result from "./components/Sonagi/Result";
 import Game from "./components/game/Game";
+import Sonagi from "./components/Sonagi/Sonagi";
 
 const router = createBrowserRouter([
-  {
-    path: "/ai",
-    element: <LandmarkerCanvas2 />,
-  },
   {
     path: "/",
     element: <Main />,
@@ -139,7 +136,7 @@ const router = createBrowserRouter([
           },
           {
             path: "shower",
-            element: <></>,
+            element: <Sonagi />,
           },
           {
             path: "wordchain",

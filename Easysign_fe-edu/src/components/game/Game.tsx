@@ -1,11 +1,5 @@
-import { useDispatch, useSelector } from "react-redux";
-import { rootState } from "../../redux/modules";
-import { useEffect, useState } from "react";
-import { IncorrectAnswerRateSet, LearningProgressSet } from "../../redux/modules/ProgressSlice";
 import Nav from "../nav/Nav";
-import { token } from "../../pages/Main";
-
-import Sonagi from "../Sonagi/Sonagi";
+import { Outlet } from "react-router-dom";
 
 export type trainingDataType = {
   signId: number;
@@ -26,8 +20,8 @@ const Lecture = () => {
         flexDirection: "row", // 추가
       }}
     >
-      {/* <Nav Progress2Visibility={false} /> */}
-      <Sonagi />
+      <Nav Progress2Visibility={false} />
+      <Outlet />
     </div>
   );
 };

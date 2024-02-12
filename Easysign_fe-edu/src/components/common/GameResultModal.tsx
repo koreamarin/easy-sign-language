@@ -4,18 +4,17 @@ import MediumButton from "../Button/MediumButton";
 import CryingEmoji from "../../assets/images/CryingEmoji.png";
 import SonagiEngine from "../Sonagi/SonagiEngine";
 import { SonagiLevelUp } from "../Sonagi/SonagiConfig";
+import API from "../../config";
+import { token } from "../../pages/Main";
 
 interface GameResultModalProps {
   success: boolean;
   setSuccess: (success: boolean) => void;
-  BookmarkButton: boolean;
   shown: boolean;
   setModalShown: (shown: boolean) => void;
   stickerNum: number;
-  signId: number;
-
-  Sonagi: SonagiEngine;
-  setWords : (words: string[]) => void;
+  words: string[];
+  setWords: (words: string[]) => void;
 }
 
 const GameResultModal = ({
@@ -23,23 +22,48 @@ const GameResultModal = ({
   setSuccess,
   shown,
   setModalShown,
-  BookmarkButton,
   stickerNum,
-  signId,
-  Sonagi,
+  words,
   setWords,
 }: GameResultModalProps) => {
+  const addSticker = async () => {
+    const response = await fetch(`${API.ADDSTICKER}?count=${stickerNum}`, {
+      method: "PUT",
+      headers: {
+        Authorization: token,
+      },
+    });
+  };
+
+  const getSonagiWord = async () => {
+    const response = await fetch(`${API.SONAGIWORD}`, {
+      method: "GET",
+      headers: {
+        Authorization: token,
+      },
+    });
+    const json = await response.json();
+    const SonagiWord = json.map((item: any) => item.content);
+    setWords(SonagiWord);
+  };
+
+  if (success) {
+    addSticker();
+  }
+
   const next = () => {
     setSuccess(false);
     setModalShown(false);
-		SonagiLevelUp();
-		setWords(["ㄱ","ㅂ","ㄴ","ㅇ","ㅈ","ㅁ","ㅋ", "ㅎ"]);
-		
+    SonagiLevelUp();
+    getSonagiWord();
   };
   const replay = () => {
     setModalShown(false);
     // setWords(["쥐","소","호랑이","토끼","용","뱀","말","양","원숭이","닭","개","돼지"]);
-    setWords(["ㄱ","ㅂ","ㄴ","ㅇ","ㅈ","ㅁ","ㅋ", "ㅎ"]);
+    // words의 리스트를 랜덤으로 재배치
+    const randWord = [...words];
+    randWord.push(randWord.shift()!);
+    setWords(randWord);
   };
 
   return (
