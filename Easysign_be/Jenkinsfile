@@ -12,7 +12,7 @@ pipeline {
                 checkout scmGit(
                         branches: [[name: 'be']],
 //                         extensions: [submodule(parentCredentials: true, trackingSubmodules: true)],
-                        userRemoteConfigs: [[credentialsId: 'GitLab-Access-Token2', url: 'https://lab.ssafy.com/s10-webmobile1-sub2/S10P12C202.git']]
+                        userRemoteConfigs: [[credentialsId: 'GitLab-Project-access-Token', url: 'https://lab.ssafy.com/s10-webmobile1-sub2/S10P12C202.git']]
                 )
             }
         }
