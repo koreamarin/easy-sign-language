@@ -23,7 +23,7 @@ pipeline {
             steps {
                 dir("${env.WORKSPACE}/Easysign_be"){
                     script {
-//                         sh "ls -al"
+                        sh "ls -al"
 //                         sh "ls secure-settings -al"
 //                         sh "chmod +x ./gradlew"
 //                         sh "cp ./secure-settings/application.yml ./src/main/resources"
@@ -57,8 +57,8 @@ pipeline {
                         //  sh "docker rmi xogns5/back"     //images 날리기
                             echo "도커허브 아이디: ${DOCKER_USER_ID}"
                             echo "도커허브 비밀번호: ${DOCKER_USER_PASSWORD}"
-                            sh "docker build -t ${DOCKER_USER_ID}/back Easysign_be"
-
+//                             sh "docker build -t ${DOCKER_USER_ID}/back Easysign_be"
+                            sh "docker build --no-cache -t ${DOCKER_USER_ID}/back Easysign_be"
                         }
                     }
                 }
