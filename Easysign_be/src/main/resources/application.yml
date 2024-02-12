@@ -1,15 +1,29 @@
+#spring:
+##  profiles:
+##    active: dev
+#  jpa:
+#    hibernate:
+#      ddl-auto: update
+##    show-sql: true 쿼리문 보이게 하기
+#  config:
+#    activate:
+#      on-profile: dev
+#  datasource:
+#    url: ${DB_URL}
+#    driver-class-name: com.mysql.cj.jdbc.Driver
+#    username: ${DB_USER}
+#    password: ${DB_PASSWORD}
+
 spring:
-#  profiles:
-#    active: dev
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://i10c202.p.ssafy.io:3307/easysign
+    username: root
+    password: ssafy
   jpa:
     hibernate:
       ddl-auto: update
-#    show-sql: true 쿼리문 보이게 하기
-  config:
-    activate:
-      on-profile: dev
-  datasource:
-    url: ${DB_URL}
-    driver-class-name: com.mysql.cj.jdbc.Driver
-    username: ${DB_USER}
-    password: ${DB_PASSWORD}
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
