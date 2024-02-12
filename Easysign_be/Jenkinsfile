@@ -5,8 +5,8 @@ pipeline {
         DB_URL = "${env.DB_URL}"
         DB_USER = "${env.DB_USER}"
         DB_PASSWORD = "${env.DB_PASSWORD}"
-        DOCKER_USER_PASSWORD = "${DOCKER_USER_PASSWORD}"
-        DOCKER_USER_ID = "${DOCKER_USER_ID}"
+//         DOCKER_USER_PASSWORD = "${DOCKER_USER_PASSWORD}"
+//         DOCKER_USER_ID = "${DOCKER_USER_ID}"
     }
     stages {
         stage('Checkout') {
