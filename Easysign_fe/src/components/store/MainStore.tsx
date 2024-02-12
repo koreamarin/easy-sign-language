@@ -1,95 +1,175 @@
 import styled from "styled-components";
-import { Link } from "react-router-dom";
 
-// 이미지 pagination 적용을 위한 react library import
-import ImageGallery from "react-image-gallery";
-import "react-image-gallery/styles/css/image-gallery.css";
+// swiper 이용
+// https://swiperjs.com/
+// Import Swiper React components
+import { Swiper, SwiperSlide } from "swiper/react";
+
+// Import Swiper styles
+import "swiper/css";
+import "swiper/css/pagination";
+
+import "./styles.css";
+
+// import required modules
+import { Pagination } from "swiper/modules";
+
+const BigView = styled.div`
+  min-height: 150vh;
+`;
+
+const Container = styled.div`
+  position: absolute;
+  display: flex;
+  width: 1300px;
+  height: 720px;
+  left: calc(50% - 1300px / 2 + 0px);
+  top: 400px;
+  background: rgba(191, 124, 69, 0.79);
+  border-radius: 50px;
+  border: 1.5px solid #000000;
+`;
+
+const F57 = styled.div`
+  position: absolute;
+
+  width: 1088px;
+  height: 500px;
+  left: calc(50% - 1088px / 2);
+  top: 110px;
+  background: #ebd8c0;
+`;
+
+const SmallBox = styled.div`
+  position: absolute;
+  top: 80px;
+  left: 118px;
+  width: 852px;
+  height: 341.75px;
+`;
+
+const PhotoBox = styled.div`
+  position: absolute;
+  width: 150px;
+  height: 230px;
+  left: calc(50% - 150px / 2);
+  top: 14px;
+
+  background: #e2d0b2;
+  border-radius: 15px;
+`;
+
+const F66 = styled.div`
+  position: absolute;
+  width: 125px;
+  height: 37px;
+  left: calc(50% - 125px / 2 + 0.5px);
+  top: 278px;
+
+  background: #0999a0;
+  border: 1.5px solid #000000;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+  border-radius: 25px;
+`;
+
+// 구매했을 경우 구매완료 / 구매하지 않았을 경우 가격 표시하는 텍스트
+const Text1 = styled.div`
+  position: absolute;
+  width: 107px;
+  height: 50px;
+  left: calc(50% - 107px / 2);
+  top: calc(50% - 50px / 2 + 0.5px);
+
+  font-family: "Inter";
+  font-style: normal;
+  font-weight: 700;
+  font-size: 15px;
+  line-height: 50px;
+  /* identical to box height, or 333% */
+  display: flex;
+  align-items: center;
+  text-align: center;
+
+  color: #ffffff;
+`;
 
 function MainStore() {
-  const Container = styled.div`
-    min-height: 120vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  `;
-
-  const ContentBox = styled.div`
-    width: 90vw;
-    height: 80vh;
-    background-color: #bf7c45;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  `;
-
-  // 이미지 저장하는 배열
-  // 이후 작업 시에는 배경/캐릭터를 분리해서 배열 이용
-  // https://www.npmjs.com/package/react-image-gallery 이 라이브러리 이용
-  const images = [
-    {
-      original:
-        "https://i.namu.wiki/i/1kIPm1SmDVLePbATyVEvTaiDC2YzLzDJWGonMFJyVggBtERGUYl9prypeQD1VSMFwAah1O6eh48pMgjPLeZsBuyyrnAM6VKwsbFsluEXAQ6Gn_mXt4nQLjEva08ym8WqpAj3PFrl889oTzBeGCTmjA.webp",
-      thumbnail:
-        "https://i.namu.wiki/i/1kIPm1SmDVLePbATyVEvTaiDC2YzLzDJWGonMFJyVggBtERGUYl9prypeQD1VSMFwAah1O6eh48pMgjPLeZsBuyyrnAM6VKwsbFsluEXAQ6Gn_mXt4nQLjEva08ym8WqpAj3PFrl889oTzBeGCTmjA.webp",
-      originalHeight: 300,
-      originalWidth: 300,
-      thumbnailHeight: 75,
-      thumbnailWidth: 75,
-    },
-    {
-      original:
-        "https://i.namu.wiki/i/ZcsfHiQg8vdZ_kbdsVcbX6iwKi1Wu4J2qFCfI5JbAfOtlLuSMdbz4qQSf9wLGRuBxKu82AWVgCK_64C_Zw3mIsPYpenGWHLmr4Q5RcRGbXtXrcRHroMgOIvSF3PD5rFoDCAORiSjarRX3FE20mMLWA.webp",
-      thumbnail:
-        "https://i.namu.wiki/i/IKkr4iBZuvQf-KLHmMqhQdYE97y5h2jJJeXctEFajXlfgeMjsCLeVHNYWg2S3XfKH1e-ate3Y0pPiuSe_amahOE1bkSyogpX9noegqyY2Z2g1s2zXM_bdqDM2AMBqKOZ7p_d9KJdETJZSc9chgHhIw.webp",
-      originalHeight: 300,
-      originalWidth: 300,
-      thumbnailHeight: 75,
-      thumbnailWidth: 75,
-    },
-    {
-      original:
-        "https://i.namu.wiki/i/VFVuUVsqNGZIw83SK2OXkvrQptxchVI-i7IbtwRY1GB6H45nqlxmQ5Bf0oYUQUwdkMLt0pwYIRpVsSx48MFA08wVxNNuYUJdI1uDK_LvgRJUGCAKKDwSX2Hu_8useYEAg-VyJqAsgN5REB0bFkEUVQ.webp",
-      thumbnail:
-        "https://i.namu.wiki/i/VFVuUVsqNGZIw83SK2OXkvrQptxchVI-i7IbtwRY1GB6H45nqlxmQ5Bf0oYUQUwdkMLt0pwYIRpVsSx48MFA08wVxNNuYUJdI1uDK_LvgRJUGCAKKDwSX2Hu_8useYEAg-VyJqAsgN5REB0bFkEUVQ.webp",
-      originalHeight: 300,
-      originalWidth: 300,
-      thumbnailHeight: 75,
-      thumbnailWidth: 75,
-    },
-    {
-      original:
-        "https://i.namu.wiki/i/b7PJPdpYzBF4FxSmckxbpweDiuDa2_JARCh5GxsmQ0Ll4rQB6zmRggi59ujbKnC1D6Qnt-T2YvLhbngcaj3PzNfK8Xh4QiGPDUpqi4_AXCzCx2r3c3wJsney8kqnOWv9mPXWka_cOzt8tff5zqLYpA.webp",
-      thumbnail:
-        "https://i.namu.wiki/i/b7PJPdpYzBF4FxSmckxbpweDiuDa2_JARCh5GxsmQ0Ll4rQB6zmRggi59ujbKnC1D6Qnt-T2YvLhbngcaj3PzNfK8Xh4QiGPDUpqi4_AXCzCx2r3c3wJsney8kqnOWv9mPXWka_cOzt8tff5zqLYpA.webp",
-      originalHeight: 300,
-      originalWidth: 300,
-      thumbnailHeight: 75,
-      thumbnailWidth: 75,
-    },
-    {
-      original:
-        "https://i.namu.wiki/i/5RVBqXBXl2_ARTt4gQHM40JcZq4rjYqCiXElHVLFEw9x0C67-s-TCrLszmzYvOho_LxtEXChr9CAyu-T7mrxQ_jnyOSDzb6_sRWDJForeyLZ1NKuYJuoZeD-wm8YYMSryZVev2hFGAyn7ahu8ppakQ.webp",
-      thumbnail:
-        "https://i.namu.wiki/i/5RVBqXBXl2_ARTt4gQHM40JcZq4rjYqCiXElHVLFEw9x0C67-s-TCrLszmzYvOho_LxtEXChr9CAyu-T7mrxQ_jnyOSDzb6_sRWDJForeyLZ1NKuYJuoZeD-wm8YYMSryZVev2hFGAyn7ahu8ppakQ.webp",
-      originalHeight: 300,
-      originalWidth: 300,
-      thumbnailHeight: 75,
-      thumbnailWidth: 75,
-    },
-  ];
-
   return (
     <div>
-      <Container>
-        <ContentBox>
-          <ImageGallery
-            items={images}
-            showBullets={true}
-            showFullscreenButton={false}
-            showPlayButton={false}
-          />
-        </ContentBox>
-      </Container>
+      <BigView>
+        {/* 저작권 걱정 없는 임시로 삽입한 이미지 */}
+        <img src="../storebg.jpg" width="1440px" height="253px"></img>
+        <Container>
+          <F57>
+            <SmallBox>
+              <Swiper
+                slidesPerView={4}
+                spaceBetween={30}
+                pagination={{
+                  clickable: true,
+                }}
+                modules={[Pagination]}
+                className="mySwiper"
+              >
+                <SwiperSlide>
+                  <PhotoBox>Slide 1</PhotoBox>
+                  <F66>
+                    <Text1> 　 구매완료</Text1>
+                  </F66>
+                </SwiperSlide>
+                <SwiperSlide>
+                  <PhotoBox>Slide 2</PhotoBox>
+                  <F66>
+                    <Text1> 　 구매완료</Text1>
+                  </F66>
+                </SwiperSlide>
+                <SwiperSlide>
+                  <PhotoBox>Slide 3</PhotoBox>
+                  <F66>
+                    <Text1> 　 구매완료</Text1>
+                  </F66>
+                </SwiperSlide>
+                <SwiperSlide>
+                  <PhotoBox>Slide 4</PhotoBox>
+                  <F66>
+                    <Text1> 　 구매완료</Text1>
+                  </F66>
+                </SwiperSlide>
+                <SwiperSlide>
+                  <PhotoBox>Slide 5</PhotoBox>
+                  <F66>
+                    <Text1> 　 구매완료</Text1>
+                  </F66>
+                </SwiperSlide>
+                <SwiperSlide>
+                  <PhotoBox>Slide 6</PhotoBox>
+                  <F66>
+                    <Text1> 　 구매완료</Text1>
+                  </F66>
+                </SwiperSlide>
+                <SwiperSlide>
+                  <PhotoBox>Slide 7</PhotoBox>
+                  <F66>
+                    <Text1> 　 구매완료</Text1>
+                  </F66>
+                </SwiperSlide>
+                <SwiperSlide>
+                  <PhotoBox>Slide 8</PhotoBox>
+                  <F66>
+                    <Text1> 　 구매완료</Text1>
+                  </F66>
+                </SwiperSlide>
+                <SwiperSlide>
+                  <PhotoBox>Slide 9</PhotoBox>
+                  <F66>
+                    <Text1> 　 구매완료</Text1>
+                  </F66>
+                </SwiperSlide>
+              </Swiper>
+            </SmallBox>
+          </F57>
+        </Container>
+      </BigView>
     </div>
   );
 }
