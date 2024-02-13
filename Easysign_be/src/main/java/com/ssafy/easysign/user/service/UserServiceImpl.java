@@ -292,8 +292,9 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public boolean getUserProgressCount(Long userId) {
-        List<UserProgress> progress = userProgressRepository.findAllByUser_userId(userId);
-        return progress.size() >= 10;
+        int cnt = userProgressRepository.getProgressCount(userId);
+        log.info("학습한 단어 개수 : " + cnt);
+        return cnt >= 10;
     }
 
     private User getUser(Long userId) {

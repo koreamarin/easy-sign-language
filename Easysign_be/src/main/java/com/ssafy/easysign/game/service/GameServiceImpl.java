@@ -55,24 +55,7 @@ public class GameServiceImpl implements GameService  {
         Long userId = user.getUserId();
 
         // 사용자의 진행 정보 가져오기
-        List<UserProgress> userProgresses = userProgressRepository.findAllByUser_userId(userId);
-        log.info("userProgresses : " + userProgresses);
-
-        List<SignInfo> signInfos = new ArrayList<>();
-
-        // 진행 정보를 기반으로 해당 수화들을 가져옴
-        for (UserProgress userProgress : userProgresses) {
-            SignInfo signInfo = userProgress.getSignInfo(); // 진행 정보에서 수화 가져오기
-            if (signInfo != null) {
-                Long signId = signInfo.getSignId();
-                // 32부터 41번 사이의 sign_id는 추가하지 않음
-                if (signId < 32 || signId > 41) {
-                    signInfos.add(signInfo);
-                }
-            }
-        }
-
-
+        List<SignInfo> signInfos = userProgressRepository.getSignProgress(userId);
         log.info("signInfos : " + signInfos);
 
         List<SignResponse> signResponses = new ArrayList<>(signInfos.stream()
