@@ -64,9 +64,14 @@ public class GameServiceImpl implements GameService  {
         for (UserProgress userProgress : userProgresses) {
             SignInfo signInfo = userProgress.getSignInfo(); // 진행 정보에서 수화 가져오기
             if (signInfo != null) {
-                signInfos.add(signInfo);
+                Long signId = signInfo.getSignId();
+                // 32부터 41번 사이의 sign_id는 추가하지 않음
+                if (signId < 32 || signId > 41) {
+                    signInfos.add(signInfo);
+                }
             }
         }
+
 
         log.info("signInfos : " + signInfos);
 
