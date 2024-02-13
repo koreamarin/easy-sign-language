@@ -14,9 +14,9 @@ import { EffectCoverflow, Pagination } from "swiper/modules";
 import { styled } from "styled-components";
 
 const Container = styled.div`
-  height: 80vh;
+  height: 100vh;
   width: 100vw;
-  top: 40px;
+  top: 4vh;
   background-color: #eee;
 `;
 
