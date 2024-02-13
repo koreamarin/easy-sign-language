@@ -71,7 +71,7 @@ public class StoreServiceImpl implements StoreService {
     @Override
     public Boolean buyItem(Long itemId, Authentication authentication) {
         PrincipalDetails principalDetails = (PrincipalDetails) authentication.getPrincipal();
-        User user = principalDetails.getUser();
+        User user = userRepository.findById(principalDetails.getUser().getUserId()).orElseThrow();
         int userSticker = user.getSticker();
         log.info("userSticker : " + userSticker);
         Optional<Store> storeOptional = storeRepository.findByItemId(itemId);
@@ -89,6 +89,7 @@ public class StoreServiceImpl implements StoreService {
                 // 성공적으로 아이템을 구매했을 경우
                 return true;
             } else {
+                log.error("스티커 잔액 부족");
                 // 스티커 잔액이 부족한 경우
                 return false;
             }

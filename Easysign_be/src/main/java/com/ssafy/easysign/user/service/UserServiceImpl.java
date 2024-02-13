@@ -62,17 +62,20 @@ public class UserServiceImpl implements UserService {
         List<UserItem> userProfile = userItemRepository.findAllByUser_UserIdAndIsUse(userId, true);
         String backgroundPath = "";
         String characterPath = "";
+        String mask = "";
 
         for(UserItem item : userProfile) {
             Optional<Store> itemInfo = storeRepository.findByItemId(item.getItem().getItemId());
             if(itemInfo.isEmpty()) throw new NotFoundException("해당하는 아이템을 찾을 수 없습니다.");
             if(itemInfo.get().getCategoryName().toString().equals("background")) {
                 backgroundPath = itemInfo.get().getImagePath();
-            } else {
+            } else if (itemInfo.get().getCategoryName().toString().equals("character")) {
                 characterPath = itemInfo.get().getImagePath();
+            } else{
+                mask = itemInfo.get().getItemName();
             }
         }
-        return userMapper.toUserInfoResponse(user.get(), characterPath, backgroundPath);
+        return userMapper.toUserInfoResponse(user.get(), characterPath, backgroundPath, mask);
     }
 
     @Override
@@ -161,17 +164,19 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void updateItem(Long userId, Long itemId) {
-
+        log.info(userId + " " +  itemId);
         Optional<UserItem> priorUserItem = userItemRepository.findPriorItem(userId, itemId);
         if (priorUserItem.isPresent()) {
             //기존 아이템
             priorUserItem.get().setUse(false);
             userItemRepository.save(priorUserItem.get());
+            log.info("아이템 적용 해제");
 
             // 새 아이템 적용
             Optional<UserItem> userItem = userItemRepository.findByUser_UserIdAndItem_ItemId(userId, itemId);
             if(userItem.isEmpty()) throw new NotFoundException("해당 아이템을 보유하고 있지 않습니다.");
 
+            log.info("새 아이템 적용");
             userItem.get().setUse(true);
             userItemRepository.save(userItem.get());
 
@@ -207,7 +212,6 @@ public class UserServiceImpl implements UserService {
         userItemRepository.deleteById(userId);
         userProgressRepository.deleteById(userId);
         userBookMarkRepository.deleteById(userId);
-        //TODO 아이템 찜하기 삭제
         storeLikeRepository.deleteById(userId);
         userRepository.delete(user.get());
     }

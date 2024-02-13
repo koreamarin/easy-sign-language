@@ -45,12 +45,12 @@ public class StoreController {
         return new ResponseEntity<>(itemResponse, HttpStatus.OK);
     }
 
-    @PutMapping("/buyItem")
+    @GetMapping("/buyItem")
     public ResponseEntity<Boolean> buyItem(@RequestParam Long itemId, Authentication authentication) {
         try {
             Boolean buyCheck = storeService.buyItem(itemId, authentication);
             // buyItem 메서드에서 예외 발생 시
-            return ResponseEntity.ok().body(true);
+            return ResponseEntity.ok().body(buyCheck);
         } catch (Exception e) {
             // 기타 예외 상황에 대한 처리
             return ResponseEntity.badRequest().body(false);
