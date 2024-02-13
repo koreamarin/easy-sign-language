@@ -11,18 +11,21 @@ import * as tf from "@tensorflow/tfjs";
 
 const PracticeLandmarkerCanvas = ({
   finResult,
-  setSecond,
   ishidden,
   stopComp,
   currentWord,
-  successModal,
-  failModal,
-  sethidden,
   category,
   gubun,
 }) => {
+  useEffect(() => {
+    console.log("Value props changed:");
+  }, [finResult, ishidden, stopComp, currentWord, category, gubun]);
+
   // mediapipe 얼굴 매쉬 인식을 위한 클래스
-  const [faceLandmarkManager, setFaceLandmarkManager] = useState(FaceLandmarkManager.getInstance());
+  const faceLandmarkManager = FaceLandmarkManager.getInstance();
+
+  console.log(process.env.PUBLIC_URL + "/model/" + gubun + "/" + category + "/model.json");
+  // alert();
 
   const model = tf.loadLayersModel(
     process.env.PUBLIC_URL + "/model/" + gubun + "/" + category + "/model.json"
@@ -33,9 +36,7 @@ const PracticeLandmarkerCanvas = ({
   const [avatar, setAvatar] = useState("Dog");
 
   // avatar 모델 파일 불러오기
-  const [modelUrl, setModelUrl] = useState(
-    process.env.PUBLIC_URL + "/assets/mask/animal_face_pack.gltf"
-  );
+  const modelUrl = process.env.PUBLIC_URL + "/assets/mask/animal_face_pack.gltf";
 
   // element에서 비디오 값을 가져와 저장
   const videoRef = useRef<HTMLVideoElement>(null);
@@ -171,22 +172,14 @@ const PracticeLandmarkerCanvas = ({
 
   console.log(currentWord, "currentWord1");
   console.log(compareWord, "compareWord1");
-  const A = 123;
 
   //
   const animate = () => {
     console.log(currentWord, "currentWord3");
     console.log(compareWord, "compareWord3");
-    console.log(A);
     console.log(stopComp.current, "stopComp");
     if (stopComp.current) {
-      setSecond(0);
       console.log("finResult: ", finResult);
-      if (finResult.current === true) {
-        successModal();
-      } else {
-        failModal();
-      }
       alert("이제부터 멈추는건가요?");
       return;
     }
@@ -269,6 +262,7 @@ const PracticeLandmarkerCanvas = ({
           // 오래된 인자 제거
           finResultList.shift();
 
+          console.log(finResultList, "finResultList");
           // 비교 문자와 일치하는 개수
           const checkArray = finResultList.filter((compare) => compare === compareWord);
           console.log(compareWord, "compareWord");
@@ -286,8 +280,6 @@ const PracticeLandmarkerCanvas = ({
           startTime = performance.now();
           hookForTimer = true;
         }
-
-        setSecond(10 - Math.floor((performance.now() - startTime) / 1000));
 
         // 타이머, 10초 이상 실행될 시
         if (performance.now() - startTime > 10000) {
@@ -309,7 +301,12 @@ const PracticeLandmarkerCanvas = ({
 
   // 컴포넌트 마운트 될시 시작
   useEffect(() => {
-    console.log(currentWord, "currentWord2");
+    console.log(currentWord, typeof currentWord, "currentWord2");
+    if (currentWord === "") {
+      console.log("아무것도 안들어옴.....");
+    } else {
+      console.log("드뎌 뭔가 들어옴");
+    }
     // 동기로
     const getUserCamera = async () => {
       try {
@@ -355,7 +352,7 @@ const PracticeLandmarkerCanvas = ({
 
     // 언마운트 되기 직전 프레임 번호에 있는 에니메이션들을 정지
     return () => cancelAnimationFrame(requestRef.current);
-  }, []);
+  }, [currentWord]);
 
   return (
     <div

@@ -1,7 +1,5 @@
 import { useOutletContext } from "react-router-dom";
 import BracketButton from "../../Button/BracketButton";
-import Sticker from "../../../assets/images/sticker.png";
-import ResultModal from "../../common/ResultModal";
 import JihwaProgressBar from "./JihwaProgressBar";
 import { trainingDataType } from "../Lecture";
 import { useDispatch } from "react-redux";
@@ -13,33 +11,25 @@ import { followStatusFalse } from "../../../redux/modules/LectureSlice";
 
 const JihwaPracticeComponent = () => {
   interface IFollowersContext {
-    followStatus: Boolean;
     trainingData: trainingDataType[];
     setTrainingData: (trainingData: trainingDataType[]) => void;
     currentNum: number;
     setCurrentNum: (currentNum: number) => void;
     addSticker: number;
-    success: boolean;
-    setSuccess: (success: boolean) => void;
     modalShown: boolean;
     setModalShown: (modalShown: boolean) => void;
-    ShownEndModal: () => void;
     ShownEndModalStatus: boolean;
     category: string;
     gubun: string;
   }
   const {
-    followStatus,
     trainingData,
     setTrainingData,
     currentNum,
     setCurrentNum,
     addSticker,
-    success,
-    setSuccess,
     modalShown,
     setModalShown,
-    ShownEndModal,
     ShownEndModalStatus,
     category,
     gubun,
@@ -61,19 +51,11 @@ const JihwaPracticeComponent = () => {
     setModalShown(!modalShown);
     trainingData[currentNum - 1].success = true;
     setTrainingData(trainingData);
-    setSuccess(true);
     disPatch(LearningProgressSet(LearningProgress()));
   };
 
   const failModal = () => {
     setModalShown(!modalShown);
-    setSuccess(false);
-  };
-
-  const replay = () => {
-    setModalShown(false);
-    midiapipeReset();
-    disPatch(followStatusFalse());
   };
 
   const currentNumModify = (currentNum: number) => {
@@ -162,13 +144,9 @@ const JihwaPracticeComponent = () => {
         >
           <PracticeLandmarkerCanvas
             finResult={finResult}
-            setSecond={setSecond}
             ishidden={ishidden}
             stopComp={stopComp}
             currentWord={trainingData[currentNum - 1].content}
-            successModal={successModal}
-            failModal={failModal}
-            sethidden={sethidden}
             category={category}
             gubun={gubun}
           />

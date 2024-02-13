@@ -19,7 +19,6 @@ export type trainingDataType = {
 };
 
 const Practice = () => {
-  const followStatus = useSelector((state: rootState) => state.lecture.follow);
   const dispatch = useDispatch();
   const [readSearchParams] = useSearchParams();
   const category = readSearchParams.get("category");
@@ -27,7 +26,6 @@ const Practice = () => {
   const gubun = gubunPath[gubunPath.length - 1];
 
   const [addSticker, setAddSticker] = useState<number>(0);
-  const [success, setSuccess] = useState<boolean>(false);
   const [modalShown, setModalShown] = useState<boolean>(false);
 
   type jsonType = {
@@ -43,6 +41,7 @@ const Practice = () => {
   };
 
   const getSignCategory = async () => {
+    console.log("카테고리를 불러와서 스티커 정보 추출중....");
     const response = await fetch(`${API.CATEGORY}`, {
       method: "GET",
       headers: {
@@ -56,6 +55,7 @@ const Practice = () => {
   };
 
   const getSignInfo = async () => {
+    console.log("카테고리에 해당하는 학습 정보를 불러오는 중....");
     const response = await fetch(`${API.SIGNINFO}/${gubun}?categoryname=${category}`, {
       method: "GET",
       headers: {
@@ -96,20 +96,14 @@ const Practice = () => {
   ]);
 
   const [currentNum, setCurrentNum] = useState<number>(1);
-  const totalNum: number = trainingData.length;
 
   const outletProps = {
-    followStatus: followStatus,
     trainingData: trainingData,
-    setTrainingData: setTrainingData,
     currentNum: currentNum,
     setCurrentNum: setCurrentNum,
     addSticker: addSticker,
-    success: success,
-    setSuccess: setSuccess,
     modalShown: modalShown,
     setModalShown: setModalShown,
-    ShownEndModal: ShownEndModal,
     ShownEndModalStatus: ShownEndModalStatus,
     category: category,
     gubun: gubun,
