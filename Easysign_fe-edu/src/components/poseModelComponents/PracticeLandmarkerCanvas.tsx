@@ -10,22 +10,16 @@ import FaceLandmarkManager from "../common/FaceLandmarkManager";
 import * as tf from "@tensorflow/tfjs";
 
 const PracticeLandmarkerCanvas = ({
-  finResult,
   ishidden,
-  stopComp,
   currentWord,
+  ClearWord,
+  setRecongnizingWord,
   category,
   gubun,
+  setPercentage,
 }) => {
-  useEffect(() => {
-    console.log("Value props changed:");
-  }, [finResult, ishidden, stopComp, currentWord, category, gubun]);
-
   // mediapipe 얼굴 매쉬 인식을 위한 클래스
   const faceLandmarkManager = FaceLandmarkManager.getInstance();
-
-  console.log(process.env.PUBLIC_URL + "/model/" + gubun + "/" + category + "/model.json");
-  // alert();
 
   const model = tf.loadLayersModel(
     process.env.PUBLIC_URL + "/model/" + gubun + "/" + category + "/model.json"
@@ -154,7 +148,7 @@ const PracticeLandmarkerCanvas = ({
 
   const resultList = modelWordList[category];
 
-  console.log(currentWord, "currentWord");
+  console.log("인식해야할 단어는 ", currentWord, "입니다.");
 
   // 판단부분 => stopComp가 true가 되면 판단 완료
   // 이후 해당 정보 상위 컴포넌트로 올리기
@@ -163,34 +157,21 @@ const PracticeLandmarkerCanvas = ({
 
   const finResultList: string[] = [];
 
-  let hookForTimer: boolean = false;
-
   // porps로 받아오기
   const compareWord: string = currentWord;
 
-  let startTime: number;
-
-  console.log(currentWord, "currentWord1");
-  console.log(compareWord, "compareWord1");
+  let finResult = false;
 
   //
   const animate = () => {
-    console.log(currentWord, "currentWord3");
-    console.log(compareWord, "compareWord3");
-    console.log(stopComp.current, "stopComp");
-    if (stopComp.current) {
-      console.log("finResult: ", finResult);
-      alert("이제부터 멈추는건가요?");
-      return;
+    if (finResult) {
+      ClearWord();
+      finResult = false;
     }
 
     // 만약 비디오 element에서 가져온 값이 존재하고, 재생중(웹)인 시간과 마지막 비디오 시간과 일치하지 않으면
     // 즉 비디오가 실시간 재생중이면
-    if (
-      videoRef.current &&
-      videoRef.current.currentTime !== lastVideoTimeRef.current &&
-      !stopComp.current
-    ) {
+    if (videoRef.current && videoRef.current.currentTime !== lastVideoTimeRef.current) {
       //얼굴 mask용 얼굴 감지
       faceLandmarkManager.detectLandmarks(videoRef.current, performance.now());
 
@@ -256,38 +237,47 @@ const PracticeLandmarkerCanvas = ({
 
         finResultList.push(resultList[aiResult]);
 
-        // 쌓인 결과가 60개 초과하면 판단 시작
+        setRecongnizingWord(resultList[aiResult]);
 
+        // 쌓인 결과가 60개 초과하면 판단 시작
         if (finResultList.length > 60) {
           // 오래된 인자 제거
           finResultList.shift();
 
-          console.log(finResultList, "finResultList");
           // 비교 문자와 일치하는 개수
-          const checkArray = finResultList.filter((compare) => compare === compareWord);
-          console.log(compareWord, "compareWord");
-          console.log(checkArray, "checkArray");
+          let count = 0;
+          finResultList.forEach((item) => {
+            if (item === compareWord) {
+              count++;
+            }
+          });
+          console.log(
+            "finResultList 에서",
+            compareWord,
+            "의 개수는 ",
+            count,
+            "개 이며, 현재",
+            resultList[aiResult],
+            "가 인식되고 있습니다."
+          );
+
+          setPercentage(Math.floor((count / 48) * 100));
 
           // 일치율이 80% 이상일시
-          if (checkArray.length > 48) {
+          if (count > 48) {
             // 정답처리
-            finResult.current = true;
-            // 컴포넌트 정지
-            stopComp.current = true;
+            finResult = true;
+            setPercentage(100);
           }
         }
-        if (!hookForTimer) {
-          startTime = performance.now();
-          hookForTimer = true;
-        }
 
-        // 타이머, 10초 이상 실행될 시
-        if (performance.now() - startTime > 10000) {
-          // 컴포넌트 정지 및 오답처리(finResult의 default는 false)
+        // // 타이머, 10초 이상 실행될 시
+        // if (performance.now() - startTime > 20000) {
+        //   // 컴포넌트 정지 및 오답처리(finResult의 default는 false)
 
-          stopComp.current = true;
-          console.log(stopComp.current);
-        }
+        //   stopComp.current = true;
+        //   console.log(stopComp.current);
+        // }
       } catch (error) {
         // 만약 에러 발생시 콘솔
         console.log(error);
@@ -301,12 +291,6 @@ const PracticeLandmarkerCanvas = ({
 
   // 컴포넌트 마운트 될시 시작
   useEffect(() => {
-    console.log(currentWord, typeof currentWord, "currentWord2");
-    if (currentWord === "") {
-      console.log("아무것도 안들어옴.....");
-    } else {
-      console.log("드뎌 뭔가 들어옴");
-    }
     // 동기로
     const getUserCamera = async () => {
       try {
@@ -347,8 +331,10 @@ const PracticeLandmarkerCanvas = ({
       }
     };
 
-    // getusercamera 함수 실행
-    getUserCamera();
+    if (currentWord !== "") {
+      // getusercamera 함수 실행
+      getUserCamera();
+    }
 
     // 언마운트 되기 직전 프레임 번호에 있는 에니메이션들을 정지
     return () => cancelAnimationFrame(requestRef.current);
@@ -357,8 +343,8 @@ const PracticeLandmarkerCanvas = ({
   return (
     <div
       style={{
-        width: "533px",
-        height: "510px",
+        width: "833px",
+        height: "550px",
         borderRadius: "40px",
         display: "flex",
         justifyContent: "center",
@@ -380,8 +366,8 @@ const PracticeLandmarkerCanvas = ({
         playsInline={true}
         style={{
           transform: "rotateY(180deg)",
-          width: "533px",
-          height: "510px",
+          width: "833px",
+          height: "550px",
           borderRadius: "40px",
           display: "flex",
           justifyContent: "center",
@@ -392,7 +378,7 @@ const PracticeLandmarkerCanvas = ({
       ></video>
 
       {videoSize && (
-        <>{<AvatarCanvas width={533} height={510} url={modelUrl} avatar_name={avatar} />}</>
+        <>{<AvatarCanvas width={883} height={550} url={modelUrl} avatar_name={avatar} />}</>
       )}
 
       {/* 캔버스 */}

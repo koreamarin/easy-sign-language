@@ -1,5 +1,4 @@
 import { Outlet, useLocation, useSearchParams } from "react-router-dom";
-import LargeButton from "../Button/LargeButton";
 import { useDispatch, useSelector } from "react-redux";
 import { rootState } from "../../redux/modules";
 import { followStatusTrue, followStatusFalse } from "../../redux/modules/LectureSlice";
@@ -8,7 +7,6 @@ import { IncorrectAnswerRateSet, LearningProgressSet } from "../../redux/modules
 import API from "../../config";
 import Nav from "../nav/Nav";
 import { token } from "../../pages/Main";
-import SmallButton from "../Button/SmallButton";
 
 export type trainingDataType = {
   signId: number;
@@ -26,7 +24,6 @@ const Practice = () => {
   const gubun = gubunPath[gubunPath.length - 1];
 
   const [addSticker, setAddSticker] = useState<number>(0);
-  const [modalShown, setModalShown] = useState<boolean>(false);
 
   type jsonType = {
     content: string;
@@ -49,9 +46,7 @@ const Practice = () => {
       },
     });
     const json = await response.json();
-    console.log(json);
     setAddSticker(json.filter((item: any) => item.categoryName === category)[0].addSticker);
-    console.log(addSticker);
   };
 
   const getSignInfo = async () => {
@@ -99,11 +94,10 @@ const Practice = () => {
 
   const outletProps = {
     trainingData: trainingData,
+    setTrainingData: setTrainingData,
     currentNum: currentNum,
     setCurrentNum: setCurrentNum,
     addSticker: addSticker,
-    modalShown: modalShown,
-    setModalShown: setModalShown,
     ShownEndModalStatus: ShownEndModalStatus,
     category: category,
     gubun: gubun,

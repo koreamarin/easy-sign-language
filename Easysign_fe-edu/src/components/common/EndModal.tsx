@@ -76,18 +76,37 @@ const EndModal = ({ trainingData, ShownEndModalStatus, addSticker }: EndModalPro
           height={"650px"}
           alt="confetti"
         />
-        <img
+        <div
           style={{
+            position: "relative",
             width: "140px",
             height: "140px",
-            borderRadius: "50%",
-            backgroundImage: `url(${backgroundSrc})`,
-            position: "relative",
-            top: "-90px",
           }}
-          src={CharacterSrc}
-          alt="profile"
-        />
+        >
+          <img
+            style={{
+              width: "140px",
+              height: "140px",
+              borderRadius: "50%",
+              position: "absolute",
+              top: "-90px",
+            }}
+            src={backgroundSrc}
+            alt="profile"
+          />
+          <img
+            style={{
+              width: "100px",
+              height: "100px",
+              borderRadius: "50%",
+              position: "absolute",
+              top: "-70px",
+              left: "20px",
+            }}
+            src={CharacterSrc}
+            alt="profile"
+          />
+        </div>
         <div
           style={{
             position: "relative",

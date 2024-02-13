@@ -70,7 +70,10 @@ const Nav = ({ Progress2Visibility }: NavProps) => {
           paddingTop: "30px",
         }}
       >
-        <Progress percentage={progress.LearningProgress} />
+        <Progress
+          percentage={progress.LearningProgress}
+          text={"<div>학습</div><div>진행도</div>"}
+        />
       </div>
       <div
         style={{
@@ -78,14 +81,18 @@ const Nav = ({ Progress2Visibility }: NavProps) => {
           visibility: Progress2Visibility ? "visible" : "hidden",
         }}
       >
-        <Progress percentage={progress.IncorrectAnswerRate} wrong_answer={true} />
+        <Progress
+          percentage={progress.IncorrectAnswerRate}
+          text={"<div>오답률</div>"}
+          wrong_answer={true}
+        />
       </div>
       <div
         style={{
           paddingTop: "30px",
         }}
       >
-        <BackButton text={"뒤로가기"} color={"pink"} onClick={() => navigate(-1)} />
+        <BackButton text={"뒤로가기"} color={"pink"} onClick={() => navigate("/")} />
       </div>
     </div>
   );

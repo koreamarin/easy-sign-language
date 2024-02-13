@@ -8,6 +8,15 @@ import EndModal from "../../common/EndModal";
 import PracticeLandmarkerCanvas from "../../poseModelComponents/PracticeLandmarkerCanvas";
 import { useRef, useState } from "react";
 import { followStatusFalse } from "../../../redux/modules/LectureSlice";
+import MediumButton from "../../Button/MediumButton";
+import Progress from "../../nav/Progress";
+import styled from "styled-components";
+
+const Div = styled.div`
+  font-family: "Black Han Sans", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+`;
 
 const JihwaPracticeComponent = () => {
   interface IFollowersContext {
@@ -16,8 +25,6 @@ const JihwaPracticeComponent = () => {
     currentNum: number;
     setCurrentNum: (currentNum: number) => void;
     addSticker: number;
-    modalShown: boolean;
-    setModalShown: (modalShown: boolean) => void;
     ShownEndModalStatus: boolean;
     category: string;
     gubun: string;
@@ -28,8 +35,6 @@ const JihwaPracticeComponent = () => {
     currentNum,
     setCurrentNum,
     addSticker,
-    modalShown,
-    setModalShown,
     ShownEndModalStatus,
     category,
     gubun,
@@ -37,6 +42,10 @@ const JihwaPracticeComponent = () => {
   const disPatch = useDispatch();
 
   const totalNum = trainingData.length;
+
+  const [recognizingWord, setRecongnizingWord] = useState<string>("");
+
+  const [percentage, setPercentage] = useState(0);
 
   // trainingData의 모든 리스트에서 success가 true인 것의 개수를 세어서 100으로 나눈 값을 반환
   const LearningProgress = () => {
@@ -47,40 +56,22 @@ const JihwaPracticeComponent = () => {
     return Math.floor((successCount / totalNum) * 100);
   };
 
-  const successModal = () => {
-    setModalShown(!modalShown);
+  const ClearWord = () => {
+    console.log("클리어 했으므로 ", currentNum, "번째 학습데이터의 success를 true로 변경합니다.");
     trainingData[currentNum - 1].success = true;
     setTrainingData(trainingData);
     disPatch(LearningProgressSet(LearningProgress()));
-  };
-
-  const failModal = () => {
-    setModalShown(!modalShown);
+    currentNumModify(currentNum + 1);
   };
 
   const currentNumModify = (currentNum: number) => {
     if (currentNum > 0 && currentNum < totalNum + 1) {
-      setModalShown(false);
       setCurrentNum(currentNum);
-      disPatch(followStatusFalse());
-      midiapipeReset();
     }
   };
 
-  // 모델 관련 변수
-
-  const finResult = useRef<boolean>(false);
-
-  const [second, setSecond] = useState<number>(10);
   // 골격 숨기기
   const [ishidden, sethidden] = useState<boolean>(false);
-  const stopComp = useRef<boolean>(false);
-
-  const midiapipeReset = () => {
-    setSecond(10);
-    stopComp.current = false;
-    finResult.current = false;
-  };
 
   return (
     <div
@@ -116,6 +107,8 @@ const JihwaPracticeComponent = () => {
           alignItems: "center",
           width: "1080px",
           height: "510px",
+          position: "relative",
+          top: "50px",
         }}
       >
         {currentNum === 1 ? (
@@ -143,34 +136,16 @@ const JihwaPracticeComponent = () => {
           }}
         >
           <PracticeLandmarkerCanvas
-            finResult={finResult}
             ishidden={ishidden}
-            stopComp={stopComp}
             currentWord={trainingData[currentNum - 1].content}
+            ClearWord={ClearWord}
+            setRecongnizingWord={setRecongnizingWord}
             category={category}
             gubun={gubun}
+            setPercentage={setPercentage}
           />
         </div>
-        <div
-          style={{
-            height: "0px",
-            position: "relative",
-            top: "30px",
-            left: "0px",
-            display: "flex",
-            flexDirection: "row",
-            justifyContent: "center",
-            alignItems: "center",
-          }}
-        >
-          <button
-            onClick={() => {
-              sethidden(!ishidden);
-            }}
-          >
-            {ishidden ? "숨기기" : "보기"}
-          </button>
-        </div>
+
         {currentNum === trainingData.length ? (
           <div
             style={{
@@ -186,6 +161,43 @@ const JihwaPracticeComponent = () => {
           />
         )}
       </div>
+      <div
+        style={{
+          position: "relative",
+          top: "100px",
+          display: "flex",
+          flexDirection: "row",
+          justifyContent: "space-between",
+          alignItems: "center",
+          width: "1110px",
+        }}
+      >
+        <MediumButton
+          text={ishidden ? "골격숨기기" : "골격보기"}
+          color={"blue"}
+          onClick={() => {
+            sethidden(!ishidden);
+          }}
+        />
+        <Div
+          style={{
+            border: "1px solid black",
+            width: "500px",
+            height: "100px",
+            fontSize: "40px",
+            textAlign: "center",
+            lineHeight: "100px",
+            borderRadius: "40px",
+            backgroundColor: "white",
+            color: "rgb(0, 143, 107)",
+            marginRight: "70px",
+          }}
+        >
+          {recognizingWord}
+        </Div>
+        <Progress percentage={percentage} text={"인식률"} />
+      </div>
+
       <EndModal
         trainingData={trainingData}
         ShownEndModalStatus={ShownEndModalStatus}

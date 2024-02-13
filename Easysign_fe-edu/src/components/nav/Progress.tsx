@@ -5,13 +5,13 @@ import { CircularProgressbarWithChildren, buildStyles } from "react-circular-pro
 import "react-circular-progressbar/dist/styles.css";
 
 interface ProgressProps {
+  text: string;
   percentage: number;
   wrong_answer?: boolean;
 }
 
-const Progress = ({ percentage, wrong_answer = false }: ProgressProps) => {
+const Progress = ({ text, percentage, wrong_answer = false }: ProgressProps) => {
   const pathColor = wrong_answer ? "red" : "turquoise";
-  const text = wrong_answer ? "<div>오답률</div>" : "<div>학습</div><div>진행도</div>";
   const textMarginTop = wrong_answer ? -7 : -17;
   const percentMarginTop = wrong_answer ? 5 : -9;
   const trailColor = wrong_answer ? "#FFCFD8" : "#D8FFFB";

@@ -1,20 +1,16 @@
 import basic_profile_img from "../../assets/images/basic_profile_img.svg";
 import styled from "styled-components";
 
-interface CharacterImgProps {
-  backgroundSrc?: string;
-}
-
-export const CharacterImg = styled.img<CharacterImgProps>`
-  width: 140px;
-  height: 140px;
+export const Div = styled.div`
+  width: 150px;
+  height: 150px;
   border-radius: 50%;
+  position: relative;
+  justify-content: center;
+  align-items: center;
   cursor: pointer;
-  background-image: url(${(props) => props.backgroundSrc});
   &:hover {
-    width: 131px;
-    height: 131px;
-    border: 5px solid #ffcfd8;
+    background-color: #ffcfd8;
   }
 `;
 
@@ -28,17 +24,33 @@ const ProfileImg = ({ backgroundSrc, CharacterSrc }: ProfileImgProps) => {
     e.currentTarget.src = basic_profile_img; // 기본 이미지로 설정
   };
 
-  if (typeof CharacterSrc === undefined || typeof backgroundSrc === undefined) {
-    return (
-      <div>
-        <CharacterImg src={basic_profile_img} onError={handleError} />
-      </div>
-    );
-  }
   return (
-    <div>
-      <CharacterImg src={CharacterSrc} backgroundSrc={backgroundSrc} onError={handleError} />
-    </div>
+    <Div onError={handleError}>
+      <img
+        style={{
+          width: "140px",
+          height: "140px",
+          borderRadius: "50%",
+          position: "absolute",
+          top: "4px",
+          left: "4px",
+        }}
+        src={backgroundSrc}
+        alt="profile"
+      />
+      <img
+        style={{
+          width: "100px",
+          height: "100px",
+          borderRadius: "50%",
+          position: "absolute",
+          left: "24px",
+          top: "24px",
+        }}
+        src={CharacterSrc}
+        alt="profile"
+      />
+    </Div>
   );
 };
 
