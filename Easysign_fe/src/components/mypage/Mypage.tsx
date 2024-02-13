@@ -39,7 +39,7 @@ function Mypage() {
       navigate("/voca");
     } else if (name === "환경설정") {
       navigate("/mypage");
-    } else if (name === "logout") {
+    } else if (name === "로그아웃") {
       navigate("/");
     }
   };
@@ -64,10 +64,10 @@ function Mypage() {
     box-sizing: border-box;
 
     position: absolute;
-    width: 1100px;
-    height: 700px;
-    top: 200px;
-    left: 170px;
+    width: 76vw;
+    height: 80vh;
+    top: 30vh;
+    left: 12vw;
 
     background: #ffffff;
     border: 1px solid #c4c4c4;
@@ -91,16 +91,15 @@ function Mypage() {
   // 캐릭터 모음 담는 박스
   const SmallBox1 = styled.div`
     position: absolute;
-    top: 90px;
-    left: 20px;
-    height: 210px;
-    width: 1060px;
+    top: 10vh;
+    height: 20.5vh;
+    width: 74vw;
   `;
 
   // 각각의 캐릭터나 배경 담는 박스
   const ContainerBox = styled.div`
-    width: 200px;
-    height: 200px;
+    width: 13vw;
+    height: 20vh;
     border-radius: 20px;
     background: #fff6f6;
   `;
@@ -124,7 +123,7 @@ function Mypage() {
     top: 450px;
     left: 20px;
     height: 210px;
-    width: 1060px;
+    width: 74vw;
   `;
   return (
     <div>
