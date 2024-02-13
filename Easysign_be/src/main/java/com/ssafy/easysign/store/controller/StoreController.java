@@ -46,14 +46,18 @@ public class StoreController {
     }
 
     @GetMapping("/buyItem")
-    public ResponseEntity<Boolean> buyItem(@RequestParam Long itemId, Authentication authentication) {
+    public ResponseEntity<String> buyItem(@RequestParam Long itemId, Authentication authentication) {
         try {
             Boolean buyCheck = storeService.buyItem(itemId, authentication);
+            if(buyCheck)
             // buyItem 메서드에서 예외 발생 시
-            return ResponseEntity.ok().body(buyCheck);
+                return ResponseEntity.ok().body("아이템 구매에 성공했습니다.");
+            else
+                return ResponseEntity.ok().body("이미 가지고 있거나 구매할 수 없는 아이템입니다.");
+
         } catch (Exception e) {
             // 기타 예외 상황에 대한 처리
-            return ResponseEntity.badRequest().body(false);
+            return ResponseEntity.badRequest().body("입력이 잘못되었습니다.");
         }
     }
 

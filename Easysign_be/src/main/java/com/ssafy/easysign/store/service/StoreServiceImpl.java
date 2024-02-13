@@ -71,13 +71,16 @@ public class StoreServiceImpl implements StoreService {
     @Override
     public Boolean buyItem(Long itemId, Authentication authentication) {
         PrincipalDetails principalDetails = (PrincipalDetails) authentication.getPrincipal();
-        User user = userRepository.findById(principalDetails.getUser().getUserId()).orElseThrow();
-        int userSticker = user.getSticker();
-        log.info("userSticker : " + userSticker);
+        User user = userRepository.findById(principalDetails.getUser().getUserId())
+                .orElseThrow();
+        Optional<UserItem> curItemCheck = userItemRepository.findByUser_UserIdAndItem_ItemId(user.getUserId(), itemId);
+        if(curItemCheck.isPresent()) return false;
         Optional<Store> storeOptional = storeRepository.findByItemId(itemId);
 
         if (storeOptional.isPresent()) {
             Store store = storeOptional.get();
+            int userSticker = user.getSticker();
+            log.info("userSticker : " + userSticker);
             int requiredSticker = store.getPrice();
             log.info("requiredSticker : " + requiredSticker);
             if (userSticker >= requiredSticker) {
