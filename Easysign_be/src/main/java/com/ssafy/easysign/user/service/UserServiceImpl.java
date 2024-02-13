@@ -209,10 +209,10 @@ public class UserServiceImpl implements UserService {
         if(user.isEmpty()) throw new NotFoundException("사용자를 찾을 수 없습니다.");
 
         //유저 보유 아이템 삭제
-        userItemRepository.deleteById(userId);
-        userProgressRepository.deleteById(userId);
-        userBookMarkRepository.deleteById(userId);
-        storeLikeRepository.deleteById(userId);
+        userItemRepository.deleteByUserId(userId);
+        userProgressRepository.deleteByUserId(userId);
+        userBookMarkRepository.deleteByUserId(userId);
+        storeLikeRepository.deleteByUserId(userId);
         userRepository.delete(user.get());
     }
 
