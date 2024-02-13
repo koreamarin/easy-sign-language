@@ -125,11 +125,9 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void registBookMark(Long userId, Long signId) {
-        User user = new User();
-        user.setUserId(userId);
+        User user = userRepository.findById(userId).orElseThrow();
 
-        SignInfo signInfo = new SignInfo();
-        signInfo.setSignId(signId);
+        SignInfo signInfo = signRepository.findBySignId(signId).orElseThrow();
 
         BookMark bookMark = userMapper.toBookMark(user, signInfo);
         userBookMarkRepository.save(bookMark);
