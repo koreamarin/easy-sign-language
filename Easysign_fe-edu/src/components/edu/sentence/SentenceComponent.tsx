@@ -2,16 +2,16 @@ import { useOutletContext } from "react-router-dom";
 import BracketButton from "../../Button/BracketButton";
 import Sticker from "../../../assets/images/sticker.png";
 import ResultModal from "../../common/ResultModal";
-import JihwaProgressBar from "./JihwaProgressBar";
+import SentenceProgressBar from "./SentenceProgressBar";
 import { trainingDataType } from "../Lecture";
 import { useDispatch } from "react-redux";
 import { LearningProgressSet } from "../../../redux/modules/ProgressSlice";
 import EndModal from "../../common/EndModal";
-import LectureLandmarkerCanvas from "../../poseModelComponents/LectureLandmarkerCanvas";
+import CameraComponent from "./CameraComponent";
 import { useRef, useState } from "react";
 import { followStatusFalse } from "../../../redux/modules/LectureSlice";
 
-const JihwaComponent = () => {
+const SentenceComponent = () => {
   interface IFollowersContext {
     followStatus: Boolean;
     trainingData: trainingDataType[];
@@ -44,6 +44,7 @@ const JihwaComponent = () => {
     category,
     gubun,
   } = useOutletContext<IFollowersContext>();
+
   const disPatch = useDispatch();
 
   const totalNum = trainingData.length;
@@ -117,9 +118,11 @@ const JihwaComponent = () => {
           flexDirection: "column",
           justifyContent: "center",
           alignItems: "center",
+          position: "relative",
+          top: "-10px",
         }}
       >
-        <JihwaProgressBar
+        <SentenceProgressBar
           trainingData={trainingData}
           currentNum={currentNum}
           currentNumModify={currentNumModify}
@@ -151,7 +154,7 @@ const JihwaComponent = () => {
                 border: "1px solid black",
               }}
             >
-              <LectureLandmarkerCanvas
+              <CameraComponent
                 finResult={finResult}
                 setSecond={setSecond}
                 ishidden={ishidden}
@@ -159,19 +162,17 @@ const JihwaComponent = () => {
                 currentWord={trainingData[currentNum - 1].content}
                 successModal={successModal}
                 failModal={failModal}
-                sethidden={sethidden}
-                category={category}
-                gubun={gubun}
               />
             </div>
-            <img
+            <video
               style={{
                 width: "533px",
                 height: "510px",
                 borderRadius: "40px",
               }}
-              src={trainingData[currentNum - 1].imagePath}
-              alt="jihwa"
+              src={trainingData[currentNum - 1].videoPath}
+              controls
+              autoPlay
             />
           </div>
           <div
@@ -270,14 +271,15 @@ const JihwaComponent = () => {
               currentNumModify={currentNumModify}
             />
           )}
-          <img
+          <video
             style={{
               width: "907px",
               height: "510px",
               borderRadius: "40px",
             }}
-            src={trainingData[currentNum - 1].imagePath}
-            alt="jihwa"
+            src={trainingData[currentNum - 1].videoPath}
+            controls
+            autoPlay
           />
           {currentNum === trainingData.length ? (
             <div
@@ -304,4 +306,4 @@ const JihwaComponent = () => {
   );
 };
 
-export default JihwaComponent;
+export default SentenceComponent;

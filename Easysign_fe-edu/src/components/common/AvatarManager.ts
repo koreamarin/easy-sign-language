@@ -124,7 +124,7 @@ class AvatarManager {
     Head?.rotateX(-Math.PI / 2);
     const root = this.scene.getObjectByName(this.avatar_name);
 
-    const trans_rate_xy = 9;
+    const trans_rate_xy = 6;
     const trans_rate_z = 6;
     root?.position.set(
       (translation.x * trans_rate_xy) / (translation.z * -0.04),

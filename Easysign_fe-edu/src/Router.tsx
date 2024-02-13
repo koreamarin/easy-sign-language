@@ -3,11 +3,13 @@ import Main from "./pages/Main";
 import Edu from "./pages/Edu";
 import { Outlet } from "react-router-dom";
 import Lecture from "./components/edu/Lecture";
-import JihwaComponent from "./components/edu/jihwa/JihwaComponent";
-import LandmarkerCanvas2 from "./components/poseModelComponents/LandmarkerCanvas2";
-import Result from "./components/Sonagi/Result";
 import Game from "./components/game/Game";
 import Sonagi from "./components/Sonagi/Sonagi";
+import JihwaComponent from "./components/edu/jihwa/JihwaComponent";
+import WordComponent from "./components/edu/word/WordComponent";
+import SentenceComponent from "./components/edu/sentence/SentenceComponent";
+import Practice from "./components/edu/Practice";
+import JihwaPracticeComponent from "./components/edu/jihwa/JihwaPracticeComponent";
 
 const router = createBrowserRouter([
   {
@@ -28,89 +30,25 @@ const router = createBrowserRouter([
           },
           {
             path: "word",
-            element: (
-              <div>
-                <div>
-                  <Outlet />
-                </div>
-                <div>단어 사진/영상</div>
-              </div>
-            ),
-            children: [
-              {
-                path: "animal",
-                element: <div>동물</div>,
-              },
-              {
-                path: "object",
-                element: <div>사물</div>,
-              },
-              {
-                path: "fruit",
-                element: <div>과일</div>,
-              },
-            ],
+            element: <WordComponent />,
           },
           {
             path: "sentence",
-            element: <div>문장</div>,
+            element: <SentenceComponent />,
           },
         ],
       },
       {
         path: "practice",
-        element: (
-          <div>
-            연습
-            <Outlet />
-          </div>
-        ),
+        element: <Practice />,
         children: [
           {
             path: "jihwa",
-            element: (
-              <div>
-                지화
-                <Outlet />
-              </div>
-            ),
-            children: [
-              {
-                path: "vowel",
-                element: <div>모음</div>,
-              },
-              {
-                path: "consonant",
-                element: <div>자음</div>,
-              },
-              {
-                path: "number",
-                element: <div>숫자</div>,
-              },
-            ],
+            element: <JihwaPracticeComponent />,
           },
           {
             path: "word",
-            element: (
-              <div>
-                단어
-                <Outlet />
-              </div>
-            ),
-            children: [
-              {
-                path: "animal",
-                element: <div>동물</div>,
-              },
-              {
-                path: "object",
-                element: <div>사물</div>,
-              },
-              {
-                path: "fruit",
-                element: <div>과일</div>,
-              },
-            ],
+            element: <div>단어</div>,
           },
           {
             path: "setence",
@@ -120,11 +58,7 @@ const router = createBrowserRouter([
       },
       {
         path: "game",
-        element: (
-          <div>
-            <Game />
-          </div>
-        ),
+        element: <Game />,
         children: [
           {
             path: "speedquiz",

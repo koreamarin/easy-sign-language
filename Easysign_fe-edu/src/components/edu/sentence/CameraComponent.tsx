@@ -1,15 +1,12 @@
 import { useEffect, useRef, useState } from "react";
-import PoseLandmarkerCanvas from "./Pose";
-import PoseLandmarkerManager from "../../poseModelLogic//PoseLandmarkManager";
-import HandLandmarkerCanvas from "./Hand";
-import HandLandmarkerManager from "../../poseModelLogic//HandLandmarkManager";
-import CalculateTensor from "../../poseModelLogic//CalculateVector";
-import AiResult from "../../poseModelLogic//AiModel";
-import AvatarCanvas from "../Sonagi/AvatarCanvas";
-import FaceLandmarkManager from "../common/FaceLandmarkManager";
-import * as tf from "@tensorflow/tfjs";
+import PoseLandmarkerCanvas from "../../poseModelComponents/Pose";
+import PoseLandmarkerManager from "../../../poseModelLogic/PoseLandmarkManager";
+import HandLandmarkerCanvas from "../../poseModelComponents/Hand";
+import HandLandmarkerManager from "../../../poseModelLogic/HandLandmarkManager";
+import AvatarCanvas from "../../Sonagi/AvatarCanvas";
+import FaceLandmarkManager from "../../common/FaceLandmarkManager";
 
-const LandmarkerCanvas = ({
+const CameraComponent = ({
   finResult,
   setSecond,
   ishidden,
@@ -17,16 +14,9 @@ const LandmarkerCanvas = ({
   currentWord,
   successModal,
   failModal,
-  sethidden,
-  category,
-  gubun,
 }) => {
   // mediapipe 얼굴 매쉬 인식을 위한 클래스
   const [faceLandmarkManager, setFaceLandmarkManager] = useState(FaceLandmarkManager.getInstance());
-
-  const model = tf.loadLayersModel(
-    process.env.PUBLIC_URL + "/model/" + gubun + "/" + category + "/model.json"
-  );
 
   // 얼굴에 씌울 아바타 이름
   // Bear, Cat, Chicken, Deer, Dog, Elephant, Pig, Rabbit
@@ -39,9 +29,6 @@ const LandmarkerCanvas = ({
 
   // element에서 비디오 값을 가져와 저장
   const videoRef = useRef<HTMLVideoElement>(null);
-
-  // const seq = useRef<object[]>([]);
-  const seq: number[][] = [];
 
   // 재생중임을 판단하기 위핸 변수
   const lastVideoTimeRef = useRef(-1);
@@ -57,115 +44,7 @@ const LandmarkerCanvas = ({
 
   // ================================상위 컴포넌트와 연동할 부분==========================
 
-  const modelWordList = {
-    자음: [
-      ".",
-      "ㄱ",
-      "ㄱ",
-      "ㄴ",
-      "ㄴ",
-      "ㄷ",
-      "ㄷ",
-      "ㄹ",
-      "ㄹ",
-      "ㅁ",
-      "ㅁ",
-      "ㅂ",
-      "ㅂ",
-      "ㅅ",
-      "ㅅ",
-      "ㅇ",
-      "ㅇ",
-      "ㅈ",
-      "ㅈ",
-      "ㅊ",
-      "ㅊ",
-      "ㅋ",
-      "ㅋ",
-      "ㅌ",
-      "ㅌ",
-      "ㅍ",
-      "ㅍ",
-      "ㅎ",
-      "ㅎ",
-    ],
-    모음: [
-      ".",
-      "ㅏ",
-      "ㅏ",
-      "ㅑ",
-      "ㅑ",
-      "ㅓ",
-      "ㅓ",
-      "ㅕ",
-      "ㅕ",
-      "ㅗ",
-      "ㅗ",
-      "ㅛ",
-      "ㅛ",
-      "ㅜ",
-      "ㅜ",
-      "ㅠ",
-      "ㅠ",
-      "ㅡ",
-      "ㅡ",
-      "ㅣ",
-      "ㅣ",
-      "ㅐ",
-      "ㅐ",
-      "ㅒ",
-      "ㅒ",
-      "ㅔ",
-      "ㅔ",
-      "ㅖ",
-      "ㅖ",
-      "ㅚ",
-      "ㅚ",
-      "ㅟ",
-      "ㅟ",
-      "ㅢ",
-      "ㅢ",
-    ],
-    숫자: [
-      ".",
-      "0",
-      "0",
-      "1",
-      "1",
-      "2",
-      "2",
-      "3",
-      "3",
-      "4",
-      "4",
-      "5",
-      "5",
-      "6",
-      "6",
-      "7",
-      "7",
-      "8",
-      "8",
-      "9",
-      "9",
-    ],
-  };
-
-  const resultList = modelWordList[category];
-
-  console.log(currentWord, "currentWord");
-
-  // 판단부분 => stopComp가 true가 되면 판단 완료
-  // 이후 해당 정보 상위 컴포넌트로 올리기
-  // finResult => false : 틀림
-  // finResult => true : 맞음
-
-  const finResultList: string[] = [];
-
   let hookForTimer: boolean = false;
-
-  // porps로 받아오기
-  const compareWord: string = currentWord;
 
   let startTime: number;
 
@@ -204,74 +83,12 @@ const LandmarkerCanvas = ({
         // 인스턴스의 results변수에 저장
         poseLandmarkerManager.detectLandmarks(videoRef.current, performance.now());
 
-        // 포즈 벡터 저장
-        const poseResult = poseLandmarkerManager.getResults();
-
         // 커스텀한 HandLandmarkerManager의 인스턴스 생성
         const handLandmarkerManager = HandLandmarkerManager.getInstance();
 
         // 인스턴스의 함수 detectLandmarks를 통해 mediapipe를 통해 좌표를 results에 저장
         handLandmarkerManager.detectLandmarks(videoRef.current, performance.now());
 
-        // 손 벡터 저장
-        const handsResult = handLandmarkerManager.getResults();
-
-        // 좌표 array 저장 공간들
-        let poseArray = poseResult.landmarks[0];
-
-        let rightArray: any[] = [];
-
-        let leftArray: any[] = [];
-
-        // 손의 탐지 영역에 따라 각 공간에 저장
-        if (handsResult.handedness.length) {
-          for (let [idx, value] of handsResult.handedness.entries()) {
-            if (value[0].categoryName === "Left") {
-              leftArray = handsResult.landmarks[idx];
-            } else if (value[0].categoryName === "Right") {
-              rightArray = handsResult.landmarks[idx];
-            }
-          }
-        }
-
-        // 텐서 계산 인스턴스 생성
-        const calculateTensor = CalculateTensor.getInstance();
-
-        // 저장한 데이터들을 넣어 계산된 각도를 인스턴스의 result에 넣기
-        calculateTensor.getAngles(poseArray, rightArray, leftArray);
-
-        // 인스턴스에 저장된 각도 불러오기
-        const angles = calculateTensor.getResults();
-
-        const aimodel = AiResult.getInstance();
-
-        seq.push(angles);
-        if (seq.length > 10) {
-          seq.shift();
-          aimodel.aiCalculate(seq, model);
-        }
-
-        const aiResult = aimodel.getResults();
-
-        finResultList.push(resultList[aiResult]);
-
-        // 쌓인 결과가 60개 초과하면 판단 시작
-
-        if (finResultList.length > 60) {
-          // 오래된 인자 제거
-          finResultList.shift();
-
-          // 비교 문자와 일치하는 개수
-          const checkArray = finResultList.filter((compare) => compare === compareWord);
-
-          // 일치율이 80% 이상일시
-          if (checkArray.length > 48) {
-            // 정답처리
-            finResult.current = true;
-            // 컴포넌트 정지
-            stopComp.current = true;
-          }
-        }
         if (!hookForTimer) {
           startTime = performance.now();
           hookForTimer = true;
@@ -383,16 +200,7 @@ const LandmarkerCanvas = ({
       ></video>
 
       {videoSize && (
-        <>
-          {
-            <AvatarCanvas
-              width={videoSize.width}
-              height={videoSize.height}
-              url={modelUrl}
-              avatar_name={avatar}
-            />
-          }
-        </>
+        <>{<AvatarCanvas width={533} height={510} url={modelUrl} avatar_name={avatar} />}</>
       )}
 
       {/* 캔버스 */}
@@ -412,4 +220,4 @@ const LandmarkerCanvas = ({
   );
 };
 
-export default LandmarkerCanvas;
+export default CameraComponent;

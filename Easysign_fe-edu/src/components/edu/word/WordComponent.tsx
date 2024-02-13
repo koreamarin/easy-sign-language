@@ -2,7 +2,7 @@ import { useOutletContext } from "react-router-dom";
 import BracketButton from "../../Button/BracketButton";
 import Sticker from "../../../assets/images/sticker.png";
 import ResultModal from "../../common/ResultModal";
-import JihwaProgressBar from "./JihwaProgressBar";
+import WordProgressBar from "./WordProgressBar";
 import { trainingDataType } from "../Lecture";
 import { useDispatch } from "react-redux";
 import { LearningProgressSet } from "../../../redux/modules/ProgressSlice";
@@ -11,7 +11,7 @@ import LectureLandmarkerCanvas from "../../poseModelComponents/LectureLandmarker
 import { useRef, useState } from "react";
 import { followStatusFalse } from "../../../redux/modules/LectureSlice";
 
-const JihwaComponent = () => {
+const WordComponent = () => {
   interface IFollowersContext {
     followStatus: Boolean;
     trainingData: trainingDataType[];
@@ -44,9 +44,12 @@ const JihwaComponent = () => {
     category,
     gubun,
   } = useOutletContext<IFollowersContext>();
+
   const disPatch = useDispatch();
 
   const totalNum = trainingData.length;
+
+  console.log(trainingData);
 
   // trainingData의 모든 리스트에서 success가 true인 것의 개수를 세어서 100으로 나눈 값을 반환
   const LearningProgress = () => {
@@ -119,7 +122,7 @@ const JihwaComponent = () => {
           alignItems: "center",
         }}
       >
-        <JihwaProgressBar
+        <WordProgressBar
           trainingData={trainingData}
           currentNum={currentNum}
           currentNumModify={currentNumModify}
@@ -164,14 +167,13 @@ const JihwaComponent = () => {
                 gubun={gubun}
               />
             </div>
-            <img
+            <video
               style={{
                 width: "533px",
                 height: "510px",
                 borderRadius: "40px",
               }}
-              src={trainingData[currentNum - 1].imagePath}
-              alt="jihwa"
+              src={trainingData[currentNum - 1].videoPath}
             />
           </div>
           <div
@@ -270,14 +272,15 @@ const JihwaComponent = () => {
               currentNumModify={currentNumModify}
             />
           )}
-          <img
+          <video
             style={{
               width: "907px",
               height: "510px",
               borderRadius: "40px",
             }}
-            src={trainingData[currentNum - 1].imagePath}
-            alt="jihwa"
+            src={trainingData[currentNum - 1].videoPath}
+            controls
+            autoPlay
           />
           {currentNum === trainingData.length ? (
             <div
@@ -304,4 +307,4 @@ const JihwaComponent = () => {
   );
 };
 
-export default JihwaComponent;
+export default WordComponent;

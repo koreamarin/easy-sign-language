@@ -5,15 +5,40 @@ import HandLandmarkerCanvas from "./Hand";
 import HandLandmarkerManager from "../../poseModelLogic/HandLandmarkManager";
 import CalculateTensor from "../../poseModelLogic/CalculateVector";
 import AiResult from "../../poseModelLogic/AiModel";
+import AvatarCanvas from "../Sonagi/AvatarCanvas";
+import FaceLandmarkManager from "../common/FaceLandmarkManager";
 import * as tf from "@tensorflow/tfjs";
 
-const LandmarkerCanvas2 = () => {
-  const model = tf.loadLayersModel(process.env.PUBLIC_URL + "/model/model.json");
+const PracticeLandmarkerCanvas = ({
+  finResult,
+  setSecond,
+  ishidden,
+  stopComp,
+  currentWord,
+  successModal,
+  failModal,
+  sethidden,
+  category,
+  gubun,
+}) => {
+  // mediapipe 얼굴 매쉬 인식을 위한 클래스
+  const [faceLandmarkManager, setFaceLandmarkManager] = useState(FaceLandmarkManager.getInstance());
+
+  const model = tf.loadLayersModel(
+    process.env.PUBLIC_URL + "/model/" + gubun + "/" + category + "/model.json"
+  );
+
+  // 얼굴에 씌울 아바타 이름
+  // Bear, Cat, Chicken, Deer, Dog, Elephant, Pig, Rabbit
+  const [avatar, setAvatar] = useState("Dog");
+
+  // avatar 모델 파일 불러오기
+  const [modelUrl, setModelUrl] = useState(
+    process.env.PUBLIC_URL + "/assets/mask/animal_face_pack.gltf"
+  );
+
   // element에서 비디오 값을 가져와 저장
   const videoRef = useRef<HTMLVideoElement>(null);
-
-  // 골격 숨기기
-  const [ishidden, sethidden] = useState<boolean>(false);
 
   // const seq = useRef<object[]>([]);
   const seq: number[][] = [];
@@ -30,75 +55,139 @@ const LandmarkerCanvas2 = () => {
     height: number;
   }>();
 
-  // 버튼 클릭시 ishidden 변경
-  const clickButton = () => {
-    sethidden(!ishidden);
-  };
-
   // ================================상위 컴포넌트와 연동할 부분==========================
 
-  const resultList = [
-    ".",
-    "ㄱ",
-    "ㄱ",
-    "ㄴ",
-    "ㄴ",
-    "ㄷ",
-    "ㄷ",
-    "ㄹ",
-    "ㄹ",
-    "ㅁ",
-    "ㅁ",
-    "ㅂ",
-    "ㅂ",
-    "ㅅ",
-    "ㅅ",
-    "ㅇ",
-    "ㅇ",
-    "ㅈ",
-    "ㅈ",
-    "ㅊ",
-    "ㅊ",
-    "ㅋ",
-    "ㅋ",
-    "ㅌ",
-    "ㅌ",
-    "ㅍ",
-    "ㅍ",
-    "ㅎ",
-    "ㅎ",
-  ];
+  const modelWordList = {
+    자음: [
+      ".",
+      "ㄱ",
+      "ㄱ",
+      "ㄴ",
+      "ㄴ",
+      "ㄷ",
+      "ㄷ",
+      "ㄹ",
+      "ㄹ",
+      "ㅁ",
+      "ㅁ",
+      "ㅂ",
+      "ㅂ",
+      "ㅅ",
+      "ㅅ",
+      "ㅇ",
+      "ㅇ",
+      "ㅈ",
+      "ㅈ",
+      "ㅊ",
+      "ㅊ",
+      "ㅋ",
+      "ㅋ",
+      "ㅌ",
+      "ㅌ",
+      "ㅍ",
+      "ㅍ",
+      "ㅎ",
+      "ㅎ",
+    ],
+    모음: [
+      ".",
+      "ㅏ",
+      "ㅏ",
+      "ㅑ",
+      "ㅑ",
+      "ㅓ",
+      "ㅓ",
+      "ㅕ",
+      "ㅕ",
+      "ㅗ",
+      "ㅗ",
+      "ㅛ",
+      "ㅛ",
+      "ㅜ",
+      "ㅜ",
+      "ㅠ",
+      "ㅠ",
+      "ㅡ",
+      "ㅡ",
+      "ㅣ",
+      "ㅣ",
+      "ㅐ",
+      "ㅐ",
+      "ㅒ",
+      "ㅒ",
+      "ㅔ",
+      "ㅔ",
+      "ㅖ",
+      "ㅖ",
+      "ㅚ",
+      "ㅚ",
+      "ㅟ",
+      "ㅟ",
+      "ㅢ",
+      "ㅢ",
+    ],
+    숫자: [
+      ".",
+      "0",
+      "0",
+      "1",
+      "1",
+      "2",
+      "2",
+      "3",
+      "3",
+      "4",
+      "4",
+      "5",
+      "5",
+      "6",
+      "6",
+      "7",
+      "7",
+      "8",
+      "8",
+      "9",
+      "9",
+    ],
+  };
+
+  const resultList = modelWordList[category];
+
+  console.log(currentWord, "currentWord");
 
   // 판단부분 => stopComp가 true가 되면 판단 완료
   // 이후 해당 정보 상위 컴포넌트로 올리기
   // finResult => false : 틀림
   // finResult => true : 맞음
 
-  const finResult = useRef<boolean>(false);
-
-  // const [stopComp, setStopComp] = useState<boolean>(false);
-  // let stopComp = false;
-  const stopComp = useRef<boolean>(false);
-
   const finResultList: string[] = [];
 
   let hookForTimer: boolean = false;
 
-  const [second, setSecond] = useState<number>(10);
-
   // porps로 받아오기
-  const compareWord: string = "ㄱ";
+  const compareWord: string = currentWord;
 
   let startTime: number;
 
-  console.log("렌더링");
+  console.log(currentWord, "currentWord1");
+  console.log(compareWord, "compareWord1");
+  const A = 123;
 
   //
   const animate = () => {
+    console.log(currentWord, "currentWord3");
+    console.log(compareWord, "compareWord3");
+    console.log(A);
     console.log(stopComp.current, "stopComp");
     if (stopComp.current) {
       setSecond(0);
       console.log("finResult: ", finResult);
+      if (finResult.current === true) {
+        successModal();
+      } else {
+        failModal();
+      }
+      alert("이제부터 멈추는건가요?");
       return;
     }
 
@@ -109,6 +198,9 @@ const LandmarkerCanvas2 = () => {
       videoRef.current.currentTime !== lastVideoTimeRef.current &&
       !stopComp.current
     ) {
+      //얼굴 mask용 얼굴 감지
+      faceLandmarkManager.detectLandmarks(videoRef.current, performance.now());
+
       videoRef.current.muted = !ishidden;
       // 마지막 비디오 시간을 현재 비디오 시간으로 업데이트 후
       lastVideoTimeRef.current = videoRef.current.currentTime;
@@ -179,6 +271,8 @@ const LandmarkerCanvas2 = () => {
 
           // 비교 문자와 일치하는 개수
           const checkArray = finResultList.filter((compare) => compare === compareWord);
+          console.log(compareWord, "compareWord");
+          console.log(checkArray, "checkArray");
 
           // 일치율이 80% 이상일시
           if (checkArray.length > 48) {
@@ -215,6 +309,7 @@ const LandmarkerCanvas2 = () => {
 
   // 컴포넌트 마운트 될시 시작
   useEffect(() => {
+    console.log(currentWord, "currentWord2");
     // 동기로
     const getUserCamera = async () => {
       try {
@@ -246,6 +341,7 @@ const LandmarkerCanvas2 = () => {
 
             // 비디오가 존재하거나 하지않아도 비디오를 재생시킴
             videoRef.current!.play();
+
             requestRef.current = requestAnimationFrame(animate);
           };
         }
@@ -262,45 +358,61 @@ const LandmarkerCanvas2 = () => {
   }, []);
 
   return (
-    <div>
-      <div style={{ display: "flex" }}>
-        {/* 비디오 */}
+    <div
+      style={{
+        width: "533px",
+        height: "510px",
+        borderRadius: "40px",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        flexDirection: "column",
+        fontSize: "40px",
+        fontWeight: "bold",
+        border: "1px solid black",
+        position: "relative",
+      }}
+    >
+      {/* 비디오 */}
 
-        <video
-          ref={videoRef}
-          loop={true}
-          muted={true}
-          autoPlay={true}
-          playsInline={true}
-          style={{ transform: "rotateY(180deg)" }}
-        ></video>
+      <video
+        ref={videoRef}
+        loop={true}
+        muted={true}
+        autoPlay={true}
+        playsInline={true}
+        style={{
+          transform: "rotateY(180deg)",
+          width: "533px",
+          height: "510px",
+          borderRadius: "40px",
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          fontSize: "40px",
+          fontWeight: "bold",
+        }}
+      ></video>
 
-        {/* 캔버스 */}
-        {videoSize && (
-          <>
-            {videoView && ishidden && (
-              <PoseLandmarkerCanvas width={videoSize.width} height={videoSize.height} />
-            )}
-          </>
-        )}
-        {videoSize && ishidden && (
-          <>
-            {videoView && (
-              <HandLandmarkerCanvas width={videoSize.width} height={videoSize.height} />
-            )}
-          </>
-        )}
-      </div>
-      <button onClick={clickButton}>{ishidden ? "숨기기" : "보기"}</button>
-      <div>
-        <div>
-          성공여부 :
-          {stopComp.current ? <>{finResult.current ? "성공" : "실패"}</> : <>"결정 안됨"</>}
-        </div>
-        <div> 남은 시간 : {second}</div>
-      </div>
+      {videoSize && (
+        <>{<AvatarCanvas width={533} height={510} url={modelUrl} avatar_name={avatar} />}</>
+      )}
+
+      {/* 캔버스 */}
+      {videoSize && (
+        <>
+          {videoView && ishidden && (
+            <PoseLandmarkerCanvas width={videoSize.width} height={videoSize.height} />
+          )}
+        </>
+      )}
+      {videoSize && ishidden && (
+        <>
+          {videoView && <HandLandmarkerCanvas width={videoSize.width} height={videoSize.height} />}
+        </>
+      )}
     </div>
   );
 };
 
-export default LandmarkerCanvas2;
+export default PracticeLandmarkerCanvas;
