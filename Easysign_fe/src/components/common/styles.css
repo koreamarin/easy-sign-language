@@ -24,8 +24,8 @@ body {
 .swiper-slide {
   background-position: center;
   background-size: cover;
-  width: 500px;
-  height: 420px;
+  width: 50vw;
+  height: 30vh;
 }
 
 .swiper-slide img {

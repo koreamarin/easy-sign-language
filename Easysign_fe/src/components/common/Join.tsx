@@ -24,7 +24,7 @@ function Join() {
   // 토큰을 로컬 스토리지에 저장
   localStorage.setItem(
     "token",
-    "Bearer eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJFYXN5U2lnbiIsImV4cCI6MTcwNzY2MzMzMSwiaWQiOjYsImxvZ2luSWQiOiJzc2FmeSJ9.xkcoHpJEv-kr86OWYkyKKnHGiIihx2H0uNWY-_Wv6f01-BAWpXTiANxh9t7OzdKV9-HPkS56u47d1YBqHpbo6w"
+    "Bearer eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJFYXN5U2lnbiIsImV4cCI6MTcwNzg4Nzg3NywiaWQiOjEsImxvZ2luSWQiOiJzc2FmeSJ9.ceYJz1QldLfOkeNqXTd6um8lihoOdaOQM2_aRpVI1YXwqyEh0Y754VRdCt9wIyrmBxXNQaFxm8nMNDnlX3TbUQ"
   );
 
   // 로컬 스토리지에서 토큰을 가져옴

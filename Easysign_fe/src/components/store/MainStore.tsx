@@ -16,55 +16,59 @@ import { Pagination } from "swiper/modules";
 
 const BigView = styled.div`
   min-height: 150vh;
+  width: 100vw;
 `;
 
+// 진한 갈색의 큰 상자
 const Container = styled.div`
   position: absolute;
   display: flex;
-  width: 1300px;
-  height: 720px;
-  left: calc(50% - 1300px / 2 + 0px);
-  top: 400px;
+  width: 90vw;
+  height: 72vh;
+  left: 5vw;
+  top: 60vh;
   background: rgba(191, 124, 69, 0.79);
   border-radius: 50px;
   border: 1.5px solid #000000;
 `;
 
+// 베이지색의 중간크기 상자
 const F57 = styled.div`
   position: absolute;
-
-  width: 1088px;
-  height: 500px;
-  left: calc(50% - 1088px / 2);
-  top: 110px;
+  width: 75vw;
+  height: 50vh;
+  left: 7vw;
+  top: 11vh;
   background: #ebd8c0;
 `;
 
+// swiper가 들어올 박스
 const SmallBox = styled.div`
   position: absolute;
-  top: 80px;
-  left: 118px;
-  width: 852px;
-  height: 341.75px;
+  top: 2vh;
+  left: 7.5vw;
+  width: 60vw;
+  height: 23vh;
 `;
 
+// 개별 상품사진들이 들어갈 박스
 const PhotoBox = styled.div`
   position: absolute;
-  width: 150px;
-  height: 230px;
-  left: calc(50% - 150px / 2);
-  top: 14px;
+  width: 10.4vw;
+  height: 15vh;
+  left: 1.5vw;
+  top: 2vh;
 
   background: #e2d0b2;
   border-radius: 15px;
 `;
 
+// 구매완료 들어갈 박스
 const F66 = styled.div`
   position: absolute;
-  width: 125px;
-  height: 37px;
-  left: calc(50% - 125px / 2 + 0.5px);
-  top: 278px;
+  width: 8.6vw;
+  height: 4vh;
+  top: 20vh;
 
   background: #0999a0;
   border: 1.5px solid #000000;
@@ -98,7 +102,7 @@ function MainStore() {
     <div>
       <BigView>
         {/* 저작권 걱정 없는 임시로 삽입한 이미지 */}
-        <img src="../storebg.jpg" width="1440px" height="253px"></img>
+        <img src="../storebg.jpg" width="100%" height="253px"></img>
         <Container>
           <F57>
             <SmallBox>
