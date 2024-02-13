@@ -53,6 +53,7 @@ public class StoreServiceImpl implements StoreService {
         List<Long> except = new ArrayList<>();
         except.add(1L);
         except.add(2L);
+        except.add(13L);
         List<ItemResponseInterface> stores = storeRepository.findStoreItem(except, userId);
         List<ItemResponse> itemResponses = stores.stream()
                 .map(storeMapper::toItemResponse)
