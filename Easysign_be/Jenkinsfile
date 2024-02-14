@@ -113,9 +113,15 @@ pipeline {
                         try{
                             sh "docker rm -f back || true"
                             sh "docker run -d --name back -p 8082:8080 \
-                                -e spring.datasource.url=${env.DB_URL} \
-                                -e spring.datasource.username=${env.DB_USER} \
-                                -e spring.datasource.password=${env.DB_PASSWORD} \
+                                -e DB_URL=${env.DB_URL} \
+                                -e DB_USER=${env.DB_USER} \
+                                -e DB_PASSWORD=${env.DB_PASSWORD} \
+                                -e REDIS_HOST=${env.REDIS_HOST} \
+                                -e REDIS_PASSWORD=${env.REDIS_PASSWORD} \
+                                -e REDIS_PORT=${env.REDIS_PORT} \
+                                -e MAIL_ID=${env.MAIL_ID} \
+                                -e MAIL_PASSWORD=${env.MAIL_PASSWORD} \
+                                -e MAIL_PORT=${env.MAIL_PORT} \
                                 doribari/back"
 //                             sh "docker rm -f back || true"
 //                             sh "docker run -d --name back -p 8082:8080 -e spring.datasource.url=jdbc:mysql://i10c202.p.ssafy.io:3307/easysign -e spring.datasource.username=root -e spring.datasource.password=ssafy doribari/back"
