@@ -126,7 +126,7 @@ pipeline {
 //                             sh "docker rm -f back || true"
 //                             sh "docker run -d --name back -p 8082:8080 -e spring.datasource.url=jdbc:mysql://i10c202.p.ssafy.io:3307/easysign -e spring.datasource.username=root -e spring.datasource.password=ssafy doribari/back"
                         } catch (Exception e){
-                            sh "docker restart back"
+                            sh "docker restart back || true"  // Ignore error if container doesn't exist
                         }
                     }
                 }
