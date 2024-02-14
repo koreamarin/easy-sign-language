@@ -167,6 +167,9 @@ const PracticeLandmarkerCanvas = ({
     if (finResult) {
       ClearWord();
       finResult = false;
+      setTimeout(() => {
+        setPercentage(0);
+      }, 1000);
     }
 
     // 만약 비디오 element에서 가져온 값이 존재하고, 재생중(웹)인 시간과 마지막 비디오 시간과 일치하지 않으면
@@ -268,6 +271,7 @@ const PracticeLandmarkerCanvas = ({
             // 정답처리
             finResult = true;
             setPercentage(100);
+            finResultList.length = 0;
           }
         }
 

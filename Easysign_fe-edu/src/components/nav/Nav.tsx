@@ -51,8 +51,9 @@ const Nav = ({ Progress2Visibility }: NavProps) => {
           padding: "20px",
           borderBottom: "3px solid pink",
         }}
-        href="/"
+        href="https://easysign.shop"
         target="_blank"
+        rel="noreferrer"
       >
         <NavLogo />
       </a>
@@ -61,7 +62,7 @@ const Nav = ({ Progress2Visibility }: NavProps) => {
           paddingTop: "30px",
         }}
       >
-        <a href="/mypage" target="_blank">
+        <a href="https://easysign.shop/mypage" target="_blank" rel="noreferrer">
           <ProfileImg backgroundSrc={backgroundSrc} CharacterSrc={CharacterSrc} />
         </a>
       </div>

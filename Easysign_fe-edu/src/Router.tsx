@@ -10,6 +10,7 @@ import WordComponent from "./components/edu/word/WordComponent";
 import SentenceComponent from "./components/edu/sentence/SentenceComponent";
 import Practice from "./components/edu/Practice";
 import JihwaPracticeComponent from "./components/edu/jihwa/JihwaPracticeComponent";
+import WordPracticeComponent from "./components/edu/word/WordPracticeComponent";
 
 const router = createBrowserRouter([
   {
@@ -48,7 +49,7 @@ const router = createBrowserRouter([
           },
           {
             path: "word",
-            element: <div>단어</div>,
+            element: <WordPracticeComponent />,
           },
           {
             path: "setence",

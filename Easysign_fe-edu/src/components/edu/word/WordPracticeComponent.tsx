@@ -1,6 +1,6 @@
 import { useOutletContext } from "react-router-dom";
 import BracketButton from "../../Button/BracketButton";
-import JihwaProgressBar from "./JihwaProgressBar";
+import WordProgressBar from "./WordProgressBar";
 import { trainingDataType } from "../Lecture";
 import { useDispatch } from "react-redux";
 import { LearningProgressSet } from "../../../redux/modules/ProgressSlice";
@@ -20,7 +20,7 @@ const Div = styled.div`
   font-style: normal;
 `;
 
-const JihwaPracticeComponent = () => {
+const WordPracticeComponent = () => {
   interface IFollowersContext {
     trainingData: trainingDataType[];
     setTrainingData: (trainingData: trainingDataType[]) => void;
@@ -111,7 +111,7 @@ const JihwaPracticeComponent = () => {
           alignItems: "center",
         }}
       >
-        <JihwaProgressBar
+        <WordProgressBar
           trainingData={trainingData}
           currentNum={currentNum}
           currentNumModify={currentNumModify}
@@ -226,4 +226,4 @@ const JihwaPracticeComponent = () => {
   );
 };
 
-export default JihwaPracticeComponent;
+export default WordPracticeComponent;

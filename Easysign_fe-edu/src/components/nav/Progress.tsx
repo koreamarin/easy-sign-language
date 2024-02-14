@@ -7,14 +7,23 @@ import "react-circular-progressbar/dist/styles.css";
 interface ProgressProps {
   text: string;
   percentage: number;
+  percentageText?: number;
   wrong_answer?: boolean;
+  unit?: string;
 }
 
-const Progress = ({ text, percentage, wrong_answer = false }: ProgressProps) => {
+const Progress = ({
+  text,
+  percentage,
+  percentageText,
+  wrong_answer = false,
+  unit = "%",
+}: ProgressProps) => {
   const pathColor = wrong_answer ? "red" : "turquoise";
   const textMarginTop = wrong_answer ? -7 : -17;
   const percentMarginTop = wrong_answer ? 5 : -9;
   const trailColor = wrong_answer ? "#FFCFD8" : "#D8FFFB";
+  percentageText = percentageText ? percentageText : percentage;
   return (
     <div style={{ width: 140 }}>
       <CircularProgressbarWithChildren
@@ -51,7 +60,8 @@ const Progress = ({ text, percentage, wrong_answer = false }: ProgressProps) => 
               fontWeight: 700,
             }}
           >
-            {percentage}%
+            {percentageText}
+            {unit}
           </div>
         </div>
       </CircularProgressbarWithChildren>

@@ -99,6 +99,7 @@ const Practice = () => {
     setCurrentNum: setCurrentNum,
     addSticker: addSticker,
     ShownEndModalStatus: ShownEndModalStatus,
+    ShownEndModal: ShownEndModal,
     category: category,
     gubun: gubun,
   };

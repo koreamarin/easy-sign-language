@@ -135,7 +135,7 @@ function SonagiCanvas({
   };
 
   const quitGame = () => {
-    navigate(-1);
+    navigate("/");
   };
 
   return (

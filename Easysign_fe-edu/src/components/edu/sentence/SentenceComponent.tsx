@@ -10,6 +10,8 @@ import EndModal from "../../common/EndModal";
 import CameraComponent from "./CameraComponent";
 import { useRef, useState } from "react";
 import { followStatusFalse } from "../../../redux/modules/LectureSlice";
+import MediumButton from "../../Button/MediumButton";
+import Progress from "../../nav/Progress";
 
 const SentenceComponent = () => {
   interface IFollowersContext {
@@ -179,42 +181,33 @@ const SentenceComponent = () => {
             style={{
               height: "0px",
               position: "relative",
-              top: "30px",
-              left: "0px",
+              top: "90px",
               display: "flex",
               flexDirection: "row",
-              justifyContent: "center",
+              justifyContent: "space-between",
               alignItems: "center",
+              width: "1040px",
+              left: "-20px",
             }}
           >
-            <button
+            <MediumButton
+              text={ishidden ? "골격숨기기" : "골격보기"}
+              color={"blue"}
               onClick={() => {
                 sethidden(!ishidden);
               }}
-            >
-              {ishidden ? "숨기기" : "보기"}
-            </button>
-          </div>
-          <div
-            style={{
-              height: "0px",
-              position: "relative",
-              top: "90px",
-              left: "70px",
-              display: "flex",
-              flexDirection: "row",
-              justifyContent: "center",
-              alignItems: "center",
-            }}
-          >
-            <div>
-              <div style={{ fontSize: "50px" }}> 남은 시간 : {second}</div>
-            </div>
+            />
+            <Progress
+              percentage={second * 10}
+              percentageText={second}
+              text={"남은시간"}
+              unit={"초"}
+              wrong_answer={second > 5 ? false : true}
+            />
 
             <span
               style={{
                 position: "relative",
-                left: "250px",
                 display: "flex",
                 flexDirection: "row",
                 justifyContent: "center",
@@ -280,6 +273,7 @@ const SentenceComponent = () => {
             src={trainingData[currentNum - 1].videoPath}
             controls
             autoPlay
+            loop
           />
           {currentNum === trainingData.length ? (
             <div

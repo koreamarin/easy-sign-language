@@ -180,7 +180,6 @@ const LectureLandmarkerCanvas = ({
       } else {
         failModal();
       }
-      alert("이제부터 멈추는건가요?");
       return;
     }
 
