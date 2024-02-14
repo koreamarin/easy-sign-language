@@ -45,18 +45,18 @@ const F57 = styled.div`
 // swiper가 들어올 박스
 const SmallBox = styled.div`
   position: absolute;
-  top: 2vh;
+  top: 5vh;
   left: 7.5vw;
   width: 60vw;
-  height: 23vh;
+  height: 40vh;
 `;
 
 // 개별 상품사진들이 들어갈 박스
 const PhotoBox = styled.div`
   position: absolute;
   width: 10.4vw;
-  height: 15vh;
-  left: 1.5vw;
+  height: 20vh;
+  left: 1.2vw;
   top: 2vh;
 
   background: #e2d0b2;
@@ -68,7 +68,8 @@ const F66 = styled.div`
   position: absolute;
   width: 8.6vw;
   height: 4vh;
-  top: 20vh;
+  left: 2vw;
+  top: 28vh;
 
   background: #0999a0;
   border: 1.5px solid #000000;
