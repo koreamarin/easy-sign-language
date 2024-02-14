@@ -27,7 +27,7 @@ public class VerifyEmailService {
     }
 
     public void sendVerificationMail(String email) {
-        String VERIFICATION_LINK = "https://easysign.shop/api/v1/auth/verification";
+        String VERIFICATION_LINK = "https://easysign.shop/api/v1/verify/";
         if(email==null) throw new NotFoundException("멤버가 조회되지 않습니다.");
         UUID uuid = UUID.randomUUID();
         //redis 저장

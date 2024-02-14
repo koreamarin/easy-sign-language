@@ -28,7 +28,7 @@ spring:
   mail:
     host: smtp.gmail.com
     port: 587
-    username: kms278711@naver.com
+    username: kms278711
     password: grod nkpi ccbp xypb
     properties:
       mail:

@@ -23,7 +23,7 @@ public class VerifyController {
     private final UserService userService;
 
     // 비밀번호 재설정 이메일 전송
-    @GetMapping("/verify")
+    @GetMapping
     public ResponseEntity<Boolean> verify(@RequestParam String email) throws NotFoundException {
         User user = userService.getUserByEmail(email);
         if(user!=null) {
@@ -34,7 +34,7 @@ public class VerifyController {
     }
 
     // 인증링크 확인
-    @GetMapping("/verify/{key}")
+    @GetMapping("/{key}")
     public ResponseEntity<Boolean> getVerify(@PathVariable String key) throws NotFoundException {
         try {
             verifyEmailService.verifyEmail(key);
