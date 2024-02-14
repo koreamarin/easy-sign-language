@@ -22,7 +22,8 @@ public class VerifyEmailService {
         SimpleMailMessage message = new SimpleMailMessage();
         message.setTo(to);
         message.setSubject(sub);
-        message.setText(text);
+        String content = "아래 링크를 클릭하여 인증을 완료해주세요.</br>" + text;
+        message.setText(content);
         emailSender.send(message);
     }
 
