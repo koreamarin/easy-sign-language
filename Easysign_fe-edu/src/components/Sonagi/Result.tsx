@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
-import PoseLandmarkerCanvas from "./Pose";
+import PoseLandmarkerCanvas from "../poseModelComponents/Pose";
 import PoseLandmarkerManager from "../../poseModelLogic/PoseLandmarkManager";
-import HandLandmarkerCanvas from "./Hand";
+import HandLandmarkerCanvas from "../poseModelComponents/Hand";
 import HandLandmarkerManager from "../../poseModelLogic/HandLandmarkManager";
 import CalculateTensor from "../../poseModelLogic/CalculateVector";
 import AiResult from "../../poseModelLogic/AiModel";

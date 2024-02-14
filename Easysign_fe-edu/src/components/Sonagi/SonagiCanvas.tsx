@@ -1,7 +1,6 @@
 import React, { useRef, useEffect, useState } from "react";
 import SonagiEngine from "./SonagiEngine";
 import GameResultModal from "../common/GameResultModal";
-import SonagiCamera from "./SonagiCamera";
 import { LifeCount } from "./SonagiConfig";
 import LandmarkerCanvas from "./Result";
 import SSmallButton from "../Button/SSmallButton";
