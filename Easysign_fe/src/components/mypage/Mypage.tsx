@@ -91,7 +91,8 @@ function Mypage() {
   // 캐릭터 모음 담는 박스
   const SmallBox1 = styled.div`
     position: absolute;
-    top: 10vh;
+    top: 13vh;
+    left: 2.5vw;
     height: 20.5vh;
     width: 74vw;
   `;
@@ -107,7 +108,7 @@ function Mypage() {
   // 배경 모음 글자
   const Text2 = styled.div`
     position: absolute;
-    top: 400px;
+    top: 40vh;
     left: 30px;
 
     font-family: "Inter";
@@ -120,8 +121,8 @@ function Mypage() {
   // 배경 모음 담는 박스
   const SmallBox2 = styled.div`
     position: absolute;
-    top: 450px;
-    left: 20px;
+    top: 50vh;
+    left: 2.5vw;
     height: 210px;
     width: 74vw;
   `;
