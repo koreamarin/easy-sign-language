@@ -5,14 +5,14 @@ spring:
     username: ${DB_USER}
     password: ${DB_PASSWORD}
 
-#jpa
+  #jpa
   jpa:
     hibernate:
       ddl-auto: update
     properties:
       hibernate:
         format_sql: true
-#redis
+  #redis
   data:
     redis:
       host: ${REDIS_HOST}
@@ -24,7 +24,7 @@ spring:
           min-idle: 0
           max-active: 8
           max-wait: -1
-#spring mail
+  #spring mail
   mail:
     host: smtp.gmail.com
     port: ${MAIL_PORT}
