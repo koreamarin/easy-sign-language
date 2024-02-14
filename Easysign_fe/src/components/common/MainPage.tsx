@@ -1,68 +1,89 @@
+import styled from "styled-components";
+
+// 사용한 라이브러리
+// https://swiperjs.com/demos#effect-cards
+
+// card library 관련 import
 import React, { useRef, useState } from "react";
 // Import Swiper React components
 import { Swiper, SwiperSlide } from "swiper/react";
 
 // Import Swiper styles
 import "swiper/css";
-import "swiper/css/effect-coverflow";
-import "swiper/css/pagination";
+import "swiper/css/effect-cards";
 
 import "./styles.css";
 
 // import required modules
-import { EffectCoverflow, Pagination } from "swiper/modules";
-import { styled } from "styled-components";
-
-const Container = styled.div`
-  height: 100vh;
-  width: 100vw;
-  top: 4vh;
-  background-color: #eee;
-`;
+import { EffectCards } from "swiper/modules";
 
 function MainPage() {
+  const Container = styled.div`
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100vw;
+    min-height: 100vh;
+    background: #eee;
+  `;
+
   return (
     <div>
       <Container>
-        <br></br>
-        <br></br>
-        <br></br>
         <Swiper
-          effect={"coverflow"}
+          effect={"cards"}
           grabCursor={true}
-          centeredSlides={true}
-          slidesPerView={"auto"}
-          coverflowEffect={{
-            rotate: 50,
-            stretch: 0,
-            depth: 100,
-            modifier: 1,
-            slideShadows: true,
-          }}
-          pagination={true}
-          modules={[EffectCoverflow, Pagination]}
+          modules={[EffectCards]}
           className="mySwiper"
         >
           <SwiperSlide>
-            <img src="../mainpage_image/jihwa_practice.jpg" />
+            <img
+              src="../mainpage_image/jihwa_practice.JPG"
+              width="576px"
+              height="480px"
+            />
           </SwiperSlide>
           <SwiperSlide>
-            <img src="../mainpage_image/word_practice.jpg" />
+            <img
+              src="../mainpage_image/word_practice.jpg"
+              width="576px"
+              height="480px"
+            />
           </SwiperSlide>
           <SwiperSlide>
-            <img src="../mainpage_image/sentence_practice.jpg" />
+            <img
+              src="../mainpage_image/sentence_practice.jpg"
+              width="576px"
+              height="480px"
+            />
           </SwiperSlide>
           <SwiperSlide>
-            <img src="../mainpage_image/rain_game.jpg" />
+            <img
+              src="../mainpage_image/rain_game.jpg"
+              width="576px"
+              height="480px"
+            />
           </SwiperSlide>
           <SwiperSlide>
-            <img src="../mainpage_image/line_game.jpg" />
+            <img
+              src="../mainpage_image/line_game.jpg"
+              width="576px"
+              height="480px"
+            />
           </SwiperSlide>
           <SwiperSlide>
-            <img src="../mainpage_image/speedquiz_game.jpg" />
+            <img
+              src="../mainpage_image/speedquiz_game.jpg"
+              width="576px"
+              height="480px"
+            />
           </SwiperSlide>
           <SwiperSlide>
-            <img src="../mainpage_image/catchmind_game.jpg" />
+            <img
+              src="../mainpage_image/catchmind_game.jpg"
+              width="576px"
+              height="480px"
+            />
           </SwiperSlide>
         </Swiper>
       </Container>
