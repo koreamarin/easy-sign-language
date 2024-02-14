@@ -3,34 +3,25 @@ import PoseLandmarkerCanvas from "./Pose";
 import PoseLandmarkerManager from "../../poseModelLogic/PoseLandmarkManager";
 import HandLandmarkerCanvas from "./Hand";
 import HandLandmarkerManager from "../../poseModelLogic/HandLandmarkManager";
-import CalculateTensor from "../../poseModelLogic/CalculateVector";
-import AiResult from "../../poseModelLogic/AiModel";
 import AvatarCanvas from "../Sonagi/AvatarCanvas";
 import FaceLandmarkManager from "../common/FaceLandmarkManager";
-import * as tf from "@tensorflow/tfjs";
 import { useSelector } from "react-redux";
 import { rootState } from "../../redux/modules";
 
-const PracticeLandmarkerCanvas = ({
+const CameraComponent = ({
+  finResult,
+  setSecond,
   ishidden,
+  stopComp,
   currentWord,
-  ClearWord,
-  setRecongnizingWord,
-  category,
-  gubun,
-  setPercentage,
+  successModal,
+  failModal,
 }) => {
   // mediapipe 얼굴 매쉬 인식을 위한 클래스
   const faceLandmarkManager = FaceLandmarkManager.getInstance();
 
-  const model = tf.loadLayersModel(
-    process.env.PUBLIC_URL + "/model/" + gubun + "/" + category + "/model.json"
-  );
-
   // 얼굴에 씌울 아바타 이름
   // Bear, Cat, Chicken, Deer, Dog, Elephant, Pig, Rabbit
-  // const avatar = "Dog";
-
   const avatar = useSelector((state: rootState) => state.avatar);
 
   // avatar 모델 파일 불러오기
@@ -38,9 +29,6 @@ const PracticeLandmarkerCanvas = ({
 
   // element에서 비디오 값을 가져와 저장
   const videoRef = useRef<HTMLVideoElement>(null);
-
-  // const seq = useRef<object[]>([]);
-  const seq: number[][] = [];
 
   // 재생중임을 판단하기 위핸 변수
   const lastVideoTimeRef = useRef(-1);
@@ -56,129 +44,31 @@ const PracticeLandmarkerCanvas = ({
 
   // ================================상위 컴포넌트와 연동할 부분==========================
 
-  const modelWordList = {
-    자음: [
-      ".",
-      "ㄱ",
-      "ㄱ",
-      "ㄴ",
-      "ㄴ",
-      "ㄷ",
-      "ㄷ",
-      "ㄹ",
-      "ㄹ",
-      "ㅁ",
-      "ㅁ",
-      "ㅂ",
-      "ㅂ",
-      "ㅅ",
-      "ㅅ",
-      "ㅇ",
-      "ㅇ",
-      "ㅈ",
-      "ㅈ",
-      "ㅊ",
-      "ㅊ",
-      "ㅋ",
-      "ㅋ",
-      "ㅌ",
-      "ㅌ",
-      "ㅍ",
-      "ㅍ",
-      "ㅎ",
-      "ㅎ",
-    ],
-    모음: [
-      ".",
-      "ㅏ",
-      "ㅏ",
-      "ㅑ",
-      "ㅑ",
-      "ㅓ",
-      "ㅓ",
-      "ㅕ",
-      "ㅕ",
-      "ㅗ",
-      "ㅗ",
-      "ㅛ",
-      "ㅛ",
-      "ㅜ",
-      "ㅜ",
-      "ㅠ",
-      "ㅠ",
-      "ㅡ",
-      "ㅡ",
-      "ㅣ",
-      "ㅣ",
-      "ㅐ",
-      "ㅐ",
-      "ㅒ",
-      "ㅒ",
-      "ㅔ",
-      "ㅔ",
-      "ㅖ",
-      "ㅖ",
-      "ㅚ",
-      "ㅚ",
-      "ㅟ",
-      "ㅟ",
-      "ㅢ",
-      "ㅢ",
-    ],
-    숫자: [
-      ".",
-      "0",
-      "0",
-      "1",
-      "1",
-      "2",
-      "2",
-      "3",
-      "3",
-      "4",
-      "4",
-      "5",
-      "5",
-      "6",
-      "6",
-      "7",
-      "7",
-      "8",
-      "8",
-      "9",
-      "9",
-    ],
-  };
+  let hookForTimer: boolean = false;
 
-  const resultList = modelWordList[category];
-
-  console.log("인식해야할 단어는 ", currentWord, "입니다.");
-
-  // 판단부분 => stopComp가 true가 되면 판단 완료
-  // 이후 해당 정보 상위 컴포넌트로 올리기
-  // finResult => false : 틀림
-  // finResult => true : 맞음
-
-  const finResultList: string[] = [];
-
-  // porps로 받아오기
-  const compareWord: string = currentWord;
-
-  let finResult = false;
+  let startTime: number;
 
   //
   const animate = () => {
-    if (finResult) {
-      ClearWord();
-      finResult = false;
-      setTimeout(() => {
-        setPercentage(0);
-      }, 1000);
+    console.log(stopComp.current, "stopComp");
+    if (stopComp.current) {
+      setSecond(0);
+      console.log("finResult: ", finResult);
+      if (finResult.current === true) {
+        successModal();
+      } else {
+        failModal();
+      }
+      return;
     }
 
     // 만약 비디오 element에서 가져온 값이 존재하고, 재생중(웹)인 시간과 마지막 비디오 시간과 일치하지 않으면
     // 즉 비디오가 실시간 재생중이면
-    if (videoRef.current && videoRef.current.currentTime !== lastVideoTimeRef.current) {
+    if (
+      videoRef.current &&
+      videoRef.current.currentTime !== lastVideoTimeRef.current &&
+      !stopComp.current
+    ) {
       //얼굴 mask용 얼굴 감지
       faceLandmarkManager.detectLandmarks(videoRef.current, performance.now());
 
@@ -193,99 +83,26 @@ const PracticeLandmarkerCanvas = ({
         // 인스턴스의 results변수에 저장
         poseLandmarkerManager.detectLandmarks(videoRef.current, performance.now());
 
-        // 포즈 벡터 저장
-        const poseResult = poseLandmarkerManager.getResults();
-
         // 커스텀한 HandLandmarkerManager의 인스턴스 생성
         const handLandmarkerManager = HandLandmarkerManager.getInstance();
 
         // 인스턴스의 함수 detectLandmarks를 통해 mediapipe를 통해 좌표를 results에 저장
         handLandmarkerManager.detectLandmarks(videoRef.current, performance.now());
 
-        // 손 벡터 저장
-        const handsResult = handLandmarkerManager.getResults();
-
-        // 좌표 array 저장 공간들
-        let poseArray = poseResult.landmarks[0];
-
-        let rightArray: any[] = [];
-
-        let leftArray: any[] = [];
-
-        // 손의 탐지 영역에 따라 각 공간에 저장
-        if (handsResult.handedness.length) {
-          for (let [idx, value] of handsResult.handedness.entries()) {
-            if (value[0].categoryName === "Left") {
-              leftArray = handsResult.landmarks[idx];
-            } else if (value[0].categoryName === "Right") {
-              rightArray = handsResult.landmarks[idx];
-            }
-          }
+        if (!hookForTimer) {
+          startTime = performance.now();
+          hookForTimer = true;
         }
 
-        // 텐서 계산 인스턴스 생성
-        const calculateTensor = CalculateTensor.getInstance();
+        setSecond(10 - Math.floor((performance.now() - startTime) / 1000));
 
-        // 저장한 데이터들을 넣어 계산된 각도를 인스턴스의 result에 넣기
-        calculateTensor.getAngles(poseArray, rightArray, leftArray);
+        // 타이머, 10초 이상 실행될 시
+        if (performance.now() - startTime > 10000) {
+          // 컴포넌트 정지 및 오답처리(finResult의 default는 false)
 
-        // 인스턴스에 저장된 각도 불러오기
-        const angles = calculateTensor.getResults();
-
-        const aimodel = AiResult.getInstance();
-
-        seq.push(angles);
-        if (seq.length > 10) {
-          seq.shift();
-          aimodel.aiCalculate(seq, model);
+          stopComp.current = true;
+          console.log(stopComp.current);
         }
-
-        const aiResult = aimodel.getResults();
-
-        finResultList.push(resultList[aiResult]);
-
-        setRecongnizingWord(resultList[aiResult]);
-
-        // 쌓인 결과가 60개 초과하면 판단 시작
-        if (finResultList.length > 60) {
-          // 오래된 인자 제거
-          finResultList.shift();
-
-          // 비교 문자와 일치하는 개수
-          let count = 0;
-          finResultList.forEach((item) => {
-            if (item === compareWord) {
-              count++;
-            }
-          });
-          console.log(
-            "finResultList 에서",
-            compareWord,
-            "의 개수는 ",
-            count,
-            "개 이며, 현재",
-            resultList[aiResult],
-            "가 인식되고 있습니다."
-          );
-
-          setPercentage(Math.floor((count / 48) * 100));
-
-          // 일치율이 80% 이상일시
-          if (count > 48) {
-            // 정답처리
-            finResult = true;
-            setPercentage(100);
-            finResultList.length = 0;
-          }
-        }
-
-        // // 타이머, 10초 이상 실행될 시
-        // if (performance.now() - startTime > 20000) {
-        //   // 컴포넌트 정지 및 오답처리(finResult의 default는 false)
-
-        //   stopComp.current = true;
-        //   console.log(stopComp.current);
-        // }
       } catch (error) {
         // 만약 에러 발생시 콘솔
         console.log(error);
@@ -330,7 +147,6 @@ const PracticeLandmarkerCanvas = ({
 
             // 비디오가 존재하거나 하지않아도 비디오를 재생시킴
             videoRef.current!.play();
-
             requestRef.current = requestAnimationFrame(animate);
           };
         }
@@ -339,20 +155,18 @@ const PracticeLandmarkerCanvas = ({
       }
     };
 
-    if (currentWord !== "") {
-      // getusercamera 함수 실행
-      getUserCamera();
-    }
+    // getusercamera 함수 실행
+    getUserCamera();
 
     // 언마운트 되기 직전 프레임 번호에 있는 에니메이션들을 정지
     return () => cancelAnimationFrame(requestRef.current);
-  }, [currentWord]);
+  }, []);
 
   return (
     <div
       style={{
-        width: "833px",
-        height: "550px",
+        width: "533px",
+        height: "510px",
         borderRadius: "40px",
         display: "flex",
         justifyContent: "center",
@@ -374,8 +188,8 @@ const PracticeLandmarkerCanvas = ({
         playsInline={true}
         style={{
           transform: "rotateY(180deg)",
-          width: "833px",
-          height: "550px",
+          width: "533px",
+          height: "510px",
           borderRadius: "40px",
           display: "flex",
           justifyContent: "center",
@@ -386,7 +200,7 @@ const PracticeLandmarkerCanvas = ({
       ></video>
 
       {videoSize && (
-        <>{<AvatarCanvas width={883} height={550} url={modelUrl} avatar_name={avatar.avatar} />}</>
+        <>{<AvatarCanvas width={533} height={510} url={modelUrl} avatar_name={avatar.avatar} />}</>
       )}
 
       {/* 캔버스 */}
@@ -406,4 +220,4 @@ const PracticeLandmarkerCanvas = ({
   );
 };
 
-export default PracticeLandmarkerCanvas;
+export default CameraComponent;

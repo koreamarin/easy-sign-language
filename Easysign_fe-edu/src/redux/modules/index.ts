@@ -1,8 +1,9 @@
 import { combineReducers } from "redux";
 import lecture from "./LectureSlice";
 import progress from "./ProgressSlice";
+import avatar from "./avatarSlice";
 
-const rootReducer = combineReducers({ lecture, progress });
+const rootReducer = combineReducers({ lecture, progress, avatar });
 export default rootReducer;
 
 //리듀서 호출 리턴?? 상태!!!

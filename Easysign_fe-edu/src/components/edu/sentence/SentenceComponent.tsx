@@ -7,7 +7,7 @@ import { trainingDataType } from "../Lecture";
 import { useDispatch } from "react-redux";
 import { LearningProgressSet } from "../../../redux/modules/ProgressSlice";
 import EndModal from "../../common/EndModal";
-import CameraComponent from "./CameraComponent";
+import CameraComponent from "../../poseModelComponents/CameraComponent";
 import { useRef, useState } from "react";
 import { followStatusFalse } from "../../../redux/modules/LectureSlice";
 import MediumButton from "../../Button/MediumButton";

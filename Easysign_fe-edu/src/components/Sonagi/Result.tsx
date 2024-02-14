@@ -8,6 +8,8 @@ import AiResult from "../../poseModelLogic/AiModel";
 import AvatarCanvas from "./AvatarCanvas";
 import FaceLandmarkManager from "../common/FaceLandmarkManager";
 import * as tf from "@tensorflow/tfjs";
+import { useSelector } from "react-redux";
+import { rootState } from "../../redux/modules";
 
 interface findMostElementResult {
   element: string;
@@ -20,19 +22,16 @@ interface LandmarkerCanvasProps {
 
 const LandmarkerCanvas = ({ setSubmitWord }: LandmarkerCanvasProps) => {
   // mediapipe 얼굴 매쉬 인식을 위한 클래스
-  const [faceLandmarkManager, setFaceLandmarkManager] = useState(FaceLandmarkManager.getInstance());
+  const faceLandmarkManager = FaceLandmarkManager.getInstance();
 
   const model = tf.loadLayersModel(process.env.PUBLIC_URL + "/model/jihwa/자음/model.json");
 
   // 얼굴에 씌울 아바타 이름
   // Bear, Cat, Chicken, Deer, Dog, Elephant, Pig, Rabbit
-  const [avatar, setAvatar] = useState("Dog");
+  const avatar = useSelector((state: rootState) => state.avatar);
 
   // avatar 모델 파일 불러오기
-  const [modelUrl, setModelUrl] = useState(
-    process.env.PUBLIC_URL + "/assets/mask/animal_face_pack.gltf"
-  );
-
+  const modelUrl = process.env.PUBLIC_URL + "/assets/mask/animal_face_pack.gltf";
   // element에서 비디오 값을 가져와 저장
   const videoRef = useRef<HTMLVideoElement>(null);
 
@@ -315,7 +314,7 @@ const LandmarkerCanvas = ({ setSubmitWord }: LandmarkerCanvasProps) => {
                 width={videoSize.width}
                 height={videoSize.height}
                 url={modelUrl}
-                avatar_name={avatar}
+                avatar_name={avatar.avatar}
               />
             }
           </>

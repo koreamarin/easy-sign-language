@@ -1,32 +1,23 @@
 import { useEffect, useRef, useState } from "react";
-import PoseLandmarkerCanvas from "../../poseModelComponents/Pose";
-import PoseLandmarkerManager from "../../../poseModelLogic/PoseLandmarkManager";
-import HandLandmarkerCanvas from "../../poseModelComponents/Hand";
-import HandLandmarkerManager from "../../../poseModelLogic/HandLandmarkManager";
-import AvatarCanvas from "../../Sonagi/AvatarCanvas";
-import FaceLandmarkManager from "../../common/FaceLandmarkManager";
+import PoseLandmarkerCanvas from "./Pose";
+import PoseLandmarkerManager from "../../poseModelLogic/PoseLandmarkManager";
+import HandLandmarkerCanvas from "./Hand";
+import HandLandmarkerManager from "../../poseModelLogic/HandLandmarkManager";
+import AvatarCanvas from "../Sonagi/AvatarCanvas";
+import FaceLandmarkManager from "../common/FaceLandmarkManager";
+import { useSelector } from "react-redux";
+import { rootState } from "../../redux/modules";
 
-const CameraComponent = ({
-  finResult,
-  setSecond,
-  ishidden,
-  stopComp,
-  currentWord,
-  successModal,
-  failModal,
-}) => {
+const WideCameraComponent = ({ finResult, ishidden, stopComp }) => {
   // mediapipe 얼굴 매쉬 인식을 위한 클래스
-  const [faceLandmarkManager, setFaceLandmarkManager] = useState(FaceLandmarkManager.getInstance());
+  const faceLandmarkManager = FaceLandmarkManager.getInstance();
 
   // 얼굴에 씌울 아바타 이름
   // Bear, Cat, Chicken, Deer, Dog, Elephant, Pig, Rabbit
-  const [avatar, setAvatar] = useState("Dog");
+  const avatar = useSelector((state: rootState) => state.avatar);
 
   // avatar 모델 파일 불러오기
-  const [modelUrl, setModelUrl] = useState(
-    process.env.PUBLIC_URL + "/assets/mask/animal_face_pack.gltf"
-  );
-
+  const modelUrl = process.env.PUBLIC_URL + "/assets/mask/animal_face_pack.gltf";
   // element에서 비디오 값을 가져와 저장
   const videoRef = useRef<HTMLVideoElement>(null);
 
@@ -44,31 +35,11 @@ const CameraComponent = ({
 
   // ================================상위 컴포넌트와 연동할 부분==========================
 
-  let hookForTimer: boolean = false;
-
-  let startTime: number;
-
   //
   const animate = () => {
-    console.log(stopComp.current, "stopComp");
-    if (stopComp.current) {
-      setSecond(0);
-      console.log("finResult: ", finResult);
-      if (finResult.current === true) {
-        successModal();
-      } else {
-        failModal();
-      }
-      return;
-    }
-
     // 만약 비디오 element에서 가져온 값이 존재하고, 재생중(웹)인 시간과 마지막 비디오 시간과 일치하지 않으면
     // 즉 비디오가 실시간 재생중이면
-    if (
-      videoRef.current &&
-      videoRef.current.currentTime !== lastVideoTimeRef.current &&
-      !stopComp.current
-    ) {
+    if (videoRef.current && videoRef.current.currentTime !== lastVideoTimeRef.current) {
       //얼굴 mask용 얼굴 감지
       faceLandmarkManager.detectLandmarks(videoRef.current, performance.now());
 
@@ -88,21 +59,6 @@ const CameraComponent = ({
 
         // 인스턴스의 함수 detectLandmarks를 통해 mediapipe를 통해 좌표를 results에 저장
         handLandmarkerManager.detectLandmarks(videoRef.current, performance.now());
-
-        if (!hookForTimer) {
-          startTime = performance.now();
-          hookForTimer = true;
-        }
-
-        setSecond(10 - Math.floor((performance.now() - startTime) / 1000));
-
-        // 타이머, 10초 이상 실행될 시
-        if (performance.now() - startTime > 10000) {
-          // 컴포넌트 정지 및 오답처리(finResult의 default는 false)
-
-          stopComp.current = true;
-          console.log(stopComp.current);
-        }
       } catch (error) {
         // 만약 에러 발생시 콘솔
         console.log(error);
@@ -165,8 +121,8 @@ const CameraComponent = ({
   return (
     <div
       style={{
-        width: "533px",
-        height: "510px",
+        width: "833px",
+        height: "550px",
         borderRadius: "40px",
         display: "flex",
         justifyContent: "center",
@@ -188,8 +144,8 @@ const CameraComponent = ({
         playsInline={true}
         style={{
           transform: "rotateY(180deg)",
-          width: "533px",
-          height: "510px",
+          width: "833px",
+          height: "550px",
           borderRadius: "40px",
           display: "flex",
           justifyContent: "center",
@@ -200,7 +156,7 @@ const CameraComponent = ({
       ></video>
 
       {videoSize && (
-        <>{<AvatarCanvas width={533} height={510} url={modelUrl} avatar_name={avatar} />}</>
+        <>{<AvatarCanvas width={833} height={550} url={modelUrl} avatar_name={avatar.avatar} />}</>
       )}
 
       {/* 캔버스 */}
@@ -220,4 +176,4 @@ const CameraComponent = ({
   );
 };
 
-export default CameraComponent;
+export default WideCameraComponent;

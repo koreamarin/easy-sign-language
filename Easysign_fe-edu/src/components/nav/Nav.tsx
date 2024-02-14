@@ -3,11 +3,12 @@ import BackButton from "../Button/BackButton";
 import NavLogo from "./NavLogo";
 import ProfileImg from "./ProfileImg";
 import Progress from "./Progress";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { rootState } from "../../redux/modules";
 import { useEffect, useState } from "react";
 import API from "../../config";
 import { token } from "../../pages/Main";
+import { setAvatar } from "../../redux/modules/avatarSlice";
 
 interface NavProps {
   Progress2Visibility: boolean;
@@ -15,6 +16,7 @@ interface NavProps {
 
 const Nav = ({ Progress2Visibility }: NavProps) => {
   const navigate = useNavigate();
+  const disPatch = useDispatch();
   const progress = useSelector((state: rootState) => state.progress);
   const [backgroundSrc, setbackgroundSrc] = useState<string | undefined>(undefined);
   const [CharacterSrc, setCharacterSrc] = useState<string | undefined>(undefined);
@@ -29,6 +31,7 @@ const Nav = ({ Progress2Visibility }: NavProps) => {
     const json = await response.json();
     setCharacterSrc(json.profileCharacterPath);
     setbackgroundSrc(json.profileBackgroundPath);
+    disPatch(setAvatar(json.mask));
   };
   useEffect(() => {
     getUserinfo();

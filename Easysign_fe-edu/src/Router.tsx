@@ -1,7 +1,6 @@
 import { createBrowserRouter } from "react-router-dom";
 import Main from "./pages/Main";
 import Edu from "./pages/Edu";
-import { Outlet } from "react-router-dom";
 import Lecture from "./components/edu/Lecture";
 import Game from "./components/game/Game";
 import Sonagi from "./components/Sonagi/Sonagi";
@@ -11,6 +10,7 @@ import SentenceComponent from "./components/edu/sentence/SentenceComponent";
 import Practice from "./components/edu/Practice";
 import JihwaPracticeComponent from "./components/edu/jihwa/JihwaPracticeComponent";
 import WordPracticeComponent from "./components/edu/word/WordPracticeComponent";
+import SentencePracticeComponent from "./components/edu/sentence/SentencePracticeComponent";
 
 const router = createBrowserRouter([
   {
@@ -52,8 +52,8 @@ const router = createBrowserRouter([
             element: <WordPracticeComponent />,
           },
           {
-            path: "setence",
-            element: <div>문장</div>,
+            path: "sentence",
+            element: <SentencePracticeComponent />,
           },
         ],
       },
