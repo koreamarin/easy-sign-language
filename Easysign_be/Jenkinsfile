@@ -10,6 +10,7 @@ pipeline {
         REDIS_PORT = "${env.REDIS_PORT}"
         MAIL_ID = "${env.MAIL_ID}"
         MAIL_PASSWORD = "${env.MAIL_PASSWORD}"
+        MAIL_PORT = "${env.MAIL_PORT}"
     }
     stages {
         stage('Checkout') {
@@ -120,6 +121,7 @@ pipeline {
                                 -e REDIS_PORT=${env.REDIS_PORT} \
                                 -e MAIL_ID=${env.MAIL_ID} \
                                 -e MAIL_PASSWORD=${env.MAIL_PASSWORD} \
+                                -e MAIL_PORT=${env.MAIL_PORT} \
                                 doribari/back"
 //                             sh "docker rm -f back || true"
 //                             sh "docker run -d --name back -p 8082:8080 -e spring.datasource.url=jdbc:mysql://i10c202.p.ssafy.io:3307/easysign -e spring.datasource.username=root -e spring.datasource.password=ssafy doribari/back"
