@@ -33,8 +33,6 @@ const Main = () => {
     getSignCategory();
   }, []);
 
-  console.log(category);
-
   const JihwaSubtitle = category
     .filter((item: any) => item.gubun === "jihwa")
     .map((item: any) => item.categoryName) // 각 name마다 강의, 연습 붙이기

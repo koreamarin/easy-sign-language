@@ -35,8 +35,6 @@ const LandmarkerCanvas = ({ setSubmitWord }: LandmarkerCanvasProps) => {
   // element에서 비디오 값을 가져와 저장
   const videoRef = useRef<HTMLVideoElement>(null);
 
-  const videoResizeVal = 0.2;
-
   // 골격 숨기기
   const [ishidden, sethidden] = useState<boolean>(false);
 

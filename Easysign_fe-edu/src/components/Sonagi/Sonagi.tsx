@@ -6,14 +6,6 @@ import backgroundImg from "../../assets/images/boy_on_the_ocean_skateboard.png";
 import Life from "../../assets/images/Life.png";
 import { relative } from "path";
 
-function HeartIcon() {
-  return (
-    <span>
-      <img src={Life} alt="" />
-    </span>
-  );
-}
-
 function Sonagi() {
   const [life, setLife] = useState(LifeCount);
   const [score, setScore] = useState(0);
@@ -45,10 +37,6 @@ function Sonagi() {
           right: 0,
         }}
       >
-        <span style={{ opacity: "0%" }}>
-          {" "}
-          <HeartIcon />
-        </span>
         {Array.from({ length: life }, (_, index) => (
           <span>
             <img src={Life} alt="" />

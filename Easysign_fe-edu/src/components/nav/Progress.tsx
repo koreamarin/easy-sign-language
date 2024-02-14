@@ -58,6 +58,7 @@ const Progress = ({
               fontSize: 33,
               marginTop: percentMarginTop,
               fontWeight: 700,
+              textAlign: "center",
             }}
           >
             {percentageText}

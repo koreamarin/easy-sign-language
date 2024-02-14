@@ -58,7 +58,7 @@ const PracticeLandmarkerCanvas = ({
 
   const modelWordList = {
     자음: [
-      ".",
+      "대기중...",
       "ㄱ",
       "ㄱ",
       "ㄴ",
@@ -89,7 +89,7 @@ const PracticeLandmarkerCanvas = ({
       "ㅎ",
     ],
     모음: [
-      ".",
+      "대기중...",
       "ㅏ",
       "ㅏ",
       "ㅑ",
@@ -126,7 +126,7 @@ const PracticeLandmarkerCanvas = ({
       "ㅢ",
     ],
     숫자: [
-      ".",
+      "대기중...",
       "0",
       "0",
       "1",

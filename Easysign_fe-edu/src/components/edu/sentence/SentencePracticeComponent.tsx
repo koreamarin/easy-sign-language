@@ -164,7 +164,10 @@ const SentencePracticeComponent = () => {
         >
           {recognizingWord}
         </Div>
-        <Progress percentage={percentage} text={"인식률"} />
+        <Progress
+          percentage={percentage}
+          text={percentage > 0 ? "<div style='font-size:25px'>유지하세요!</div>" : ""}
+        />
       </div>
 
       <EndModal

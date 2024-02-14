@@ -1,5 +1,7 @@
+import { useDispatch } from "react-redux";
 import Nav from "../nav/Nav";
 import { Outlet } from "react-router-dom";
+import { LearningProgressSet } from "../../redux/modules/ProgressSlice";
 
 export type trainingDataType = {
   signId: number;
@@ -9,7 +11,10 @@ export type trainingDataType = {
   success: boolean;
 };
 
-const Lecture = () => {
+const Game = () => {
+  const dispatch = useDispatch();
+  dispatch(LearningProgressSet(0));
+  console.log("Game");
   return (
     <div
       style={{
@@ -26,4 +31,4 @@ const Lecture = () => {
   );
 };
 
-export default Lecture;
+export default Game;

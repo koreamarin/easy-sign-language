@@ -59,7 +59,7 @@ const LectureLandmarkerCanvas = ({
 
   const modelWordList = {
     자음: [
-      ".",
+      "대기중...",
       "ㄱ",
       "ㄱ",
       "ㄴ",
@@ -90,7 +90,7 @@ const LectureLandmarkerCanvas = ({
       "ㅎ",
     ],
     모음: [
-      ".",
+      "대기중...",
       "ㅏ",
       "ㅏ",
       "ㅑ",
@@ -127,7 +127,7 @@ const LectureLandmarkerCanvas = ({
       "ㅢ",
     ],
     숫자: [
-      ".",
+      "대기중...",
       "0",
       "0",
       "1",
