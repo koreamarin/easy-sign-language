@@ -12,7 +12,7 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import "swiper/css/effect-cards";
 
-import "./styles.css";
+import styles from "./mainpage_styles.module.css";
 
 // import required modules
 import { EffectCards } from "swiper/modules";
@@ -34,7 +34,7 @@ function MainPage() {
           effect={"cards"}
           grabCursor={true}
           modules={[EffectCards]}
-          className="mySwiper"
+          className={`${styles.swiper} mySwiper`}
         >
           <SwiperSlide>
             <img

@@ -9,7 +9,7 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import "swiper/css/pagination";
 
-import "./styles.css";
+import styles from "./store_styles.module.css";
 
 // import required modules
 import { Pagination } from "swiper/modules";
@@ -113,7 +113,7 @@ function MainStore() {
                   clickable: true,
                 }}
                 modules={[Pagination]}
-                className="mySwiper"
+                className={`${styles.swiper} mySwiper`}
               >
                 <SwiperSlide>
                   <PhotoBox>Slide 1</PhotoBox>

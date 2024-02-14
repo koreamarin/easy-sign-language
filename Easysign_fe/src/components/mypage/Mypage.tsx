@@ -24,7 +24,7 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import "swiper/css/pagination";
 
-import "./styles.css";
+import styles from "./mypage_styles.module.css";
 
 // import required modules
 import { Pagination } from "swiper/modules";
@@ -138,7 +138,7 @@ function Mypage() {
                 clickable: true,
               }}
               modules={[Pagination]}
-              className="mySwiper"
+              className={`${styles.swiper} mySwiper`}
             >
               <SwiperSlide>
                 <ContainerBox>slide 1</ContainerBox>
