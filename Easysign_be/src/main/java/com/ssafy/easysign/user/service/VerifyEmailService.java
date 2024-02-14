@@ -22,7 +22,22 @@ public class VerifyEmailService {
         SimpleMailMessage message = new SimpleMailMessage();
         message.setTo(to);
         message.setSubject(sub);
-        String content = "아래 링크를 클릭하여 인증을 완료해주세요.</br>" + text;
+        String content = "안녕하세요,\n" +
+                "\n" +
+                "회원님의 계정 안전을 위해 비밀번호를 변경해주시기 바랍니다. 아래 링크를 클릭하여 변경해주시기 바랍니다.\n" +
+                "\n" +
+                text +
+                "\n" +
+                "비밀번호를 안전하게 보호하기 위해 다음 사항을 고려해주세요:\n" +
+                "\n" +
+                "영문 대/소문자, 숫자, 특수문자를 혼합하여 비밀번호를 설정하세요.\n" +
+                "다른 사이트의 비밀번호와 겹치지 않도록 주의하세요.\n" +
+                "주기적으로 비밀번호를 변경하여 계정을 보호하세요.\n" +
+                "변경 사항이 없거나 궁금한 사항이 있으시면 언제든지 저희에게 문의해주세요.\n" +
+                "\n" +
+                "감사합니다.\n" +
+                "\n" +
+                "수어쉬워 드림";
         message.setText(content);
         emailSender.send(message);
     }
