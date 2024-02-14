@@ -294,7 +294,7 @@ function Join() {
   const ConfirmButton = styled.div`
     position: absolute;
     width: 378px;
-    right: 531px;
+    left: 35vw;
     top: 733px;
     bottom: 247px;
   `;
