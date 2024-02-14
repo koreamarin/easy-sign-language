@@ -27,19 +27,30 @@ const ItemContainer = styled.div`
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
-  gap: 20px; /* 각 항목 간의 간격을 조절 */
-  width: 100%; /* 너비를 100%로 설정 */
+  gap: 2vw; /* 각 항목 간의 간격을 조절 */
+  width: 100%;
+`;
+
+// 회색 배경(단어장)을 감싸는 것. 가운데 정렬을 위해 넣은 속성.
+const BigContainer = styled.div`
+  width: 100%;
+  justify-content: center; /* 수평 가운데 정렬 */
+  align-items: center; /* 수직 가운데 정렬 */
+  display: flex; /* 추가 */
 `;
 
 const MainContainer = styled.div`
+  left: 10vw;
   min-height: calc(
     100vh - 200px
   ); /* footer 높이를 고려하여 화면의 높이를 조정 */
+  padding-top: 5vh;
   padding-bottom: 200px; /* footer 높이 만큼의 여백을 추가하여 footer가 화면 내에 보이도록 함 */
   display: flex;
   justify-content: center; /* 수평 가운데 정렬 */
   align-items: center; /* 수직 가운데 정렬 */
 
+  width: 80vw;
   background: #ededed;
   border-radius: 50px;
   position: relative; /* 추가 */
@@ -53,8 +64,8 @@ const CenteredDiv = styled.div`
 
 // 단어장 글자
 const Text1 = styled.div`
-  width: 260px;
-  height: 60px;
+  width: 20vw;
+  height: 10vh;
   font-family: "Inter";
   font-style: normal;
   font-weight: 400;
@@ -72,13 +83,14 @@ const WordComponent = styled.div`
   background: #fff9f9;
   border: 1px solid #adadad;
   border-radius: 30px;
-  height: 350px;
-  width: 80%;
+  height: 50vh;
+  width: 23vw;
   font-family: "Inter";
   font-style: normal;
   font-weight: 700;
   font-size: 20px;
   color: #833f00;
+  margin: 2vh;
 `;
 
 // 단어 표시하는 박스
@@ -87,8 +99,8 @@ const ContentBox = styled.div`
   box-sizing: border-box;
   align-items: center;
   position: absolute;
-  width: 300px;
-  height: 40px;
+  width: 21vw;
+  height: 5vh;
   background: #eff8ff;
   border: 1px solid #e4e4e4;
   border-radius: 10px;
@@ -114,7 +126,7 @@ function VocaStore() {
       navigate("/voca");
     } else if (name === "환경설정") {
       navigate("/mypage");
-    } else if (name === "logout") {
+    } else if (name === "로그아웃") {
       navigate("/");
     }
   };
@@ -125,7 +137,7 @@ function VocaStore() {
 
   localStorage.setItem(
     "token",
-    "Bearer eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJFYXN5U2lnbiIsImV4cCI6MTcwNzg4Nzg3NywiaWQiOjEsImxvZ2luSWQiOiJzc2FmeSJ9.ceYJz1QldLfOkeNqXTd6um8lihoOdaOQM2_aRpVI1YXwqyEh0Y754VRdCt9wIyrmBxXNQaFxm8nMNDnlX3TbUQ"
+    "Bearer eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJFYXN5U2lnbiIsImV4cCI6MTcwNzk3ODIzOCwiaWQiOjEsImxvZ2luSWQiOiJzc2FmeSJ9.8hLq-oy4_KjFTL7MZ_Fs94_i11Rhb7y163oYc2J7cBbMEnuTLbKNBz2FmuI_8xlfa-6UDWBB8lYOGHbUULneDw"
   );
 
   const token = localStorage.getItem("token") || "";
@@ -159,58 +171,67 @@ function VocaStore() {
   return (
     <div>
       <br />
+      <br />
       <Text1>
         <BookmarksOutlined fontSize="large" />
         　단어장
       </Text1>
       <br />
-      <MainContainer>
-        {/* 무한 스크롤 구현 */}
-        <div ref={ref}>
-          <ItemContainer>
-            {bookmark.map((item: any) => (
-              <CenteredDiv
-                key={item.signId}
-                style={{
-                  flex: "0 0 30%",
-                  marginTop: "20px",
-                  marginBottom: "20px",
-                }}
-              >
-                {/* <p>Sign ID: {item.signId}</p> */}
-                <WordComponent>
-                  <br />
-                  <ContentBox>{item.content}</ContentBox>
-                  <br></br>
-                  <br />
-                  <br />
-                  <img
-                    src={item.imagePath}
-                    alt={item.content}
-                    width="200px"
-                    height="200px"
-                  />
-                </WordComponent>
-              </CenteredDiv>
+      <br />
+      <BigContainer>
+        <MainContainer>
+          {/* 무한 스크롤 구현 */}
+          <div ref={ref}>
+            <ItemContainer>
+              {bookmark.map((item: any) => (
+                <CenteredDiv
+                  key={item.signId}
+                  style={{
+                    flex: "0 0 30%",
+                    marginTop: "20px",
+                    marginBottom: "20px",
+                  }}
+                >
+                  {/* <p>Sign ID: {item.signId}</p> */}
+                  <WordComponent>
+                    <br />
+                    <ContentBox>{item.content}</ContentBox>
+                    <br></br>
+                    <br />
+                    <br />
+                    <img
+                      src={item.imagePath}
+                      alt={item.content}
+                      width="230px"
+                      height="230px"
+                    />
+                  </WordComponent>
+                </CenteredDiv>
+              ))}
+            </ItemContainer>
+            <br></br>
+          </div>
+          {/* mui speed dial 적용 */}
+          <SpeedDial
+            ariaLabel="SpeedDial basic example"
+            sx={{ position: "fixed", bottom: 50, right: 50 }}
+            icon={<SpeedDialIcon />}
+          >
+            {actions.map((action) => (
+              <SpeedDialAction
+                key={action.name}
+                icon={action.icon}
+                tooltipTitle={action.name}
+                onClick={() => handleActionClick(action.name)}
+              />
             ))}
-          </ItemContainer>
-        </div>
-        {/* mui speed dial 적용 */}
-        <SpeedDial
-          ariaLabel="SpeedDial basic example"
-          sx={{ position: "fixed", bottom: 50, right: 50 }}
-          icon={<SpeedDialIcon />}
-        >
-          {actions.map((action) => (
-            <SpeedDialAction
-              key={action.name}
-              icon={action.icon}
-              tooltipTitle={action.name}
-              onClick={() => handleActionClick(action.name)}
-            />
-          ))}
-        </SpeedDial>
-      </MainContainer>
+          </SpeedDial>
+        </MainContainer>
+      </BigContainer>
+      <br></br>
+      <br></br>
+      <br></br>
+      <br></br>
     </div>
   );
 }
