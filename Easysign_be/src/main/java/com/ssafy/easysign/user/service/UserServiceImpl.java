@@ -79,8 +79,15 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User getUser(String loginId) {
+    public User getUserByLoginId(String loginId) {
         Optional <User> user = userRepository.findByLoginId(loginId);
+        if(user.isEmpty()) throw new NotFoundException("사용자를 찾을 수 없습니다.");
+        return user.get();
+    }
+
+    @Override
+    public User getUserByEmail(String email) {
+        Optional <User> user = userRepository.findByEmail(email);
         if(user.isEmpty()) throw new NotFoundException("사용자를 찾을 수 없습니다.");
         return user.get();
     }
