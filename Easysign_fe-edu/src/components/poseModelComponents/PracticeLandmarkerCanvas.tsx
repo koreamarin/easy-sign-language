@@ -148,6 +148,19 @@ const PracticeLandmarkerCanvas = ({
       "9",
       "9",
     ],
+    동물: [
+      ".",
+      "강아지_i",
+      "강아지",
+      "강아지_f",
+      "고양이if",
+      "고양이",
+      "사자_i",
+      "사자",
+      "사자_f",
+      "소",
+      "코끼리",
+    ],
   };
 
   const resultList = modelWordList[category];
