@@ -53,6 +53,7 @@ function SonagiCanvas({
     });
     const json = await response.json();
     const SonagiWord = json.map((item: any) => item.content);
+    setIsLoadingWord(false);
     setWords(SonagiWord);
   };
 
@@ -67,7 +68,6 @@ function SonagiCanvas({
     if(isLoadingWord === false){
       setIsLoadingWord(true);
       getSonagiWord();
-      setIsLoadingWord(false);
     }
     // setWords(["ㄱ","ㅂ","ㄴ","ㅇ","ㅈ","ㅁ","ㅋ", "ㅎ", "ㅊ", "ㅍ"]);
   }, []);
