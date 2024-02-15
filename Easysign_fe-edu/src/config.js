@@ -9,6 +9,7 @@ const API = {
   ADDSTICKER: `${BASE_URL}/user/sticker`,
   ADDLEARNEDWORD: `${BASE_URL}/user/progress`,
   SONAGIWORD: `${BASE_URL}/game/sonagi-game`,
+  LOGIN: `${BASE_URL}/login`,
 };
 
 export default API;

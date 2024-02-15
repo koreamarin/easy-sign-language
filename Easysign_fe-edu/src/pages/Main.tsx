@@ -7,10 +7,11 @@ import hand5 from "../assets/images/hand5.jpg";
 import EduButtons from "../components/main/EduButtons";
 import { useEffect, useState } from "react";
 import API from "../config";
+import axios from "axios";
 
 localStorage.setItem(
   "token",
-  "Bearer eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJFYXN5U2lnbiIsImV4cCI6MTcwNzk1NjYzMiwiaWQiOjEsImxvZ2luSWQiOiJzc2FmeSJ9.b2ymQWsAP9esX7Q3v1G8-n9YdLOr9rnEHJWF2G4PX4boHjZPv4kfrIuDvI6GTeI29mZbGwL6GYxzDPzfpzZZpw"
+  "Bearer eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJFYXN5U2lnbiIsImV4cCI6MTcwODA0MzE5NSwiaWQiOjEsImxvZ2luSWQiOiJzc2FmeSJ9.TRo15_I8fo_scZapUzWpgJ1Ukk7HyWATiQWscpQ54uCRd3zhNNXDX2ndKc4rVquPQ1ksMGFCuwtw1Art9wteKA"
 );
 
 export const token = localStorage.getItem("token") || "";
@@ -29,8 +30,25 @@ const Main = () => {
     setCategory(json);
   };
 
+  const Login = async () => {
+    const response = axios.post(`${API.LOGIN}`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      data: {
+        loginId: "ssafy",
+        password: "1234",
+      },
+    });
+    console.log((await response).headers);
+    const authToken = await (await response).headers.authorization;
+    console.log("토큰 : ", authToken);
+  };
+
   useEffect(() => {
     getSignCategory();
+    Login();
   }, []);
 
   const JihwaSubtitle = category
