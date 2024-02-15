@@ -14,7 +14,6 @@ export type trainingDataType = {
 const Game = () => {
   const dispatch = useDispatch();
   dispatch(LearningProgressSet(0));
-  console.log("Game");
   return (
     <div
       style={{

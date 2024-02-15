@@ -165,8 +165,6 @@ const PracticeLandmarkerCanvas = ({
 
   const resultList = modelWordList[category];
 
-  console.log("인식해야할 단어는 ", currentWord, "입니다.");
-
   // 판단부분 => stopComp가 true가 되면 판단 완료
   // 이후 해당 정보 상위 컴포넌트로 올리기
   // finResult => false : 틀림
@@ -260,7 +258,7 @@ const PracticeLandmarkerCanvas = ({
         setRecongnizingWord(resultList[aiResult]);
 
         // 쌓인 결과가 60개 초과하면 판단 시작
-        if (finResultList.length > 60) {
+        if (finResultList.length > 30) {
           // 오래된 인자 제거
           finResultList.shift();
 
@@ -271,20 +269,10 @@ const PracticeLandmarkerCanvas = ({
               count++;
             }
           });
-          console.log(
-            "finResultList 에서",
-            compareWord,
-            "의 개수는 ",
-            count,
-            "개 이며, 현재",
-            resultList[aiResult],
-            "가 인식되고 있습니다."
-          );
-
-          setPercentage(Math.floor((count / 48) * 100));
+          setPercentage(Math.floor((count / 24) * 100));
 
           // 일치율이 80% 이상일시
-          if (count > 48) {
+          if (count > 24) {
             // 정답처리
             finResult = true;
             setPercentage(100);
@@ -321,7 +309,7 @@ const PracticeLandmarkerCanvas = ({
         // 내부 인자는 video / audio 존재
         const stream = await navigator.mediaDevices.getUserMedia({
           video: {
-            frameRate: { ideal: 30, max: 30 },
+            frameRate: { ideal: 10, max: 10 },
           },
         });
 

@@ -88,7 +88,6 @@ class SonagiEngine {
 
   //최초 실행시 단어를 랜덤으로 배치 및 라이프 설정
   initializeGame() {
-    console.log("initializeGame exe");
     this.wordList.sort(() => Math.random() - 0.5);
     this.wordsCnt = 0;
     for (let i = 0; i < this.wordList.length; i++) {
@@ -114,7 +113,6 @@ class SonagiEngine {
       this.setIsGameOver(true);
       this.isGameOver = true;
       this.setIsClear(true);
-      console.log("게임 클리어");
     }
     if (this.life <= 0) {
       this.setIsGameOver(true);
@@ -239,9 +237,6 @@ class SonagiEngine {
         this.setIsGameOver(true);
         if (this.life === 0) this.setIsClear(false);
         else this.setIsClear(true);
-
-        console.log("exe");
-        console.log(this.wordsCnt);
         return;
       }
     }

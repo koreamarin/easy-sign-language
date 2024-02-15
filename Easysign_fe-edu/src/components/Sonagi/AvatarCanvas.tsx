@@ -34,17 +34,13 @@ const AvatarCanvas = ({ width, height, url, avatar_name }: AvatarCanvasProps) =>
 
   useEffect(() => {
     const avatarManager = AvatarManager.getInstance();
-    console.log("useEffect on AvatarCanvas : ");
-    console.log("url : ", url);
     avatarManager
       .loadAnimal(url, avatar_name)
       .then(() => {
-        console.log("LoadAnimal .then");
         setScene(avatarManager.getScene());
       })
       .catch((e) => {
-        console.log("LoadAnimal .catch");
-        alert(e);
+        console.log("LoadAnimal .catch", e);
       });
   }, [url, avatar_name]);
 

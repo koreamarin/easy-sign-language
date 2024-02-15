@@ -43,14 +43,12 @@ const JihwaPracticeComponent = () => {
     gubun,
   } = useOutletContext<IFollowersContext>();
   const ADDSticker = async () => {
-    console.log("스티커를" + addSticker + "개 추가합니다.");
     const response = await fetch(`${API.ADDSTICKER}?count=${addSticker}`, {
       method: "PUT",
       headers: {
         Authorization: token,
       },
     });
-    console.log(response);
   };
 
   const disPatch = useDispatch();
@@ -71,7 +69,6 @@ const JihwaPracticeComponent = () => {
   };
 
   const ClearWord = () => {
-    console.log("클리어 했으므로 ", currentNum, "번째 학습데이터의 success를 true로 변경합니다.");
     trainingData[currentNum - 1].success = true;
     setTrainingData(trainingData);
     disPatch(LearningProgressSet(LearningProgress()));

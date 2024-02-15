@@ -7,7 +7,6 @@ import { useRef, useState } from "react";
 import MediumButton from "../../Button/MediumButton";
 import Progress from "../../nav/Progress";
 import styled from "styled-components";
-import CameraComponent from "../../poseModelComponents/CameraComponent";
 import WideCameraComponent from "../../poseModelComponents/WideCameraComponent";
 
 const Div = styled.div`

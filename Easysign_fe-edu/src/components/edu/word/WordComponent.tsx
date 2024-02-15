@@ -51,8 +51,6 @@ const WordComponent = () => {
 
   const totalNum = trainingData.length;
 
-  console.log(trainingData);
-
   // trainingData의 모든 리스트에서 success가 true인 것의 개수를 세어서 100으로 나눈 값을 반환
   const LearningProgress = () => {
     let successCount = 0;

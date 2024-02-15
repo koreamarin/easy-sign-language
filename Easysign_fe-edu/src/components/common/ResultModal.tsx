@@ -33,8 +33,6 @@ const ResultModal = ({
   ShownEndModal,
   replay,
 }: ResultModalProps) => {
-  console.log(trainingData);
-
   const signId = trainingData[currentNum - 1].signId;
 
   const next = () => {
@@ -54,14 +52,12 @@ const ResultModal = ({
   }, [showMessage]);
 
   const addLeanedWord = async () => {
-    console.log(signId + "번 수화를 학습한 단어에 추가합니다.");
     const response = await fetch(`${API.ADDLEARNEDWORD}?signId=${signId}`, {
       method: "PUT",
       headers: {
         Authorization: token,
       },
     });
-    console.log(response);
   };
 
   const totalNum = trainingData.length;
@@ -73,17 +69,14 @@ const ResultModal = ({
         Authorization: token,
       },
     });
-    console.log(response);
   };
 
   if (success && modalShown) {
-    console.log("스티커 추가하고 성공 단어에 추가");
     addSticker();
     addLeanedWord();
   }
 
   const addBookmark = async () => {
-    console.log(signId + "번 수화를 북마크에 추가합니다.");
     const response = await fetch(`${API.ADDBOOKMARK}?signId=${signId}`, {
       method: "POST",
       headers: {

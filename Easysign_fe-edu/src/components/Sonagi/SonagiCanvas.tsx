@@ -47,7 +47,6 @@ function SonagiCanvas({
     const json = await response.json();
     const SonagiWord = json.map((item: any) => item.content);
     setWords(SonagiWord);
-    console.log(SonagiWord);
   };
 
   useEffect(() => {

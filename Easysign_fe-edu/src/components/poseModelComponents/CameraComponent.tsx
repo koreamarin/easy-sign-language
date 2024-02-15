@@ -50,10 +50,8 @@ const CameraComponent = ({
 
   //
   const animate = () => {
-    console.log(stopComp.current, "stopComp");
     if (stopComp.current) {
       setSecond(0);
-      console.log("finResult: ", finResult);
       if (finResult.current === true) {
         successModal();
       } else {
@@ -101,7 +99,6 @@ const CameraComponent = ({
           // 컴포넌트 정지 및 오답처리(finResult의 default는 false)
 
           stopComp.current = true;
-          console.log(stopComp.current);
         }
       } catch (error) {
         // 만약 에러 발생시 콘솔

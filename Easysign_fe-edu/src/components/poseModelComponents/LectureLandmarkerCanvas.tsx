@@ -166,8 +166,6 @@ const LectureLandmarkerCanvas = ({
 
   const resultList = modelWordList[category];
 
-  console.log(currentWord, "currentWord");
-
   // 판단부분 => stopComp가 true가 되면 판단 완료
   // 이후 해당 정보 상위 컴포넌트로 올리기
   // finResult => false : 틀림
@@ -184,10 +182,8 @@ const LectureLandmarkerCanvas = ({
 
   //
   const animate = () => {
-    console.log(stopComp.current, "stopComp");
     if (stopComp.current) {
       setSecond(0);
-      console.log("finResult: ", finResult);
       if (finResult.current === true) {
         successModal();
       } else {
@@ -276,7 +272,6 @@ const LectureLandmarkerCanvas = ({
 
           // 비교 문자와 일치하는 개수
           const checkArray = finResultList.filter((compare) => compare === compareWord);
-          console.log(checkArray, "checkArray");
 
           // 일치율이 80% 이상일시
           if (checkArray.length > 48) {
@@ -296,9 +291,7 @@ const LectureLandmarkerCanvas = ({
         // 타이머, 10초 이상 실행될 시
         if (performance.now() - startTime > 10000) {
           // 컴포넌트 정지 및 오답처리(finResult의 default는 false)
-
           stopComp.current = true;
-          console.log(stopComp.current);
         }
       } catch (error) {
         // 만약 에러 발생시 콘솔

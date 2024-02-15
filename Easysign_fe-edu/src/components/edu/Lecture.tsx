@@ -50,9 +50,7 @@ const Lecture = () => {
       },
     });
     const json = await response.json();
-    console.log(json);
     setAddSticker(json.filter((item: any) => item.categoryName === category)[0].addSticker);
-    console.log(addSticker);
   };
 
   const getSignInfo = async () => {

@@ -37,14 +37,11 @@ class AvatarManager {
     if (this.scene.children.length === 1) {
       this.scene.children[0].removeFromParent();
     }
-    console.log("preloadGltf");
     const gltf = await loadGltf(url);
-    console.log("loadGltf");
 
     //각 동물 아바타 모델명의 prefix
     const prefix: string = "AnimalFace_";
     this.avatar_name = prefix + avatar_chosen;
-    console.log("45번 라인");
     //선택된 모델을 제외하고 모두 없애기
     this.avatar_list.forEach((avatar) => {
       if (avatar !== avatar_chosen) {

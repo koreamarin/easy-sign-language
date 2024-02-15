@@ -99,8 +99,6 @@ const LandmarkerCanvas = ({ setSubmitWord }: LandmarkerCanvasProps) => {
 
   //
   const animate = () => {
-    // console.log(answer)
-
     // 만약 비디오 element에서 가져온 값이 존재하고, 재생중(웹)인 시간과 마지막 비디오 시간과 일치하지 않으면
     // 즉 비디오가 실시간 재생중이면
     if (videoRef.current && videoRef.current.currentTime !== lastVideoTimeRef.current) {

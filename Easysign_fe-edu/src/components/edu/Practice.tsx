@@ -1,7 +1,6 @@
 import { Outlet, useLocation, useSearchParams } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
-import { rootState } from "../../redux/modules";
-import { followStatusTrue, followStatusFalse } from "../../redux/modules/LectureSlice";
+import { useDispatch } from "react-redux";
+import { followStatusFalse } from "../../redux/modules/LectureSlice";
 import { useEffect, useState } from "react";
 import { IncorrectAnswerRateSet, LearningProgressSet } from "../../redux/modules/ProgressSlice";
 import API from "../../config";
@@ -38,7 +37,6 @@ const Practice = () => {
   };
 
   const getSignCategory = async () => {
-    console.log("카테고리를 불러와서 스티커 정보 추출중....");
     const response = await fetch(`${API.CATEGORY}`, {
       method: "GET",
       headers: {
@@ -50,7 +48,6 @@ const Practice = () => {
   };
 
   const getSignInfo = async () => {
-    console.log("카테고리에 해당하는 학습 정보를 불러오는 중....");
     const response = await fetch(`${API.SIGNINFO}/${gubun}?categoryname=${category}`, {
       method: "GET",
       headers: {
