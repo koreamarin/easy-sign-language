@@ -12,12 +12,7 @@ import SpeedDialIcon from "@mui/material/SpeedDialIcon";
 import SpeedDialAction from "@mui/material/SpeedDialAction";
 
 // mui icon import
-import {
-  AccessAlarm,
-  BookmarksOutlined,
-  Settings,
-  Logout,
-} from "@mui/icons-material";
+import { BookmarksOutlined, Settings, Logout } from "@mui/icons-material";
 
 // swiper 이용
 // https://swiperjs.com/
@@ -48,6 +43,7 @@ function Mypage() {
   const [mypage, setMypage] = useState<Product[] | null>(null);
 
   const getMypage = async () => {
+    console.log("토큰 값", token);
     try {
       const response = await fetch(`${API.ITEM_HAVE}`, {
         method: "GET",
@@ -57,6 +53,7 @@ function Mypage() {
       });
 
       if (!response.ok) {
+        console.log("aaaaa");
         throw new Error("Failed to fetch store");
       }
 
@@ -64,6 +61,7 @@ function Mypage() {
       setMypage(data);
     } catch (error) {
       console.error("ERROR: ", error);
+      console.log("abc");
     }
   };
 
@@ -87,7 +85,6 @@ function Mypage() {
 
   // Speed dial 관련 데이터(action)
   const actions = [
-    { icon: <AccessAlarm />, name: "상점 모달 테스트" },
     { icon: <BookmarksOutlined />, name: "단어장" },
     { icon: <Settings />, name: "환경설정" },
     { icon: <Logout />, name: "로그아웃" },

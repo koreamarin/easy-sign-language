@@ -17,12 +17,7 @@ import SpeedDialIcon from "@mui/material/SpeedDialIcon";
 import SpeedDialAction from "@mui/material/SpeedDialAction";
 
 // mui icon import
-import {
-  AccessAlarm,
-  BookmarksOutlined,
-  Settings,
-  Logout,
-} from "@mui/icons-material";
+import { BookmarksOutlined, Settings, Logout } from "@mui/icons-material";
 
 const ItemContainer = styled.div`
   display: flex;
@@ -111,7 +106,6 @@ const ContentBox = styled.div`
 
 // Speed dial 관련 데이터(action)
 const actions = [
-  { icon: <AccessAlarm />, name: "상점 모달 테스트" },
   { icon: <BookmarksOutlined />, name: "단어장" },
   { icon: <Settings />, name: "환경설정" },
   { icon: <Logout />, name: "로그아웃" },
