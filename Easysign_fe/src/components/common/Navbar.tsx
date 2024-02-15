@@ -77,7 +77,7 @@ function Navbar() {
             {/* 원래의 이미지 경로 img src="../../../public/images/signeasy_logo.png" */}
             <img src="../images/signeasy_logo.png" alt="수어쉬워 로고" />
           </Link>
-          <StyledLink to="https://edu.easysign.shop/">
+          <StyledLink to="https://edu.easysign.shop/" target="_blank">
             <span> 수어연습</span>
           </StyledLink>
           <StyledLink to={"/store"}>상점</StyledLink>
