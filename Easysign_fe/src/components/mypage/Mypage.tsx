@@ -1,6 +1,10 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
+
+// 백-프론트 API 통신을 위한 import
+import API from "../../config";
+import { token } from "../common/Token";
 
 // Speed Dial 관련 import
 import SpeedDial from "@mui/material/SpeedDial";
@@ -29,7 +33,44 @@ import styles from "./mypage_styles.module.css";
 // import required modules
 import { Pagination } from "swiper/modules";
 
+interface Product {
+  itemId: number;
+  categoryName: string;
+  price: number;
+  description: string;
+  imagePath: string;
+  itemName: string;
+  isLike: boolean;
+}
+
 function Mypage() {
+  // 백-프론트 연결 통신(get)
+  const [mypage, setMypage] = useState<Product[] | null>(null);
+
+  const getMypage = async () => {
+    try {
+      const response = await fetch(`${API.ITEM_HAVE}`, {
+        method: "GET",
+        headers: {
+          Authorization: token,
+        },
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to fetch store");
+      }
+
+      const data = await response.json();
+      setMypage(data);
+    } catch (error) {
+      console.error("ERROR: ", error);
+    }
+  };
+
+  useEffect(() => {
+    getMypage();
+  }, []);
+
   const navigate = useNavigate(); // useNavigate 훅을 이용해 navigate 함수를 가져옴
 
   const handleActionClick = (name: string) => {
@@ -130,7 +171,7 @@ function Mypage() {
     <div>
       <BigView>
         <R56>
-          <Text1>캐릭터 모음</Text1>
+          <Text1>캐릭터 및 마스크 모음</Text1>
           <SmallBox1>
             <Swiper
               slidesPerView={4}
@@ -141,33 +182,34 @@ function Mypage() {
               modules={[Pagination]}
               className={`${styles.swiper} mySwiper`}
             >
-              <SwiperSlide>
-                <ContainerBox>slide 1</ContainerBox>
-              </SwiperSlide>
-              <SwiperSlide>
-                <ContainerBox>slide 2</ContainerBox>
-              </SwiperSlide>
-              <SwiperSlide>
-                <ContainerBox>slide 3</ContainerBox>
-              </SwiperSlide>
-              <SwiperSlide>
-                <ContainerBox>slide 4</ContainerBox>
-              </SwiperSlide>
-              <SwiperSlide>
-                <ContainerBox>slide 5</ContainerBox>
-              </SwiperSlide>
-              <SwiperSlide>
-                <ContainerBox>slide 6</ContainerBox>
-              </SwiperSlide>
-              <SwiperSlide>
-                <ContainerBox>slide 7</ContainerBox>
-              </SwiperSlide>
-              <SwiperSlide>
-                <ContainerBox>slide 8</ContainerBox>
-              </SwiperSlide>
-              <SwiperSlide>
-                <ContainerBox>slide 9</ContainerBox>
-              </SwiperSlide>
+              {mypage &&
+                mypage.map((item) => {
+                  if (item.categoryName !== "background") {
+                    return (
+                      <SwiperSlide key={item.itemId}>
+                        <ContainerBox>
+                          {item.imagePath ? (
+                            <img
+                              src={item.imagePath}
+                              alt={item.itemName}
+                              width="100%"
+                              height="100%"
+                            />
+                          ) : (
+                            <img
+                              src="../normal_profileimage.png"
+                              alt="대체이미지"
+                              width="100%"
+                              height="100%"
+                            />
+                          )}
+                        </ContainerBox>
+                      </SwiperSlide>
+                    );
+                  } else {
+                    return null;
+                  }
+                })}
             </Swiper>
           </SmallBox1>
           <Text2>배경 모음</Text2>
@@ -181,33 +223,34 @@ function Mypage() {
               modules={[Pagination]}
               className="mySwiper"
             >
-              <SwiperSlide>
-                <ContainerBox>slide 1</ContainerBox>
-              </SwiperSlide>
-              <SwiperSlide>
-                <ContainerBox>slide 2</ContainerBox>
-              </SwiperSlide>
-              <SwiperSlide>
-                <ContainerBox>slide 3</ContainerBox>
-              </SwiperSlide>
-              <SwiperSlide>
-                <ContainerBox>slide 4</ContainerBox>
-              </SwiperSlide>
-              <SwiperSlide>
-                <ContainerBox>slide 5</ContainerBox>
-              </SwiperSlide>
-              <SwiperSlide>
-                <ContainerBox>slide 6</ContainerBox>
-              </SwiperSlide>
-              <SwiperSlide>
-                <ContainerBox>slide 7</ContainerBox>
-              </SwiperSlide>
-              <SwiperSlide>
-                <ContainerBox>slide 8</ContainerBox>
-              </SwiperSlide>
-              <SwiperSlide>
-                <ContainerBox>slide 9</ContainerBox>
-              </SwiperSlide>
+              {mypage &&
+                mypage.map((item) => {
+                  if (item.categoryName === "background") {
+                    return (
+                      <SwiperSlide key={item.itemId}>
+                        <ContainerBox>
+                          {item.imagePath ? (
+                            <img
+                              src={item.imagePath}
+                              alt={item.itemName}
+                              width="100%"
+                              height="100%"
+                            />
+                          ) : (
+                            <img
+                              src="../normal_profileimage.png"
+                              alt="대체이미지"
+                              width="100%"
+                              height="100%"
+                            />
+                          )}
+                        </ContainerBox>
+                      </SwiperSlide>
+                    );
+                  } else {
+                    return null;
+                  }
+                })}
             </Swiper>
           </SmallBox2>
         </R56>

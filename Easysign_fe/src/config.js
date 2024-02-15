@@ -9,6 +9,8 @@ const API = {
   LOGIN: `${BASE_URL}/login`,
   // 상점
   STORE_LIST: `${BASE_URL}/store/info`,
+  // 보유아이템
+  ITEM_HAVE: `${BASE_URL}/user/items`,
 };
 
 export default API;
