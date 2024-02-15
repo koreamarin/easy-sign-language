@@ -9,8 +9,6 @@ import { token } from "../../pages/Main";
 import { useLocation, useNavigate } from "react-router-dom";
 
 interface SonagiCanvasProps {
-  life: number;
-  score: number;
   isGameOver: boolean;
   isClear: boolean;
   setLife: React.Dispatch<React.SetStateAction<number>>;
@@ -20,8 +18,6 @@ interface SonagiCanvasProps {
 }
 
 function SonagiCanvas({
-  life,
-  score,
   isGameOver,
   isClear,
   setIsGameOver,
@@ -38,8 +34,6 @@ function SonagiCanvas({
 
   const navigate = useNavigate();
 
-  // let submitWord :string = "";
-
   const canvasWidth = 1140;
   const canvasHeight = 600;
 
@@ -53,18 +47,11 @@ function SonagiCanvas({
     const json = await response.json();
     const SonagiWord = json.map((item: any) => item.content);
     setWords(SonagiWord);
+    console.log(SonagiWord);
   };
 
   useEffect(() => {
-    //단어 Api 호출 및 단어 세팅.
-    //이건 더미 단어
-    //await load()
-    //temp_words = []
-    //setWords([temp_words])
-
-    //그런데 useState는 비동기라서 바로 반영 안됨. 체크 들어올때를 체크해야함.
     getSonagiWord();
-    // setWords(["ㄱ","ㅂ","ㄴ","ㅇ","ㅈ","ㅁ","ㅋ", "ㅎ", "ㅊ", "ㅍ"]);
   }, []);
 
   useEffect(() => {
@@ -100,11 +87,6 @@ function SonagiCanvas({
         setScore,
         setIsClear
       );
-      // ctx.font = '30px 고딕'
-      // ctx.fillText("홀리모올리??", 400, 50);
-      // Sonagi.current.initializeGame();
-
-      // ctx.fillText("홀리모올리??", 0, 0);
       Sonagi.current.initializeGame();
       Sonagi.current.animate();
     }

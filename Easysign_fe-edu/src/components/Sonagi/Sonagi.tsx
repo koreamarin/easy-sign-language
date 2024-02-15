@@ -1,10 +1,8 @@
 import SonagiCanvas from "./SonagiCanvas";
 import React, { useState } from "react";
-import GameResultModal from "../common/GameResultModal";
 import { LifeCount } from "./SonagiConfig";
 import backgroundImg from "../../assets/images/boy_on_the_ocean_skateboard.png";
 import Life from "../../assets/images/Life.png";
-import { relative } from "path";
 
 function Sonagi() {
   const [life, setLife] = useState(LifeCount);
@@ -44,8 +42,6 @@ function Sonagi() {
         ))}
       </div>
       <SonagiCanvas
-        life={life}
-        score={score}
         isGameOver={isGameOver}
         isClear={isClear}
         setIsGameOver={setIsGameOver}

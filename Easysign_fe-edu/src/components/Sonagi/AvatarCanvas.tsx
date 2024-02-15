@@ -18,7 +18,6 @@ interface AvatarCanvasProps {
 
 const AvatarCanvas = ({ width, height, url, avatar_name }: AvatarCanvasProps) => {
   const [scene, setScene] = useState<THREE.Scene | null>();
-  const [isLoading, setIsLoading] = useState(true);
   const avatarManagerRef = useRef<AvatarManager>(AvatarManager.getInstance());
   const requestRef = useRef(0);
 
@@ -34,7 +33,6 @@ const AvatarCanvas = ({ width, height, url, avatar_name }: AvatarCanvasProps) =>
   }, []);
 
   useEffect(() => {
-    setIsLoading(true);
     const avatarManager = AvatarManager.getInstance();
     console.log("useEffect on AvatarCanvas : ");
     console.log("url : ", url);
@@ -43,7 +41,6 @@ const AvatarCanvas = ({ width, height, url, avatar_name }: AvatarCanvasProps) =>
       .then(() => {
         console.log("LoadAnimal .then");
         setScene(avatarManager.getScene());
-        setIsLoading(false);
       })
       .catch((e) => {
         console.log("LoadAnimal .catch");
@@ -67,22 +64,6 @@ const AvatarCanvas = ({ width, height, url, avatar_name }: AvatarCanvasProps) =>
           enablePan={false}
         />
         {scene && <primitive object={scene} />}
-
-        {/* 모델 이미지가 로딩 될 동안 'loading' 글자를 출력하는 부분입니다. */}
-        {/* {isLoading && (
-          <Float floatIntensity={1} speed={1}>
-            <Text3D
-              font={"../assets/Open_Sans_Condensed_Bold.json"}
-              scale={100000}
-              position={[-0.1, 0.6, 200]}
-              bevelEnabled
-              bevelSize={0.05}
-            >
-              loading...
-              <meshNormalMaterial />
-            </Text3D>
-          </Float>
-        )} */}
       </Canvas>
     </div>
   );

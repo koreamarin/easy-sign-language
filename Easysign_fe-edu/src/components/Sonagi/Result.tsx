@@ -47,7 +47,6 @@ const LandmarkerCanvas = ({ setSubmitWord }: LandmarkerCanvasProps) => {
   // 프레임 번호 저장 변수
   const requestRef = useRef(0);
 
-  const [videoView] = useState(true);
   const [videoSize, setVideoSize] = useState<{
     width: number;
     height: number;
@@ -277,81 +276,67 @@ const LandmarkerCanvas = ({ setSubmitWord }: LandmarkerCanvasProps) => {
   }, []);
 
   return (
-    <div>
+    <div
+      style={{
+        display: "flex",
+        position: "relative",
+        justifyContent: "center",
+        alignItems: "center",
+        marginTop: "10px",
+      }}
+    >
+      {/* 비디오 */}
       <div
         style={{
-          display: "flex",
-          position: "relative",
-          justifyContent: "center",
-          alignItems: "center",
-          marginTop: "10px",
+          width: "200px",
+          height: "180px",
+          backgroundColor: "#ffffff",
+          position: "absolute",
+          top: 0,
+        }}
+      ></div>
+      <video
+        ref={videoRef}
+        loop={true}
+        muted={true}
+        autoPlay={true}
+        playsInline={true}
+        style={{ transform: "rotateY(180deg)" }}
+      ></video>
+      {videoSize && (
+        <>
+          <AvatarCanvas
+            width={videoSize.width}
+            height={videoSize.height}
+            url={modelUrl}
+            avatar_name={avatar.avatar}
+          />
+          {ishidden && (
+            <>
+              <PoseLandmarkerCanvas width={videoSize.width} height={videoSize.height} />
+              <HandLandmarkerCanvas width={videoSize.width} height={videoSize.height} />
+            </>
+          )}
+        </>
+      )}
+
+      {/* 추가 버튼 및 input 칸 */}
+      <div
+        style={{
+          position: "absolute",
+          right: "-30px",
         }}
       >
-        {/* 비디오 */}
-        <div
+        <button
+          onClick={clickButton}
           style={{
-            width: "200px",
-            height: "180px",
-            backgroundColor: "#ffffff",
-            position: "absolute",
-            top: 0,
-          }}
-        ></div>
-        <video
-          ref={videoRef}
-          loop={true}
-          muted={true}
-          autoPlay={true}
-          playsInline={true}
-          style={{ transform: "rotateY(180deg)" }}
-        ></video>
-        {videoSize && (
-          <>
-            {
-              <AvatarCanvas
-                width={videoSize.width}
-                height={videoSize.height}
-                url={modelUrl}
-                avatar_name={avatar.avatar}
-              />
-            }
-          </>
-        )}
-
-        {/* 캔버스 */}
-        {videoSize && (
-          <>
-            {videoView && ishidden && (
-              <PoseLandmarkerCanvas width={videoSize.width} height={videoSize.height} />
-            )}
-          </>
-        )}
-        {videoSize && ishidden && (
-          <>
-            {videoView && (
-              <HandLandmarkerCanvas width={videoSize.width} height={videoSize.height} />
-            )}
-          </>
-        )}
-
-        {/* 추가 버튼 및 input 칸 */}
-        <div
-          style={{
-            position: "absolute",
-            right: "-30px",
+            width: "70px",
+            height: "70px",
+            borderRadius: "50%",
           }}
         >
-          <button
-            onClick={clickButton}
-            style={{
-              width: "70px",
-              height: "70px",
-              borderRadius: "50%",
-            }}
-          >
-            {ishidden ? "숨기기" : "보기"}
-          </button>
-        </div>
+          {ishidden ? "숨기기" : "보기"}
+        </button>
       </div>
     </div>
   );
