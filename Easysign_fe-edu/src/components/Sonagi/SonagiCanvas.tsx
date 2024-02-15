@@ -35,6 +35,7 @@ function SonagiCanvas({
   const [words, setWords] = useState<string[] | null>(null);
   const [inputWord, setInputWord] = useState<string>("");
   const [submitWord, setSubmitWord] = useState<string>("");
+  const [isLoadingWord, setIsLoadingWord] = useState<boolean>(false);
 
   const navigate = useNavigate();
 
@@ -55,15 +56,19 @@ function SonagiCanvas({
     setWords(SonagiWord);
   };
 
-  useEffect(() => {
+  useEffect( async () => {
     //단어 Api 호출 및 단어 세팅.
     //이건 더미 단어
     //await load()
     //temp_words = []
     //setWords([temp_words])
 
-    //그런데 useState는 비동기라서 바로 반영 안됨. 체크 들어올때를 체크해야함.
-    getSonagiWord();
+    //그런데 useState는 비동기라서 바로 반영 안됨. 체크 들어올때를 체크해야함./
+    if(isLoadingWord === false){
+      setIsLoadingWord(true);
+      await getSonagiWord();
+      setIsLoadingWord(false);
+    }
     // setWords(["ㄱ","ㅂ","ㄴ","ㅇ","ㅈ","ㅁ","ㅋ", "ㅎ", "ㅊ", "ㅍ"]);
   }, []);
 
