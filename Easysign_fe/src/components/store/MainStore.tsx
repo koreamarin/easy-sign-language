@@ -1,4 +1,9 @@
+// css 적용을 위한 import
 import styled from "styled-components";
+
+// 백-프론트 API 통신을 위한 import
+import { token } from "../common/Token";
+import API from "../../config";
 
 // swiper 이용
 // https://swiperjs.com/
@@ -13,6 +18,7 @@ import styles from "./store_styles.module.css";
 
 // import required modules
 import { Pagination } from "swiper/modules";
+import { useEffect, useState } from "react";
 
 const BigView = styled.div`
   min-height: 150vh;
@@ -98,7 +104,44 @@ const Text1 = styled.div`
   color: #ffffff;
 `;
 
+interface Product {
+  itemId: number;
+  categoryName: string;
+  price: number;
+  description: string;
+  imagePath: string;
+  itemName: string;
+  isLike: boolean;
+}
+
 function MainStore() {
+  // 백-프론트 연결 통신(get)
+  const [store, setStore] = useState<Product[] | null>(null);
+
+  const getStore = async () => {
+    try {
+      const response = await fetch(`${API.STORE_LIST}`, {
+        method: "GET",
+        headers: {
+          Authorization: token,
+        },
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to fetch store");
+      }
+
+      const data = await response.json();
+      setStore(data);
+    } catch (error) {
+      console.error("ERROR: ", error);
+    }
+  };
+
+  useEffect(() => {
+    getStore();
+  }, []);
+
   return (
     <div>
       <BigView>
@@ -107,70 +150,42 @@ function MainStore() {
         <Container>
           <F57>
             <SmallBox>
-              <Swiper
-                slidesPerView={4}
-                spaceBetween={30}
-                pagination={{
-                  clickable: true,
-                }}
-                modules={[Pagination]}
-                className={`${styles.swiper} mySwiper`}
-              >
-                <SwiperSlide>
-                  <PhotoBox>Slide 1</PhotoBox>
-                  <F66>
-                    <Text1> 　 구매완료</Text1>
-                  </F66>
-                </SwiperSlide>
-                <SwiperSlide>
-                  <PhotoBox>Slide 2</PhotoBox>
-                  <F66>
-                    <Text1> 　 구매완료</Text1>
-                  </F66>
-                </SwiperSlide>
-                <SwiperSlide>
-                  <PhotoBox>Slide 3</PhotoBox>
-                  <F66>
-                    <Text1> 　 구매완료</Text1>
-                  </F66>
-                </SwiperSlide>
-                <SwiperSlide>
-                  <PhotoBox>Slide 4</PhotoBox>
-                  <F66>
-                    <Text1> 　 구매완료</Text1>
-                  </F66>
-                </SwiperSlide>
-                <SwiperSlide>
-                  <PhotoBox>Slide 5</PhotoBox>
-                  <F66>
-                    <Text1> 　 구매완료</Text1>
-                  </F66>
-                </SwiperSlide>
-                <SwiperSlide>
-                  <PhotoBox>Slide 6</PhotoBox>
-                  <F66>
-                    <Text1> 　 구매완료</Text1>
-                  </F66>
-                </SwiperSlide>
-                <SwiperSlide>
-                  <PhotoBox>Slide 7</PhotoBox>
-                  <F66>
-                    <Text1> 　 구매완료</Text1>
-                  </F66>
-                </SwiperSlide>
-                <SwiperSlide>
-                  <PhotoBox>Slide 8</PhotoBox>
-                  <F66>
-                    <Text1> 　 구매완료</Text1>
-                  </F66>
-                </SwiperSlide>
-                <SwiperSlide>
-                  <PhotoBox>Slide 9</PhotoBox>
-                  <F66>
-                    <Text1> 　 구매완료</Text1>
-                  </F66>
-                </SwiperSlide>
-              </Swiper>
+              {store !== null && (
+                <Swiper
+                  slidesPerView={4}
+                  spaceBetween={30}
+                  pagination={{
+                    clickable: true,
+                  }}
+                  modules={[Pagination]}
+                  className={`${styles.swiper} mySwiper`}
+                >
+                  {store.map((item) => (
+                    <SwiperSlide key={item.itemId}>
+                      <PhotoBox>
+                        {item.imagePath ? (
+                          <img
+                            src={item.imagePath}
+                            alt={item.itemName}
+                            width="100%"
+                            height="100%"
+                          />
+                        ) : (
+                          <img
+                            src="../normal_profileimage.png"
+                            alt="대체이미지"
+                            width="100%"
+                            height="100%"
+                          />
+                        )}
+                      </PhotoBox>
+                      <F66>
+                        <Text1>구매완료</Text1>
+                      </F66>
+                    </SwiperSlide>
+                  ))}
+                </Swiper>
+              )}
             </SmallBox>
           </F57>
         </Container>
