@@ -4,6 +4,7 @@ public record UserInfoResponse (
     String name,
     int sticker,
     String profileCharacterPath,
-    String profileBackgroundPath
+    String profileBackgroundPath,
+    String mask
 ) {
 }

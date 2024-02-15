@@ -28,7 +28,7 @@ public class ProgressController {
         }
     }
 
-    @PutMapping
+    @PostMapping
     public ResponseEntity<Void> saveUserProgress(@RequestParam Long signId, Authentication authentication){
         try{
             userService.saveUserProgress(signId, authentication);

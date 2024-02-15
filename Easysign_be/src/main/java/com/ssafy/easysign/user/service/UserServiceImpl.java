@@ -8,6 +8,7 @@ import com.ssafy.easysign.sign.repository.SignRepository;
 import com.ssafy.easysign.store.dto.response.ItemResponse;
 import com.ssafy.easysign.store.entity.Store;
 import com.ssafy.easysign.store.mapper.StoreMapper;
+import com.ssafy.easysign.store.repository.StoreLikeRepository;
 import com.ssafy.easysign.store.repository.StoreRepository;
 import com.ssafy.easysign.user.dto.request.ProfileRequest;
 import com.ssafy.easysign.user.dto.response.UserInfoResponse;
@@ -43,6 +44,7 @@ public class UserServiceImpl implements UserService {
     private final StickerLogRepository stickerLogRepository;
     private final UserBookMarkRepository userBookMarkRepository;
     private final UserProgressRepository userProgressRepository;
+    private final StoreLikeRepository storeLikeRepository;
     private final SignMapper signMapper;
     private final StoreMapper storeMapper;
     private final UserMapper userMapper;
@@ -60,22 +62,32 @@ public class UserServiceImpl implements UserService {
         List<UserItem> userProfile = userItemRepository.findAllByUser_UserIdAndIsUse(userId, true);
         String backgroundPath = "";
         String characterPath = "";
+        String mask = "";
 
         for(UserItem item : userProfile) {
             Optional<Store> itemInfo = storeRepository.findByItemId(item.getItem().getItemId());
             if(itemInfo.isEmpty()) throw new NotFoundException("해당하는 아이템을 찾을 수 없습니다.");
             if(itemInfo.get().getCategoryName().toString().equals("background")) {
                 backgroundPath = itemInfo.get().getImagePath();
-            } else {
+            } else if (itemInfo.get().getCategoryName().toString().equals("character")) {
                 characterPath = itemInfo.get().getImagePath();
+            } else{
+                mask = itemInfo.get().getItemName();
             }
         }
-        return userMapper.toUserInfoResponse(user.get(), characterPath, backgroundPath);
+        return userMapper.toUserInfoResponse(user.get(), characterPath, backgroundPath, mask);
     }
 
     @Override
-    public User getUser(String loginId) {
+    public User getUserByLoginId(String loginId) {
         Optional <User> user = userRepository.findByLoginId(loginId);
+        if(user.isEmpty()) throw new NotFoundException("사용자를 찾을 수 없습니다.");
+        return user.get();
+    }
+
+    @Override
+    public User getUserByEmail(String email) {
+        Optional <User> user = userRepository.findByEmail(email);
         if(user.isEmpty()) throw new NotFoundException("사용자를 찾을 수 없습니다.");
         return user.get();
     }
@@ -123,11 +135,9 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void registBookMark(Long userId, Long signId) {
-        User user = new User();
-        user.setUserId(userId);
+        User user = userRepository.findById(userId).orElseThrow();
 
-        SignInfo signInfo = new SignInfo();
-        signInfo.setSignId(signId);
+        SignInfo signInfo = signRepository.findBySignId(signId).orElseThrow();
 
         BookMark bookMark = userMapper.toBookMark(user, signInfo);
         userBookMarkRepository.save(bookMark);
@@ -161,17 +171,19 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void updateItem(Long userId, Long itemId) {
-
+        log.info(userId + " " +  itemId);
         Optional<UserItem> priorUserItem = userItemRepository.findPriorItem(userId, itemId);
         if (priorUserItem.isPresent()) {
             //기존 아이템
             priorUserItem.get().setUse(false);
             userItemRepository.save(priorUserItem.get());
+            log.info("아이템 적용 해제");
 
             // 새 아이템 적용
             Optional<UserItem> userItem = userItemRepository.findByUser_UserIdAndItem_ItemId(userId, itemId);
             if(userItem.isEmpty()) throw new NotFoundException("해당 아이템을 보유하고 있지 않습니다.");
 
+            log.info("새 아이템 적용");
             userItem.get().setUse(true);
             userItemRepository.save(userItem.get());
 
@@ -205,11 +217,9 @@ public class UserServiceImpl implements UserService {
 
         //유저 보유 아이템 삭제
         userItemRepository.deleteByUserId(userId);
-
-        //TODO 학습된 단어 삭제
-        //TODO 즐겨찾기 삭제
-        //TODO 아이템 찜하기 삭제
-
+        userProgressRepository.deleteByUserId(userId);
+        userBookMarkRepository.deleteByUserId(userId);
+        storeLikeRepository.deleteByUserId(userId);
         userRepository.delete(user.get());
     }
 
@@ -289,8 +299,9 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public boolean getUserProgressCount(Long userId) {
-        List<UserProgress> progress = userProgressRepository.findAllByUser_userId(userId);
-        return progress.size() >= 10 ? true: false;
+        int cnt = userProgressRepository.getProgressCount(userId);
+        log.info("학습한 단어 개수 : " + cnt);
+        return cnt >= 10;
     }
 
     private User getUser(Long userId) {

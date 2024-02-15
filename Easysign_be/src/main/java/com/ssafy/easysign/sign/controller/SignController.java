@@ -13,6 +13,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -22,6 +26,39 @@ import java.util.List;
 public class SignController {
 
     private final SignService signService;
+
+    // url 테스트 코드
+    @GetMapping("/signUrl")
+    public ResponseEntity<List<String>> getJihwaURLData(
+            @RequestParam(value = "categoryname", required = false) String categoryName) {
+        // EC2 서버에 있는 JSON 파일 경로
+        String jsonFilePath = "/path/to/your/json/file.json";
+
+        // URL 데이터를 저장할 리스트
+        List<String> urlDataList = new ArrayList<>();
+
+        try (BufferedReader br = new BufferedReader(new FileReader(jsonFilePath))) {
+            String line;
+            while ((line = br.readLine()) != null) {
+                // JSON 데이터를 읽어서 URL 데이터 생성
+                String urlData = createURLDataFromJSON(line);
+                urlDataList.add(urlData);
+            }
+        } catch (IOException e) {
+            log.error("Error reading JSON file: " + e.getMessage());
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
+        // URL 데이터를 클라이언트에 반환
+        return new ResponseEntity<>(urlDataList, HttpStatus.OK);
+    }
+
+    // JSON 데이터를 기반으로 URL 데이터 생성하는 메서드
+    private String createURLDataFromJSON(String jsonData) {
+        // JSON 데이터를 파싱하여 필요한 정보를 추출하고 URL 데이터를 생성하는 로직 구현
+        // 예시 코드에서는 단순히 JSON 데이터를 URL 데이터로 사용하는 것으로 가정
+        return jsonData;
+    }
 
     @GetMapping("/category")
     public ResponseEntity<List<CategoryResponse>> getCategoryResponseList() {

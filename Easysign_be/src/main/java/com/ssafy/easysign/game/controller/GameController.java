@@ -30,7 +30,7 @@ public class GameController {
             log.info("signResponses: " + signResponses);
             return new ResponseEntity<>(signResponses, HttpStatus.OK);
         } catch (Exception e) {
-            e.printStackTrace();
+            log.error("Error while fetching speed game list", e); // 예외 메시지 로그에 출력
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }
@@ -39,7 +39,6 @@ public class GameController {
     public ResponseEntity<List<SignResponse>> getSonagiGameList(Authentication authentication){
         try {
             List<SignResponse> signResponses = gameService.getSonagiGameList(authentication);
-            log.info("11111");
             return new ResponseEntity<>(signResponses, HttpStatus.OK);
         } catch (Exception e) {
             log.error("Error while fetching Sonagi game list", e); // 예외 메시지 로그에 출력

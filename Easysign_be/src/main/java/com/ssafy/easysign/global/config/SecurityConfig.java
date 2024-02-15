@@ -67,20 +67,9 @@ public class SecurityConfig {
                         authorizeRequests
                                 .requestMatchers("/api/v1/login").permitAll()
                                 .requestMatchers("/api/v1/auth/**").permitAll()
+                                .requestMatchers("/api/v1/verify/**").permitAll()
                                 .anyRequest().authenticated());
         return http.build();
-    }
-
-    // CORS 구성
-    @Bean
-    public CorsConfigurationSource corsConfigurationSource() {
-        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        CorsConfiguration config = new CorsConfiguration();
-        config.addAllowedOrigin("http://localhost:3000"); // 본인의 프론트엔드 URL로 변경
-        config.addAllowedMethod("*");
-        config.addAllowedHeader("*");
-        source.registerCorsConfiguration("/**", config);
-        return source;
     }
 
 }

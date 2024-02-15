@@ -17,7 +17,8 @@ public interface UserService {
 
     void registBookMark(Long userId, Long signId);
 
-    User getUser(String loginId);
+    User getUserByLoginId(String loginId);
+    User getUserByEmail(String email);
 
     List<SignResponse> getSigns(Authentication authentication);
 

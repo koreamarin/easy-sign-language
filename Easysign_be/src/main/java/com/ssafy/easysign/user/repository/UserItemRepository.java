@@ -19,7 +19,6 @@ public interface UserItemRepository extends JpaRepository<UserItem, Long> {
             "and s.categoryName=(select categoryName from Store where itemId = :itemId)\n" +
             "and i.user.userId = :userId")
     Optional<UserItem> findPriorItem(Long userId, Long itemId);
-    Optional<UserItem> findByItem_ItemId(Long itemId);
     @Modifying
     @Transactional
     @Query("DELETE FROM UserItem u WHERE u.user.userId = :userId")

@@ -111,6 +111,7 @@ public class UserController {
         } catch(NotFoundException e) {
             return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
         } catch (Exception e) {
+            e.printStackTrace();
             // 실패 시 400 Bad Request 응답
             return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
         }

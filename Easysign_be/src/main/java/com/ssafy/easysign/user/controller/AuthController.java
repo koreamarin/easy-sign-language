@@ -31,11 +31,11 @@ public class AuthController {
             // 사용자 등록 서비스 호출
             authService.registerUser(registRequest);
 
-            User user = userService.getUser(registRequest.loginId());
-            //기본 이미지, 배경 등록
+            User user = userService.getUserByLoginId(registRequest.loginId());
+            //기본 이미지, 배경, 마스트 등록
             userService.registProfile(user.getUserId(), (long)1);
             userService.registProfile(user.getUserId(), (long)2);
-
+            userService.registProfile(user.getUserId(), (long)13);
             log.info("request : " + registRequest);
             return new ResponseEntity<>("회원가입이 완료되었습니다.", HttpStatus.OK);
         } catch (IllegalArgumentException e) {
@@ -78,7 +78,6 @@ public class AuthController {
         }
     }
 
-
     /**
      * 닉네임 중복체크
      * @param name
@@ -94,5 +93,4 @@ public class AuthController {
             return new ResponseEntity<>(false, HttpStatus.BAD_REQUEST);
         }
     }
-
 }
