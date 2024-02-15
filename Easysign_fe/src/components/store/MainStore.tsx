@@ -146,19 +146,25 @@ function MainStore() {
       ])
       .then(
         axios.spread((res1, res2) => {
-          console.log(res1, res2);
           setItems1(res1.data);
           setItems2(res2.data);
-
-          const duplicateItems = items1.filter((item1) =>
-            items2.some((item2) => item2.itemId === item1.itemId)
-          );
-
-          console.log("겹치는 숫자: ", duplicateItems);
         })
       )
       .catch((err) => console.log(err));
   }, []);
+
+  const handlePurchase = (itemId: number) => {
+    axios
+      .get(`${API.ITEM_PURCHASE}?itemId=${itemId}`, { headers })
+      .then((res) => {
+        alert("아이템 구매에 성공했습니다."); // 간단한 alert 창으로 텍스트를 띄움
+        window.location.reload(); // 페이지 새로고침
+        // 아이템 구매 완료 처리 후, 상태 업데이트 등 추가 작업 가능
+        console.log("아이템 구매 완료:", res);
+        // 구매가 완료된 아이템을 다시 불러오는 등의 작업 수행 가능
+      })
+      .catch((err) => console.log(err));
+  };
 
   return (
     <div>
@@ -201,9 +207,14 @@ function MainStore() {
                         <Text1>구매완료</Text1>
                       </F66>
                     ) : (
-                      <F66_2>
-                        <Text1>{item.price}</Text1>
-                      </F66_2>
+                      <button
+                        onClick={() => handlePurchase(item.itemId)}
+                        disabled={false}
+                      >
+                        <F66_2>
+                          <Text1>{item.price}</Text1>
+                        </F66_2>
+                      </button>
                     )}
                   </SwiperSlide>
                 ))}
