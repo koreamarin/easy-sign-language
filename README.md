@@ -23,7 +23,7 @@
 3. 수화언어를 이용한 간단한 게임 플레이
 4. 학습, 게임을 통한 재화로 페이스 마스크(모델) 구매 및 적용
 
----
+
 
 ## 🧩기획 배경
 
@@ -66,7 +66,7 @@
 | 배상훈 | Front-End, AI |  |  |
 | 서민주 | Front-End | 프론트엔드 서브 |  |
 
----
+
 
 ## 🧩기술 스택
 ![SpringBoot](https://img.shields.io/badge/springboot-%236DB33F.svg?style=for-the-badge&logo=springboot&logoColor=white)
