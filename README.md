@@ -33,20 +33,20 @@
 
 수화를 배우는 연령대가 평균적으로 낮지만 실제 해당 연령대에 
 
-배우는 비율은 매우 적다.
+배우는 비율은 매우 적다.<br />
 
 
-**이유는?**
+**이유는?** <br />
 
 
 전문성을 갖춘 교수 인력의 부족으로 수준 높은 교육이 불가능 
 
-→ **전문적인 교육 체계 부족**
+→ **전문적인 교육 체계 부족**<br />
 
 
 국립 국어원의 ‘한국수어문법’ 성인 농인 기준으로 교재 개발 
 
-→ **농아동 및 농가족을 위한 교재 부재** 
+→ **농아동 및 농가족을 위한 교재 부재** <br />
 
 
 수화 교육의 진입장벽을 해소하고
@@ -175,20 +175,20 @@
 
 - 아키텍처 구성도
 
-[https://mahogany-subway-c64.notion.site/f3d1666df5524d7fa07d367e0cc690d2?pvs=4](https://www.notion.so/f3d1666df5524d7fa07d367e0cc690d2?pvs=21)
+>[https://mahogany-subway-c64.notion.site/f3d1666df5524d7fa07d367e0cc690d2?pvs=4](https://www.notion.so/f3d1666df5524d7fa07d367e0cc690d2?pvs=21)
 
 - api 명세서
 
-[https://mahogany-subway-c64.notion.site/API-59de950fd164496280ce991841a2c812?pvs=74](https://www.notion.so/API-59de950fd164496280ce991841a2c812?pvs=21)
+>[https://mahogany-subway-c64.notion.site/API-59de950fd164496280ce991841a2c812?pvs=74](https://www.notion.so/API-59de950fd164496280ce991841a2c812?pvs=21)
 
 - erd
 
-[https://mahogany-subway-c64.notion.site/ERD-f9a8b48c9839408b945088e188dcf169](https://www.notion.so/ERD-f9a8b48c9839408b945088e188dcf169?pvs=21)
+>[https://mahogany-subway-c64.notion.site/ERD-f9a8b48c9839408b945088e188dcf169](https://www.notion.so/ERD-f9a8b48c9839408b945088e188dcf169?pvs=21)
 
 - 요구사항 명세서
 
-[https://mahogany-subway-c64.notion.site/2989e2af1bf046d5afea6138e25b0bb7?v=6a6434e7c4504ae6b1654eceb941753c](https://www.notion.so/2989e2af1bf046d5afea6138e25b0bb7?pvs=21)
+>[https://mahogany-subway-c64.notion.site/2989e2af1bf046d5afea6138e25b0bb7?v=6a6434e7c4504ae6b1654eceb941753c](https://www.notion.so/2989e2af1bf046d5afea6138e25b0bb7?pvs=21)
 
 - 와이어 프레임(Figma)
 
-[https://www.figma.com/file/OU1Cr8MoLcxyohrJm3fosp/수어쉬워?type=design&node-id=0%3A1&mode=design&t=HlbOSCJQN4EmB2Cr-1](https://www.figma.com/file/OU1Cr8MoLcxyohrJm3fosp/%EC%88%98%EC%96%B4%EC%89%AC%EC%9B%8C?type=design&node-id=0%3A1&mode=design&t=HlbOSCJQN4EmB2Cr-1)
+>[https://www.figma.com/file/OU1Cr8MoLcxyohrJm3fosp/수어쉬워?type=design&node-id=0%3A1&mode=design&t=HlbOSCJQN4EmB2Cr-1](https://www.figma.com/file/OU1Cr8MoLcxyohrJm3fosp/%EC%88%98%EC%96%B4%EC%89%AC%EC%9B%8C?type=design&node-id=0%3A1&mode=design&t=HlbOSCJQN4EmB2Cr-1)
