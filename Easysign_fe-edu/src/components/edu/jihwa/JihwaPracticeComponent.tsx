@@ -14,7 +14,7 @@ import { token } from "../../../pages/Main";
 import API from "../../../config";
 
 const Div = styled.div`
-  font-family: "Black Han Sans", sans-serif;
+  font-family: "TTHakgyoansimJiugaeR", sans-serif;
   font-weight: 400;
   font-style: normal;
 `;

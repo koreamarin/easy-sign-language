@@ -11,7 +11,7 @@ import CameraComponent from "../../poseModelComponents/CameraComponent";
 import WideCameraComponent from "../../poseModelComponents/WideCameraComponent";
 
 const Div = styled.div`
-  font-family: "Black Han Sans", sans-serif;
+  font-family: "TTHakgyoansimJiugaeR", sans-serif;
   font-weight: 400;
   font-style: normal;
 `;
@@ -162,7 +162,7 @@ const SentencePracticeComponent = () => {
             marginRight: "70px",
           }}
         >
-          {recognizingWord}
+          대기중...
         </Div>
         <Progress
           percentage={percentage}

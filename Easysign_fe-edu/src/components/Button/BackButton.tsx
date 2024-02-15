@@ -40,7 +40,8 @@ const Containers = styled.button<ContainersProps>`
     }
   }};
   font-size: 18px;
-  font-weight: 700;
+  font-weight: 400;
+  font-family: "TTHakgyoansimJiugaeR", sans-serif;
   line-height: 25px;
   word-wrap: break-word;
   border: none;

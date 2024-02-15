@@ -16,6 +16,8 @@ const Div = styled.div<SpanProps>`
   border-radius: 20px;
   margin: 3px 0px;
   cursor: pointer;
+  font-family: "TTHakgyoansimJiugaeR", sans-serif;
+  font-weight: 100;
 `;
 
 interface SentenceProgressBarProps {
@@ -146,7 +148,9 @@ const SentenceProgressBar = ({
           <span
             style={{
               position: "relative",
-              top: "-5px",
+              top: "0px",
+              fontFamily: "TTHakgyoansimJiugaeR",
+              fontWeight: 100,
             }}
           >
             {trainingData[currentNum - 1].content}

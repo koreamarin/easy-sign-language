@@ -40,8 +40,9 @@ const Containers = styled.button<ContainersProps>`
   }};
   font-size: 20px;
   font-family: Inter;
-  font-weight: 700;
-  line-height: 40px;
+  font-weight: 200;
+  font-family: "TTHakgyoansimJiugaeR", sans-serif;
+  line-height: 45px;
   word-wrap: break-word;
   border: none;
   box-shadow: 1px 1px 1px 1px gray;

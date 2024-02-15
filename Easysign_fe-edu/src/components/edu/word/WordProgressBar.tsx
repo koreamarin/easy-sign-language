@@ -7,7 +7,8 @@ interface SpanProps {
 
 const Span = styled.span<SpanProps>`
   width: 80px;
-  height: 80px;
+  height: 75px;
+  padding-top: 5px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -15,6 +16,8 @@ const Span = styled.span<SpanProps>`
   background-color: ${(props) => props.backgroundColor};
   border-radius: 30%;
   cursor: pointer;
+  font-family: "TTHakgyoansimJiugaeR", sans-serif;
+  font-weight: 100;
 `;
 
 interface WordProgressBarProps {
@@ -141,7 +144,9 @@ const WordProgressBar = ({ trainingData, currentNum, currentNumModify }: WordPro
           <span
             style={{
               position: "relative",
-              top: "-5px",
+              top: "5px",
+              fontFamily: "TTHakgyoansimJiugaeR",
+              fontWeight: 100,
             }}
           >
             {trainingData[currentNum - 1].content}

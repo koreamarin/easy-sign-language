@@ -285,16 +285,6 @@ const LandmarkerCanvas = ({ setSubmitWord }: LandmarkerCanvasProps) => {
         marginTop: "10px",
       }}
     >
-      {/* 비디오 */}
-      <div
-        style={{
-          width: "200px",
-          height: "180px",
-          backgroundColor: "#ffffff",
-          position: "absolute",
-          top: 0,
-        }}
-      ></div>
       <video
         ref={videoRef}
         loop={true}
@@ -333,8 +323,14 @@ const LandmarkerCanvas = ({ setSubmitWord }: LandmarkerCanvasProps) => {
             width: "70px",
             height: "70px",
             borderRadius: "50%",
+            fontFamily: "TTHakgyoansimJiugaeR",
+            fontSize: "15px",
+            lineHeight: "15px",
+            backgroundColor: ishidden ? "rgb(255, 157, 157)" : "rgb(182, 202, 255)",
           }}
         >
+          골격
+          <br />
           {ishidden ? "숨기기" : "보기"}
         </button>
       </div>

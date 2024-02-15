@@ -37,7 +37,8 @@ const Containers = styled.button<ContainersProps>`
   }};
   font-size: 30px;
   font-family: Inter;
-  font-weight: 700;
+  font-weight: 400;
+  font-family: "TTHakgyoansimJiugaeR", sans-serif;
   line-height: 75px;
   word-wrap: break-word;
   border: none;

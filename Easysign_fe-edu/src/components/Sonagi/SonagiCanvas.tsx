@@ -6,7 +6,7 @@ import LandmarkerCanvas from "./Result";
 import SSmallButton from "../Button/SSmallButton";
 import API from "../../config";
 import { token } from "../../pages/Main";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 interface SonagiCanvasProps {
   isGameOver: boolean;
@@ -139,7 +139,6 @@ function SonagiCanvas({
           borderRadius: "40px",
           padding: "0px 40px",
           backgroundColor: "#D9D9D9",
-
           fontSize: "50px",
           fontWeight: "bold",
           color: "#636363",
@@ -168,11 +167,13 @@ function SonagiCanvas({
             onKeyDown={enterEvent}
             style={{
               width: "200px",
-              height: "100px",
+              height: "90px",
+              paddingTop: "10px",
+              lineHeight: "200px",
               marginBottom: "10px",
               fontSize: "30px",
-              fontFamily: "Inter",
-              fontWeight: "500",
+              fontFamily: "TTHakgyoansimJiugaeR",
+              fontWeight: "300",
               textAlign: "center",
               backgroundColor: "#8CCFFF",
               color: "#006EBD",
@@ -180,7 +181,7 @@ function SonagiCanvas({
               border: "none",
               borderRadius: "40px",
             }}
-          ></input>
+          />
           <SSmallButton text={"게임종료"} onClick={quitGame} />
         </div>
       </div>
