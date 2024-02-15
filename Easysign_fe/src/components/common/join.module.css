@@ -1,5 +1,3 @@
-/* join.module.css */
-
 .contentBox {
   min-height: 130vh;
 }
@@ -64,29 +62,28 @@
 }
 
 .idForm {
-  bottom: 400px;
+  top: 330px;
 }
 
 .emailForm {
-  bottom: 330px;
+  top: 400px;
 }
 
 .passwordForm {
-  bottom: 260px;
+  top: 470px;
 }
 
 .confirmPasswordForm {
-  bottom: 190px;
+  top: 540px;
 }
 
 .nameForm {
-  bottom: 120px;
+  top: 610px;
 }
 
 .confirmButton {
   position: absolute;
   width: 378px;
-  left: 35vw;
+  left: 530px;
   top: 733px;
-  bottom: 247px;
 }
