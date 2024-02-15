@@ -4,6 +4,7 @@ import styled from "styled-components";
 // 백-프론트 연동 관련 import
 import { useState, useEffect } from "react";
 import API from "../../config";
+import { token } from "../common/Token";
 
 // 무한 스크롤 구현 라이브러리
 // https://www.npmjs.com/package/react-intersection-observer
@@ -134,13 +135,6 @@ function VocaStore() {
   // 백-프론트 연결 통신(GET)
 
   const [bookmark, setBookmark] = useState([]);
-
-  localStorage.setItem(
-    "token",
-    "Bearer eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJFYXN5U2lnbiIsImV4cCI6MTcwNzk3ODIzOCwiaWQiOjEsImxvZ2luSWQiOiJzc2FmeSJ9.8hLq-oy4_KjFTL7MZ_Fs94_i11Rhb7y163oYc2J7cBbMEnuTLbKNBz2FmuI_8xlfa-6UDWBB8lYOGHbUULneDw"
-  );
-
-  const token = localStorage.getItem("token") || "";
 
   const getBookmark = async () => {
     try {
