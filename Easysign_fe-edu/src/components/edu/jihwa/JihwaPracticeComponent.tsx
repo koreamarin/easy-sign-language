@@ -6,8 +6,7 @@ import { useDispatch } from "react-redux";
 import { LearningProgressSet } from "../../../redux/modules/ProgressSlice";
 import EndModal from "../../common/EndModal";
 import PracticeLandmarkerCanvas from "../../poseModelComponents/PracticeLandmarkerCanvas";
-import { useEffect, useRef, useState } from "react";
-import { followStatusFalse } from "../../../redux/modules/LectureSlice";
+import { useState } from "react";
 import MediumButton from "../../Button/MediumButton";
 import Progress from "../../nav/Progress";
 import styled from "styled-components";
@@ -216,7 +215,7 @@ const JihwaPracticeComponent = () => {
         </Div>
         <Progress
           percentage={percentage}
-          text={percentage > 0 ? "<div style='font-size:25px'>유지하세요!</div>" : ""}
+          text={percentage > 0 ? "<div style='font-size:25px'>유지하세요!</div>" : "&nbsp"}
         />
       </div>
 

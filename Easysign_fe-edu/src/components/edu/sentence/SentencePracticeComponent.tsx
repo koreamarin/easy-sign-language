@@ -166,7 +166,7 @@ const SentencePracticeComponent = () => {
         </Div>
         <Progress
           percentage={percentage}
-          text={percentage > 0 ? "<div style='font-size:25px'>유지하세요!</div>" : ""}
+          text={percentage > 0 ? "<div style='font-size:25px'>유지하세요!</div>" : "&nbsp"}
         />
       </div>
 
