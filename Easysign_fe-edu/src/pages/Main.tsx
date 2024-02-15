@@ -12,6 +12,10 @@ import axios from "axios";
 export const token = localStorage.getItem("token") || "";
 
 const Main = () => {
+  const socket = new WebSocket("wss://edu.easysign.shop");
+  socket.onerror = function (event) {
+    console.error("WebSocket error observed:", event);
+  };
   const [category, setCategory] = useState<any>([]);
 
   const getSignCategory = async () => {
