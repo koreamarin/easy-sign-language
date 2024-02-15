@@ -73,15 +73,15 @@ public class SecurityConfig {
     }
 
     // CORS 구성
-    @Bean
-    public CorsConfigurationSource corsConfigurationSource() {
-        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        CorsConfiguration config = new CorsConfiguration();
-        config.addAllowedOrigin("*"); // 본인의 프론트엔드 URL로 변경
-        config.addAllowedMethod("*");
-        config.addAllowedHeader("*");
-        source.registerCorsConfiguration("/**", config);
-        return source;
-    }
+//    @Bean
+//    public CorsConfigurationSource corsConfigurationSource() {
+//        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+//        CorsConfiguration config = new CorsConfiguration();
+//        config.addAllowedOrigin("*"); // 본인의 프론트엔드 URL로 변경
+//        config.addAllowedMethod("*");
+//        config.addAllowedHeader("*");
+//        source.registerCorsConfiguration("/**", config);
+//        return source;
+//    }
 
 }
