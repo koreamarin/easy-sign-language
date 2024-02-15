@@ -32,7 +32,7 @@ class AiResult {
   aiCalculate = async (seq: number[][], modelInput: any) => {
     const model = await modelInput;
     // const model = await tf.loadLayersModel('https://cdn.jsdelivr.net/gh/bsh4766/JSmodel/continue/test/model.json')
-    const inputData = tf.tensor3d(seq.flat(), [1, 10, 80]);
+    const inputData = tf.tensor3d(seq.flat(), [1, 14, 80]);
     const output = model.predict(inputData) as tf.Tensor;
     const preArray = output.dataSync();
     const resultArray = Array.from(preArray);

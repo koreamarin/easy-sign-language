@@ -161,7 +161,7 @@ const LandmarkerCanvas = ({ setSubmitWord }: LandmarkerCanvasProps) => {
         const aimodel = AiResult.getInstance();
 
         seq.push(angles);
-        if (seq.length > 10) {
+        if (seq.length > 14) {
           seq.shift();
           aimodel.aiCalculate(seq, model);
         }
