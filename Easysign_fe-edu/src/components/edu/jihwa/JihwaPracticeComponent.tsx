@@ -105,6 +105,8 @@ const JihwaPracticeComponent = () => {
           flexDirection: "column",
           justifyContent: "center",
           alignItems: "center",
+          position: "relative",
+          top: "50px",
         }}
       >
         <JihwaProgressBar
@@ -123,7 +125,7 @@ const JihwaPracticeComponent = () => {
           width: "1080px",
           height: "510px",
           position: "relative",
-          top: "50px",
+          top: "80px",
         }}
       >
         {currentNum === 1 ? (

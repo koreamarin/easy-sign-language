@@ -66,6 +66,8 @@ const SentencePracticeComponent = () => {
           flexDirection: "column",
           justifyContent: "center",
           alignItems: "center",
+          position: "relative",
+          top: "55px",
         }}
       >
         <SentenceProgressBar
@@ -84,7 +86,7 @@ const SentencePracticeComponent = () => {
           width: "1080px",
           height: "510px",
           position: "relative",
-          top: "50px",
+          top: "85px",
         }}
       >
         {currentNum === 1 ? (

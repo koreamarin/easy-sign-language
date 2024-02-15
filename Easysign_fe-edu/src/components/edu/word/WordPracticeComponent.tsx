@@ -106,6 +106,8 @@ const WordPracticeComponent = () => {
           flexDirection: "column",
           justifyContent: "center",
           alignItems: "center",
+          position: "relative",
+          top: "50px",
         }}
       >
         <WordProgressBar
@@ -124,7 +126,7 @@ const WordPracticeComponent = () => {
           width: "1080px",
           height: "510px",
           position: "relative",
-          top: "50px",
+          top: "80px",
         }}
       >
         {currentNum === 1 ? (
