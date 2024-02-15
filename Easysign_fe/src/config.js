@@ -7,6 +7,8 @@ const API = {
   JOIN: `${BASE_URL}/auth/regist`,
   // 로그인
   LOGIN: `${BASE_URL}/login`,
+  // 상점
+  STORE_LIST: `${BASE_URL}/store/info`,
 };
 
 export default API;
