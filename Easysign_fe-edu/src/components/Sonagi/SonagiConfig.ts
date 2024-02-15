@@ -1,5 +1,5 @@
 export const LifeCount: number = 6;
-export const StaggerFrame: number = 50;
+export const StaggerFrame: number = 100;
 export let SonagiLevel: number = 0;
 export const SonagiLevelUp = () => {
   SonagiLevel += 1;
