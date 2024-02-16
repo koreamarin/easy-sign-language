@@ -1,0 +1,73 @@
+{
+	"label_count": 17,
+	"label": {
+		"default": {
+			"idx": 0,
+			"file_cnt": 10
+		},
+		"우산_i": {
+			"idx": 1,
+			"file_cnt": 25
+		},
+		"우산": {
+			"idx": 2,
+			"file_cnt": 50
+		},
+		"우산_f": {
+			"idx": 3,
+			"file_cnt": 25
+		},
+		"지우개_i": {
+			"idx": 4,
+			"file_cnt": 25
+		},
+		"지우개": {
+			"idx": 5,
+			"file_cnt": 50
+		},
+		"지우개_f": {
+			"idx": 6,
+			"file_cnt": 25
+		},
+		"책_i": {
+			"idx": 7,
+			"file_cnt": 25
+		},
+		"책": {
+			"idx": 8,
+			"file_cnt": 40
+		},
+		"책_f": {
+			"idx": 9,
+			"file_cnt": 25
+		},
+		"탁자_i": {
+			"idx": 10,
+			"file_cnt": 25
+		},
+		"탁자": {
+			"idx": 11,
+			"file_cnt": 50
+		},
+		"탁자_f": {
+			"idx": 12,
+			"file_cnt": 25
+		},
+		"텔레비전_i": {
+			"idx": 13,
+			"file_cnt": 25
+		},
+		"텔레비전": {
+			"idx": 14,
+			"file_cnt": 50
+		},
+		"텔레비전_f": {
+			"idx": 15,
+			"file_cnt": 25
+		},
+		"첵": {
+			"idx": 16,
+			"file_cnt": 10
+		}
+	}
+}
