@@ -1,0 +1,127 @@
+/* login.module.css */
+
+.contentBox {
+  min-height: 130vh;
+}
+
+.r29 {
+  box-sizing: border-box;
+  position: absolute;
+  width: 476px;
+  height: 680px;
+  left: 482px;
+  top: 145px;
+  background: #ffffff;
+  border: 1px solid #cfcfcf;
+  box-shadow: 30px 30px 4px rgba(0, 0, 0, 0.25);
+  border-radius: 10px;
+}
+
+.i62 {
+  position: absolute;
+  width: 318px;
+  height: 112px;
+  left: 562px;
+  top: 209px;
+}
+
+.newUser {
+  position: absolute;
+  width: 130px;
+  height: 19px;
+  left: 531px;
+  top: 371.42px;
+  font-family: "Noto Sans KR";
+  font-style: normal;
+  font-weight: 500;
+  font-size: 13px;
+  line-height: 21px;
+  display: flex;
+  align-items: center;
+  letter-spacing: 0.122px;
+  color: rgba(0, 0, 0, 0.6);
+}
+
+.createAccount {
+  position: absolute;
+  width: 94.48px;
+  height: 19px;
+  left: 670px;
+  top: 371.42px;
+  font-family: "Noto Sans KR";
+  font-style: normal;
+  font-weight: 500;
+  font-size: 13px;
+  line-height: 21px;
+  display: flex;
+  align-items: center;
+  letter-spacing: 0.122px;
+  color: rgba(0, 0, 0, 0.87);
+}
+
+.form1,
+.form2 {
+  box-sizing: border-box;
+  position: absolute;
+  height: 24px;
+  left: 531px;
+  right: 531px;
+}
+
+.form1 {
+  top: 420px;
+}
+
+.form2 {
+  top: 490px;
+}
+
+.loginButton {
+  position: absolute;
+  width: 378px;
+  left: 531px;
+  right: 531px;
+  top: 570px;
+}
+
+.form3 {
+  position: absolute;
+  height: 40px;
+  left: 531px;
+  right: 531px;
+  top: 640.94px;
+}
+
+.findAccount {
+  position: absolute;
+  width: 79.93px;
+  height: 19px;
+  left: 0px;
+  top: 10.47px;
+  font-family: "Noto Sans KR";
+  font-style: normal;
+  font-weight: 350;
+  font-size: 13px;
+  line-height: 21px;
+  display: flex;
+  align-items: center;
+  letter-spacing: 0.122px;
+  color: #141414;
+}
+
+.findPassword {
+  position: absolute;
+  width: 112.14px;
+  height: 19px;
+  left: 95.61px;
+  top: 10.47px;
+  font-family: "Noto Sans KR";
+  font-style: normal;
+  font-weight: 350;
+  font-size: 13px;
+  line-height: 21px;
+  display: flex;
+  align-items: center;
+  letter-spacing: 0.122px;
+  color: #141414;
+}
