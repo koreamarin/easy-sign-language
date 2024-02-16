@@ -24,7 +24,7 @@ const LandmarkerCanvas = ({ setSubmitWord }: LandmarkerCanvasProps) => {
   // mediapipe 얼굴 매쉬 인식을 위한 클래스
   const faceLandmarkManager = FaceLandmarkManager.getInstance();
 
-  const model = tf.loadLayersModel(process.env.PUBLIC_URL + "/model/jihwa/자음/model.json");
+  const model = tf.loadLayersModel(process.env.PUBLIC_URL + "/model/game/sonagi/model.json");
 
   // 얼굴에 씌울 아바타 이름
   // Bear, Cat, Chicken, Deer, Dog, Elephant, Pig, Rabbit
@@ -60,7 +60,7 @@ const LandmarkerCanvas = ({ setSubmitWord }: LandmarkerCanvasProps) => {
   // ================================상위 컴포넌트와 연동할 부분==========================
 
   const resultList = [
-    "",
+    " ",
     "ㄱ",
     "ㄱ",
     "ㄴ",
@@ -89,6 +89,40 @@ const LandmarkerCanvas = ({ setSubmitWord }: LandmarkerCanvasProps) => {
     "ㅍ",
     "ㅎ",
     "ㅎ",
+    "ㅏ",
+    "ㅏ",
+    "ㅑ",
+    "ㅑ",
+    "ㅓ",
+    "ㅓ",
+    "ㅕ",
+    "ㅕ",
+    "ㅗ",
+    "ㅗ",
+    "ㅛ",
+    "ㅛ",
+    "ㅜ",
+    "ㅜ",
+    "ㅠ",
+    "ㅠ",
+    "ㅡ",
+    "ㅡ",
+    "ㅣ",
+    "ㅣ",
+    "ㅐ",
+    "ㅑ",
+    "ㅒ",
+    "ㅒ",
+    "ㅔ",
+    "ㅔ",
+    "ㅖ",
+    "ㅖ",
+    "ㅚ",
+    "ㅚ",
+    "ㅟ",
+    "ㅟ",
+    "ㅢ",
+    "ㅢ",
   ];
 
   // answer부분 상위로 올리기

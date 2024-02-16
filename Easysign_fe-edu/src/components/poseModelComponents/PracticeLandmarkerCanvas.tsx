@@ -176,6 +176,24 @@ const PracticeLandmarkerCanvas = ({
       "호두",
       "호두_f",
     ],
+    사물: [
+      "대기중...",
+      "우산_i",
+      "우산",
+      "우산_f",
+      "지우개_i",
+      "지우개",
+      "지우개_f",
+      "책_i",
+      "책",
+      "책_f",
+      "탁자_i",
+      "탁자",
+      "탁자_f",
+      "텔레비전_i",
+      "텔레비전",
+      "텔레비전_f",
+    ],
   };
 
   const resultWordsList = {
@@ -184,6 +202,7 @@ const PracticeLandmarkerCanvas = ({
     숫자: [],
     동물: ["강아지", "고양이", "사자", "소", "코끼리"],
     과일: ["레몬", "바나나", "수박", "포도", "호두"],
+    사물: ["우산", "지우개", "책", "탁자", "텔레비전"],
   };
 
   const wordList = resultWordsList[category];
@@ -378,6 +397,16 @@ const PracticeLandmarkerCanvas = ({
           "호두_i",
           "강아지_f",
           "호두_f",
+          "우산_i",
+          "우산_f",
+          "지우개_i",
+          "지우개_f",
+          "책_i",
+          "책_f",
+          "탁자_i",
+          "탁자_f",
+          "텔레비전_i",
+          "텔레비전_f",
         ];
 
         let recongCheck = true;
@@ -449,6 +478,18 @@ const PracticeLandmarkerCanvas = ({
               dynamicWord("포도_i_f", "포도", "포도_i_f");
             } else if (wordList.indexOf(compareWord, 0) === 4) {
               dynamicWord("호두_i", "호두", "호두_f");
+            }
+          } else if (category === "사물") {
+            if (wordList.indexOf(compareWord, 0) === 0) {
+              dynamicWord("우산_i", "우산", "우산_f");
+            } else if (wordList.indexOf(compareWord, 0) === 1) {
+              dynamicWord("지우개_i", "지우개", "지우개_f");
+            } else if (wordList.indexOf(compareWord, 0) === 2) {
+              dynamicWord("책_i", "책", "책_f");
+            } else if (wordList.indexOf(compareWord, 0) === 3) {
+              dynamicWord("탁자_i", "탁자", "탁자_f");
+            } else if (wordList.indexOf(compareWord, 0) === 4) {
+              dynamicWord("텔레비전_i", "텔레비전", "텔레비전_f");
             }
           } else if (category === "자음" || category === "모음" || category === "숫자") {
             staticWord();
