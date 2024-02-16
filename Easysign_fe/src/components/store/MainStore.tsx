@@ -169,8 +169,7 @@ function MainStore() {
   return (
     <div>
       <BigView>
-        {/* 저작권 걱정 없는 임시로 삽입한 이미지 */}
-        <img src="../storebg.jpg" width="100%" height="253px"></img>
+        <img src="../bgcolor.png" width="100%" height="253px"></img>
         <Container>
           <F57>
             <SmallBox>
