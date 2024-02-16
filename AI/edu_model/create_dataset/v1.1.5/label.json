@@ -1,0 +1,77 @@
+{
+	"label_count": 18,
+	"label": {
+		"default": {
+			"idx": 0,
+			"file_cnt": 15
+		},
+		"ㅏ": {
+			"idx": 1,
+			"file_cnt": 40
+		},
+		"ㅑ": {
+			"idx": 2,
+			"file_cnt": 60
+		},
+		"ㅓ": {
+			"idx": 3,
+			"file_cnt": 40
+		},
+		"ㅕ": {
+			"idx": 4,
+			"file_cnt": 40
+		},
+		"ㅗ": {
+			"idx": 5,
+			"file_cnt": 60
+		},
+		"ㅛ": {
+			"idx": 6,
+			"file_cnt": 40
+		},
+		"ㅜ": {
+			"idx": 7,
+			"file_cnt": 40
+		},
+		"ㅠ": {
+			"idx": 8,
+			"file_cnt": 40
+		},
+		"ㅡ": {
+			"idx": 9,
+			"file_cnt": 60
+		},
+		"ㅣ": {
+			"idx": 10,
+			"file_cnt": 40
+		},
+		"ㅐ": {
+			"idx": 11,
+			"file_cnt": 40
+		},
+		"ㅒ": {
+			"idx": 12,
+			"file_cnt": 40
+		},
+		"ㅔ": {
+			"idx": 13,
+			"file_cnt": 40
+		},
+		"ㅖ": {
+			"idx": 14,
+			"file_cnt": 40
+		},
+		"ㅚ": {
+			"idx": 15,
+			"file_cnt": 40
+		},
+		"ㅟ": {
+			"idx": 16,
+			"file_cnt": 40
+		},
+		"ㅢ": {
+			"idx": 17,
+			"file_cnt": 40
+		}
+	}
+}

@@ -1,0 +1,49 @@
+{
+	"label_count": 18,
+	"label": {
+		"default": {
+			"idx": 0,
+			"file_cnt": 5
+		},
+		"0": {
+			"idx": 1,
+			"file_cnt": 10
+		},
+		"1": {
+			"idx": 2,
+			"file_cnt": 10
+		},
+		"2": {
+			"idx": 3,
+			"file_cnt": 10
+		},
+		"3": {
+			"idx": 4,
+			"file_cnt": 10
+		},
+		"4": {
+			"idx": 5,
+			"file_cnt": 10
+		},
+		"5": {
+			"idx": 6,
+			"file_cnt": 10
+		},
+		"6": {
+			"idx": 7,
+			"file_cnt": 10
+		},
+		"7": {
+			"idx": 8,
+			"file_cnt": 10
+		},
+		"8": {
+			"idx": 9,
+			"file_cnt": 10
+		},
+		"9": {
+			"idx": 10,
+			"file_cnt": 10
+		}
+	}
+}
