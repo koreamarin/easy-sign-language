@@ -3,6 +3,7 @@ import styled from "styled-components";
 
 export interface ContainersProps {
   color?: string;
+  Activate?: boolean;
 }
 
 const Containers = styled.button<ContainersProps>`
@@ -62,7 +63,12 @@ const Containers = styled.button<ContainersProps>`
       }
     }};
   }
-  cursor: pointer;
+  cursor: "pointer";
+  // props.Activate가 false일 시 disabled 속성을 추가하고, cursor를 not-allowed로 변경
+  &:disabled {
+    background: gray;
+    cursor: not-allowed;
+  }
 `;
 
 export interface ButtonProps {
@@ -71,15 +77,25 @@ export interface ButtonProps {
   onClick: () => void;
   onMouseEnter?: () => void;
   onMouseLeave?: () => void;
+  Activate?: boolean;
 }
 
-const SSmallButton = ({ text, color, onClick, onMouseEnter, onMouseLeave }: ButtonProps) => {
+const SSmallButton = ({
+  text,
+  color,
+  onClick,
+  onMouseEnter,
+  onMouseLeave,
+  Activate = true,
+}: ButtonProps) => {
   return (
     <Containers
       color={color}
       onClick={onClick}
       onMouseEnter={onMouseEnter}
       onMouseLeave={onMouseLeave}
+      Activate={Activate}
+      disabled={!Activate}
     >
       {text}
     </Containers>

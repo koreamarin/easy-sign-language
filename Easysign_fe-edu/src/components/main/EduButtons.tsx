@@ -36,9 +36,10 @@ interface EduButtonsProps {
   title: string;
   subtitle: string[];
   subtitleOnClick: string[];
+  Activate?: boolean[];
 }
 
-const EduButtons = ({ title, subtitle, subtitleOnClick }: EduButtonsProps) => {
+const EduButtons = ({ title, subtitle, subtitleOnClick, Activate }: EduButtonsProps) => {
   const navigate = useNavigate();
   return (
     <Containers>
@@ -52,6 +53,7 @@ const EduButtons = ({ title, subtitle, subtitleOnClick }: EduButtonsProps) => {
             text={text}
             color={"skyblue"}
             onClick={() => navigate(subtitleOnClick[index])}
+            Activate={Activate ? Activate[index] : true}
           />
         ))}
       </div>

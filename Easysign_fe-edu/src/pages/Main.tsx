@@ -92,6 +92,7 @@ const Main = () => {
     "../learn/game/shower",
     "../learn/game/wordchain",
   ];
+  const GameActivate = [false, false, true, false];
 
   const [imageSrc, setImageSrc] = useState(hand5);
 
@@ -169,6 +170,7 @@ const Main = () => {
             title={"게임하기"}
             subtitle={GameSubtitle}
             subtitleOnClick={GameSubtitleURL}
+            Activate={GameActivate}
           />
         </div>
       </div>
