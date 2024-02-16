@@ -149,11 +149,11 @@ const PracticeLandmarkerCanvas = ({
       "9",
     ],
     동물: [
-      ".",
+      "대기중...",
       "강아지_i",
       "강아지",
       "강아지_f",
-      "고양이if",
+      "고양이_i_f",
       "고양이",
       "사자_i",
       "사자",
@@ -161,9 +161,34 @@ const PracticeLandmarkerCanvas = ({
       "소",
       "코끼리",
     ],
+    과일: [
+      "대기중...",
+      "레몬_i_f",
+      "레몬",
+      "바나나_i",
+      "바나나",
+      "바나나_f",
+      "수박_i_f",
+      "수박",
+      "포도_i_f",
+      "포도",
+      "호두_i",
+      "호두",
+      "호두_f",
+    ],
   };
 
-  const resultList = modelWordList[category];
+  const resultWordsList = {
+    자음: [],
+    모음: [],
+    숫자: [],
+    동물: ["강아지", "고양이", "사자", "소", "코끼리"],
+    과일: ["레몬", "바나나", "수박", "포도", "호두"],
+  };
+
+  const wordList = resultWordsList[category];
+
+  const resultList: string[] = modelWordList[category];
 
   // 판단부분 => stopComp가 true가 되면 판단 완료
   // 이후 해당 정보 상위 컴포넌트로 올리기
@@ -251,18 +276,74 @@ const PracticeLandmarkerCanvas = ({
           aimodel.aiCalculate(seq, model);
         }
 
-        const aiResult = aimodel.getResults();
+        const dynamicWord = (init: string, middle: string, finish: string) => {
+          let initMiddleIdx = 0;
+          let finMiddleIdx = 0;
+          // 인식 결과 리스트 0이 인식되었을 때 5개 묶음 리스트가 for문을 돌아가면서 60%를 확인해야됨,
+          // 60%가 끝났을 때 인덱스가 걸려야됨
 
-        finResultList.push(resultList[aiResult]);
+          // 시작점 찾기!
+          if (finResultList[0] === init) {
+            for (let i = 0; i < 25; i++) {
+              let countInit = 0;
 
-        setRecongnizingWord(resultList[aiResult]);
+              // 인덱스 범위안에서 강아지_i 갯수 찾아서 7개 이상이면 돌리는식으로
+              for (let j = i; j < i + 5; j++) {
+                if (finResultList[j] === init) {
+                  // 가운데 친구(일반 강아지)의 시작점 업데이트
+                  initMiddleIdx = j + 1;
+                  countInit += 1;
+                }
+              }
 
-        // 쌓인 결과가 60개 초과하면 판단 시작
-        if (finResultList.length > 30) {
-          // 오래된 인자 제거
-          finResultList.shift();
+              if (countInit < 4) {
+                // 만약 i가 한번밖에 안돔(0~9까지 안에 60%를 못넘겼을 때)
+                if (!i) {
+                  initMiddleIdx = 0;
+                }
+                break;
+              }
+            }
+          }
 
-          // 비교 문자와 일치하는 개수
+          // 끝점 찾기!
+          if (initMiddleIdx && initMiddleIdx < 24) {
+            // initMiiddle부터 도는데 => 시작점이 바껴야 됨, 왜냐-> 끝에서 먹을수 있어서  ->  만약 60퍼가 넘으면 finMiddle에 훅 그리고 break
+
+            for (let i = initMiddleIdx; i <= 25; i++) {
+              let countFin = 0;
+              // for문으로 위와 같게 해버림 대신 finMiddle은 나중에 찾는걸로
+              for (let j = i; j < i + 5; j++) {
+                if (finResultList[j] === finish) {
+                  countFin += 1;
+                }
+              }
+              // 만약 끝점 리스트 70% 이상을 하나라도 찾으면 나가버려야됨 finMiddle을 업데이트하면서
+              if (countFin >= 3) {
+                const findFinList = finResultList.slice(i, i + 3);
+                finMiddleIdx = findFinList.indexOf(finish) + i;
+                break;
+              }
+            }
+          }
+
+          if (initMiddleIdx && finMiddleIdx && initMiddleIdx + 1 < finMiddleIdx) {
+            let countMiddle = 0;
+            for (let i = initMiddleIdx; i < finMiddleIdx; i++) {
+              if (finResultList[i] === middle) {
+                countMiddle += 1;
+              }
+            }
+            if (countMiddle / (finMiddleIdx - initMiddleIdx - 1) > 0.7) {
+              finResult = true;
+              setPercentage(100);
+              finResultList.length = 0;
+            }
+          }
+        };
+
+        // ===========================================================================
+        const staticWord = () => {
           let count = 0;
           finResultList.forEach((item) => {
             if (item === compareWord) {
@@ -277,6 +358,100 @@ const PracticeLandmarkerCanvas = ({
             finResult = true;
             setPercentage(100);
             finResultList.length = 0;
+          }
+        };
+
+        const aiResult = aimodel.getResults();
+
+        finResultList.push(resultList[aiResult]);
+
+        var upWords = [
+          "강아지_i",
+          "고양이_i_f",
+          "사자_i",
+          "사자_f",
+          "레몬_i_f",
+          "바나나_i",
+          "바나나_f",
+          "수박_i_f",
+          "포도_i_f",
+          "호두_i",
+          "강아지_f",
+          "호두_f",
+        ];
+
+        let recongCheck = true;
+
+        for (let upWord of upWords) {
+          if (upWord === resultList[aiResult]) {
+            recongCheck = false;
+          }
+
+          if (recongCheck) {
+            setRecongnizingWord(resultList[aiResult]);
+          } else {
+            setRecongnizingWord("인식중...");
+          }
+        }
+
+        // if (resultList[aiResult] in upWord) {
+        //   setRecongnizingWord("인식중...");
+        //   console.log("asfdasf");
+        // } else {
+        //   setRecongnizingWord(resultList[aiResult]);
+        //   console.log("aqqqqq");
+        //   console.log(upWord);
+        //   console.log(resultList[aiResult] === "강아지_i");
+        // }
+
+        // 쌓인 결과가 60개 초과하면 판단 시작
+        if (finResultList.length > 30) {
+          // 오래된 인자 제거
+          finResultList.shift();
+
+          // 비교 문자와 일치하는 개수
+          // let count = 0;
+          // finResultList.forEach((item) => {
+          //   if (item === compareWord) {
+          //     count++;
+          //   }
+          // });
+          // setPercentage(Math.floor((count / 24) * 100));
+
+          // // 일치율이 80% 이상일시
+          // if (count > 24) {
+          //   // 정답처리
+          //   finResult = true;
+          //   setPercentage(100);
+          //   finResultList.length = 0;
+          // }
+
+          if (category === "동물") {
+            if (wordList.indexOf(compareWord, 0) === 0) {
+              dynamicWord("강아지_i", "강아지", "강아지_f");
+            } else if (wordList.indexOf(compareWord, 0) === 1) {
+              dynamicWord("고양이_i_f", "고양이", "고양이_i_f");
+            } else if (wordList.indexOf(compareWord, 0) === 2) {
+              dynamicWord("사자_i", "사자", "사자_f");
+            } else if (wordList.indexOf(compareWord, 0) === 3) {
+              staticWord();
+            } else if (wordList.indexOf(compareWord, 0) === 4) {
+              staticWord();
+            }
+          } else if (category === "과일") {
+            if (wordList.indexOf(compareWord, 0) === 0) {
+              dynamicWord("레몬_i_f", "레몬", "레몬_i_f");
+            } else if (wordList.indexOf(compareWord, 0) === 1) {
+              dynamicWord("바나나_i", "바나나", "바나나_f");
+            } else if (wordList.indexOf(compareWord, 0) === 2) {
+              dynamicWord("수박_i_f", "수박", "수박_i_f");
+            } else if (wordList.indexOf(compareWord, 0) === 3) {
+              dynamicWord("포도_i_f", "포도", "포도_i_f");
+            } else if (wordList.indexOf(compareWord, 0) === 4) {
+              dynamicWord("호두_i", "호두", "호두_f");
+            }
+          } else if (category === "자음" || category === "모음" || category === "숫자") {
+            staticWord();
           }
         }
 
