@@ -201,3 +201,6 @@
 - 와이어 프레임(Figma)
 
 >[https://www.figma.com/file/OU1Cr8MoLcxyohrJm3fosp/수어쉬워?type=design&node-id=0%3A1&mode=design&t=HlbOSCJQN4EmB2Cr-1](https://www.figma.com/file/OU1Cr8MoLcxyohrJm3fosp/%EC%88%98%EC%96%B4%EC%89%AC%EC%9B%8C?type=design&node-id=0%3A1&mode=design&t=HlbOSCJQN4EmB2Cr-1)
+
+- UCC
+>[https://youtu.be/ZkIuFB8XYwQ](https://youtu.be/ZkIuFB8XYwQ)
