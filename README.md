@@ -61,14 +61,14 @@
 
 ![team](assets/team.jpeg)
 
-| Name | Part | Detail | Github |
-| --- | --- | --- | --- |
-| 한정수 | Front-End, AI | 팀장 |  |
-| 김도현 | CI/CD, Back-End | CI/CD 팀장 및 백엔드 서브 |  |
-| 김민석 | Back-End | 백엔드 팀장 |  |
-| 류지원 | Front-End | 프론트엔드 팀장 |  |
-| 배상훈 | Front-End, AI |  |  |
-| 서민주 | Front-End | 프론트엔드 서브 |  |
+| Name | Part | Detail |
+| --- | --- | --- |
+| 한정수 | Front-End, AI | 팀장 |
+| 김도현 | CI/CD, Back-End | CI/CD 팀장 및 백엔드 서브 |
+| 김민석 | Back-End | 백엔드 팀장 |
+| 류지원 | Front-End | 프론트엔드 팀장 |
+| 배상훈 | Front-End, AI |  |
+| 서민주 | Front-End | 프론트엔드 서브 |
 
 
 
