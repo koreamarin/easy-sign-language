@@ -36,3 +36,11 @@ out/
 ### VS Code ###
 .vscode/
 .env
+
+# dependencies
+/Easysign_fe-edu/node_modules
+/.pnp
+.pnp.js
+
+# production
+/build
