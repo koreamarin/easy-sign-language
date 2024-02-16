@@ -1,0 +1,49 @@
+{
+	"label_count": 11,
+	"label": {
+		"default": {
+			"idx": 0,
+			"file_cnt": 10
+		},
+		"강아지_i": {
+			"idx": 1,
+			"file_cnt": 20
+		},
+		"강아지": {
+			"idx": 2,
+			"file_cnt": 40
+		},
+		"강아지_f": {
+			"idx": 3,
+			"file_cnt": 20
+		},
+		"고양이_i_f": {
+			"idx": 4,
+			"file_cnt": 20
+		},
+		"고양이": {
+			"idx": 5,
+			"file_cnt": 40
+		},
+		"사자_i": {
+			"idx": 6,
+			"file_cnt": 10
+		},
+		"사자": {
+			"idx": 7,
+			"file_cnt": 10
+		},
+		"사자_f": {
+			"idx": 8,
+			"file_cnt": 10
+		},
+		"소": {
+			"idx": 9,
+			"file_cnt": 20
+		},
+		"코끼리": {
+			"idx": 10,
+			"file_cnt": 20
+		}
+	}
+}

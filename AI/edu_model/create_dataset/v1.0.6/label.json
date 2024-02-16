@@ -1,0 +1,41 @@
+{
+	"label_count": 9,
+	"label": {
+		"default": {
+			"idx": 0,
+			"file_cnt": 65
+		},
+		"ㄱ": {
+			"idx": 1,
+			"file_cnt": 70
+		},
+		"ㄴ": {
+			"idx": 2,
+			"file_cnt": 70
+		},
+		"ㄷ": {
+			"idx": 3,
+			"file_cnt": 74
+		},
+		"ㄹ": {
+			"idx": 4,
+			"file_cnt": 70
+		},
+		"ㅁ": {
+			"idx": 5,
+			"file_cnt": 72
+		},
+		"ㅂ": {
+			"idx": 6,
+			"file_cnt": 60
+		},
+		"ㅅ": {
+			"idx": 7,
+			"file_cnt": 60
+		},
+		"ㅇ": {
+			"idx": 8,
+			"file_cnt": 60
+		}
+	}
+}

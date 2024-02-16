@@ -1,0 +1,17 @@
+{
+	"label_count": 3,
+	"label": {
+		"default": {
+			"idx": 0,
+			"file_cnt": 40
+		},
+		"ㄱ": {
+			"idx": 1,
+			"file_cnt": 40
+		},
+		"ㄴ": {
+			"idx": 2,
+			"file_cnt": 40
+		}
+	}
+}

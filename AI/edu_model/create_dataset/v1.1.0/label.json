@@ -1,0 +1,65 @@
+{
+	"label_count": 15,
+	"label": {
+		"default": {
+			"idx": 0,
+			"file_cnt": 5
+		},
+		"ㄱ": {
+			"idx": 1,
+			"file_cnt": 10
+		},
+		"ㄴ": {
+			"idx": 2,
+			"file_cnt": 10
+		},
+		"ㄷ": {
+			"idx": 3,
+			"file_cnt": 10
+		},
+		"ㄹ": {
+			"idx": 4,
+			"file_cnt": 10
+		},
+		"ㅁ": {
+			"idx": 5,
+			"file_cnt": 10
+		},
+		"ㅂ": {
+			"idx": 6,
+			"file_cnt": 10
+		},
+		"ㅅ": {
+			"idx": 7,
+			"file_cnt": 10
+		},
+		"ㅇ": {
+			"idx": 8,
+			"file_cnt": 10
+		},
+		"ㅈ": {
+			"idx": 9,
+			"file_cnt": 10
+		},
+		"ㅊ": {
+			"idx": 10,
+			"file_cnt": 10
+		},
+		"ㅋ": {
+			"idx": 11,
+			"file_cnt": 10
+		},
+		"ㅌ": {
+			"idx": 12,
+			"file_cnt": 10
+		},
+		"ㅍ": {
+			"idx": 13,
+			"file_cnt": 10
+		},
+		"ㅎ": {
+			"idx": 14,
+			"file_cnt": 10
+		}
+	}
+}
